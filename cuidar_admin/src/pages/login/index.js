@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles, TextField, withStyles } from '@material-ui/core';
 
 import { login } from '../../api';
@@ -55,6 +56,9 @@ const useStyles = makeStyles({
   bottomSpace: {
     marginBottom: '30px',
   },
+  center: {
+    alignSelf: 'center',
+  },
 });
 
 function Login() {
@@ -64,6 +68,7 @@ function Login() {
   const [errorEmail, setErrorEmail] = useState(false);
   const [password, setPassword] = useState('');
   const [errorPassword, setErrorPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateEmail = () => {
     const validated = !email || email === '';
@@ -83,7 +88,7 @@ function Login() {
 
   const auth = async () => {
     if (validateInputs()) {
-      const result = await login(email, password);
+      const result = await login(email, password, setIsLoading);
 
       if (result) {
         const { token, user } = result.data;
@@ -128,6 +133,7 @@ function Login() {
             Entrar
           </CustomButton>
           <a className="login-forget-password">Esqueceu a senha?</a>
+          {isLoading && <CircularProgress className={style.center} />}
         </form>
       </Container>
     </div>
