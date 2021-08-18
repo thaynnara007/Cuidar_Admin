@@ -20,6 +20,7 @@ module.exports = {
   },
   plugins: ['react', 'prettier'],
   rules: {
+    'consistent-return': 'off',
     'no-console': 'error',
     'global-require': 'off',
     'no-throw-literal': 'off',
