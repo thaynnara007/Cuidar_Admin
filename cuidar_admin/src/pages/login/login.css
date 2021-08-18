@@ -1,0 +1,15 @@
+.homepage-background {
+  background-color: #fff;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  height: auto;
+  backface-visibility: hidden;
+  overflow: hidden;
+  background-image: linear-gradient(40deg, rgb(63, 114, 175, 1), rgb(249, 247, 247, 1));
+}
