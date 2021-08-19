@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import Login from './pages/login';
+import Enter from './pages/enterPage';
 import Home from './pages/homepage';
 import NotFound from './pages/notFound';
 
@@ -18,7 +18,7 @@ function App() {
           <main>
             <Switch>
               <Route exact path="/">
-                <Login />
+                <Enter />
               </Route>
               <Route exact path="/home">
                 <Home />
