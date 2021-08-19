@@ -82,10 +82,10 @@ export async function changePassword(password, setIsLoading) {
 
     const url = '/user/changePassword';
     const body = {
-      newPassowd: password,
+      newPassword: password,
     };
 
-    const result = await api.post(url, body);
+    const result = await api.put(url, body);
 
     setIsLoading(false);
 

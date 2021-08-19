@@ -1,4 +1,4 @@
-/* eslint consistent-return: off */
+/* eslint-disable no-else-return,no-lonely-if */
 
 import { toast } from 'react-toastify';
 import React, { useState } from 'react';
@@ -68,7 +68,7 @@ function RecoveryPassword({ flip }) {
 
     if (result) {
       const { data } = result;
-      toast(data);
+      toast.info(data);
     }
     return result;
   };
@@ -99,6 +99,21 @@ function RecoveryPassword({ flip }) {
         }
       }
     } else {
+      if (validateValue() && validatePassword2()) {
+        const password = password2;
+        const result = await changePassword(password, setIsLoading);
+
+        if (result) {
+          const { data } = result;
+
+          toast.success(data);
+          setPassword2('');
+
+          await localStorage.removeItem('cuidar_access_token');
+
+          goToLogin();
+        }
+      }
     }
   };
 
@@ -109,6 +124,7 @@ function RecoveryPassword({ flip }) {
           className={style.bottomSpace}
           label={getLabel()}
           variant="outlined"
+          type={state === RECOVERY_PASSWORD_PASSWORD ? 'password' : 'text'}
           helperText={state}
           error={errorValue}
           value={value}
