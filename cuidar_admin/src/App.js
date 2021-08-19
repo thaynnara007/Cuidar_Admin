@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import Login from './pages/login';
+import Login from './components/login';
 import Home from './pages/homepage';
 import NotFound from './pages/notFound';
 
