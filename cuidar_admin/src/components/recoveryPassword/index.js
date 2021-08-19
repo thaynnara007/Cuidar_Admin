@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core';
 
-import { login } from '../../api';
+import { sendRecoveryPasswordEmail, verifyCode, changePassword } from '../../api';
 import { CustomButton } from '../styles/buttons.style';
 import { CustomTextField } from '../styles/inputs.style';
 import {
@@ -14,7 +14,7 @@ import {
   RECOVERY_PASSWORD_PASSWORD,
 } from '../../utils/constants';
 
-import '../login/login.css';
+import './recoveryPassword.css';
 
 const useStyles = makeStyles({
   bottomSpace: {
@@ -29,6 +29,7 @@ function RecoveryPassword({ flip }) {
   const style = useStyles();
 
   const [value, setValue] = useState('');
+  const [email, setEmail] = useState('');
   const [errorValue, setErrorValue] = useState(false);
   const [password2, setPassword2] = useState('');
   const [errorPassword2, setErrorPassword2] = useState(false);
@@ -36,18 +37,21 @@ function RecoveryPassword({ flip }) {
   const [state, setState] = useState(RECOVERY_PASSWORD_EMAIL);
 
   const goToLogin = () => {
+    setValue('');
+    setState(RECOVERY_PASSWORD_EMAIL);
     flip(false);
   };
 
   const getLabel = () => {
     if (state === RECOVERY_PASSWORD_EMAIL) return 'Email';
     else if (state === RECOVERY_PASSWORD_CODE) return 'Código';
-    else return 'Senha';
+
+    return 'Senha';
   };
 
   const validateValue = () => {
     const validated = !value || value === '';
-    setErrorPassword(validated);
+    setErrorValue(validated);
 
     return !validated;
   };
@@ -59,11 +63,34 @@ function RecoveryPassword({ flip }) {
     return !validated;
   };
 
-  const validateInputs = () => validateValue() && validatePassword2();
+  const sendEmail = async (emailValue) => {
+    const result = await sendRecoveryPasswordEmail(emailValue, setIsLoading);
 
-  const handleConfirm = () => {
+    if (result) {
+      const { data } = result;
+      toast(data);
+    }
+    return result;
+  };
 
-  }
+  const handleConfirm = async () => {
+    if (state === RECOVERY_PASSWORD_EMAIL) {
+      if (validateValue()) {
+        const emailValue = value;
+        const result = await sendEmail(emailValue);
+
+        if (result) {
+          setValue('');
+          setEmail(emailValue);
+          setState(RECOVERY_PASSWORD_CODE);
+        }
+      }
+    } else if (state === RECOVERY_PASSWORD_CODE) {
+      if (validateValue()) {
+      }
+    } else {
+    }
+  };
 
   return (
     <>
@@ -75,7 +102,7 @@ function RecoveryPassword({ flip }) {
           helperText={state}
           error={errorValue}
           value={value}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setValue(e.target.value)}
         />
         {state === RECOVERY_PASSWORD_PASSWORD && (
           <CustomTextField
@@ -91,9 +118,22 @@ function RecoveryPassword({ flip }) {
         <CustomButton size="large" className={style.bottomSpace} onClick={handleConfirm}>
           Confirmar
         </CustomButton>
-        <a className="login-forget-password" onClick={goToLogin}>
-          Voltar para login
-        </a>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: state === RECOVERY_PASSWORD_CODE ? 'space-between' : 'center',
+          }}
+        >
+          <a className="recovery-anchor-style" onClick={goToLogin}>
+            Voltar para login
+          </a>
+          {state === RECOVERY_PASSWORD_CODE && (
+            <a className="recovery-anchor-style" onClick={() => sendEmail(email)}>
+              Enviar email novamente
+            </a>
+          )}
+        </div>
         {isLoading && <CircularProgress className={style.center} />}
       </form>
     </>

@@ -27,20 +27,20 @@ export async function login(email, password, setIsLoading) {
   }
 }
 
-export async function recoveryPassword(email, setIsLoading) {
+export async function sendRecoveryPasswordEmail(email, setIsLoading) {
   try {
-    setIsLoading(true)
-    
-    const url = '/user/forgetPassword'
+    setIsLoading(true);
+
+    const url = '/user/forgetPassword';
     const body = {
       email,
-    }
+    };
 
-    const result = await api.post(url, body)
+    const result = await api.post(url, body);
 
-    setIsLoading(false)
+    setIsLoading(false);
 
-    return result
+    return result;
   } catch (error) {
     let msg = '';
     if (error.response) msg = error.response.data.error;
@@ -53,19 +53,19 @@ export async function recoveryPassword(email, setIsLoading) {
 
 export async function verifyCode(email, code, setIsLoading) {
   try {
-    setIsLoading(true)
-    
-    const url = '/auth/verifyCode'
+    setIsLoading(true);
+
+    const url = '/auth/verifyCode';
     const body = {
       email,
       code,
-    }
+    };
 
-    const result = await api.post(url, body)
+    const result = await api.post(url, body);
 
-    setIsLoading(false)
+    setIsLoading(false);
 
-    return result
+    return result;
   } catch (error) {
     let msg = '';
     if (error.response) msg = error.response.data.error;
@@ -78,18 +78,18 @@ export async function verifyCode(email, code, setIsLoading) {
 
 export async function changePassword(password, setIsLoading) {
   try {
-    setIsLoading(true)
-    
-    const url = '/user/changePassword'
+    setIsLoading(true);
+
+    const url = '/user/changePassword';
     const body = {
       newPassowd: password,
-    }
+    };
 
-    const result = await api.post(url, body)
+    const result = await api.post(url, body);
 
-    setIsLoading(false)
+    setIsLoading(false);
 
-    return result
+    return result;
   } catch (error) {
     let msg = '';
     if (error.response) msg = error.response.data.error;
