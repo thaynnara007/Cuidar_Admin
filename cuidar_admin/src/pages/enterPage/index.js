@@ -1,10 +1,12 @@
 /* eslint consistent-return: off */
 
-import React from 'react';
+import React, { useState } from 'react';
+import ReactCardFlip from 'react-card-flip';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core';
 
 import Login from '../../components/login';
+import RecoveryPassword from '../../components/recoveryPassword';
 
 import './enterPage.css';
 
@@ -19,6 +21,8 @@ const useStyles = makeStyles({
 function Enter() {
   const style = useStyles();
 
+  const [isFlipped, setIsFlipped] = useState(false);
+
   return (
     <div className="login-background">
       <Container maxWidth="xs" className={style.root}>
@@ -27,11 +31,15 @@ function Enter() {
           className="login-logo"
           alt="cuidar's logo"
         />
-        <form
-          style={{ marginTop: '60px', flexDirection: 'column', display: 'flex', width: '100%' }}
+
+        <ReactCardFlip
+          isFlipped={isFlipped}
+          flipDirection="horizontal"
+          containerStyle={{ width: '100%' }}
         >
           <Login />
-        </form>
+          <RecoveryPassword />
+        </ReactCardFlip>
       </Container>
     </div>
   );

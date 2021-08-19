@@ -5,11 +5,16 @@ import React, { useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core';
 
-import { CustomTextField } from '../styles/inputs.style';
-import { CustomButton } from '../styles/buttons.style';
 import { login } from '../../api';
+import { CustomButton } from '../styles/buttons.style';
+import { CustomTextField } from '../styles/inputs.style';
+import {
+  RECOVERY_PASSWORD_EMAIL,
+  RECOVERY_PASSWORD_CODE,
+  RECOVERY_PASSWORD_PASSWORD,
+} from '../../utils/constants';
 
-import './login.css';
+import '../login/login.css';
 
 const useStyles = makeStyles({
   bottomSpace: {
@@ -20,18 +25,30 @@ const useStyles = makeStyles({
   },
 });
 
-function Login() {
+function RecoveryPassword() {
   const style = useStyles();
 
   const [email, setEmail] = useState('');
   const [errorEmail, setErrorEmail] = useState(false);
+  const [code, setCode] = useState('');
+  const [errorCode, setErrorCode] = useState(false);
   const [password, setPassword] = useState('');
   const [errorPassword, setErrorPassword] = useState(false);
+  const [password2, setPassword2] = useState('');
+  const [errorPassword2, setErrorPassword2] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [state, setState] = useState(RECOVERY_PASSWORD_EMAIL);
 
   const validateEmail = () => {
     const validated = !email || email === '';
     setErrorEmail(validated);
+
+    return !validated;
+  };
+
+  const validateCode = () => {
+    const validated = !email || email === '';
+    setErrorCode(validated);
 
     return !validated;
   };
@@ -43,7 +60,15 @@ function Login() {
     return !validated;
   };
 
-  const validateInputs = () => validateEmail() && validatePassword();
+  const validatePassword2 = () => {
+    const validated = !password || password === '' || password !== password2;
+    setErrorPassword2(validated);
+
+    return !validated;
+  };
+
+  const validateInputs = () =>
+    validateEmail() && validateCode() && validatePassword() && validatePassword2();
 
   const auth = async () => {
     if (validateInputs()) {
@@ -67,27 +92,30 @@ function Login() {
           className={style.bottomSpace}
           label="Email"
           variant="outlined"
+          helperText={RECOVERY_PASSWORD_EMAIL}
           error={errorEmail}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <CustomTextField
-          className={style.bottomSpace}
-          label="Senha"
-          variant="outlined"
-          error={errorPassword}
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        {state === RECOVERY_PASSWORD_PASSWORD && (
+          <CustomTextField
+            className={style.bottomSpace}
+            label="Confirmar senha"
+            variant="outlined"
+            error={errorPassword2}
+            type="password"
+            value={password2}
+            onChange={(e) => setPassword2(e.target.value)}
+          />
+        )}
         <CustomButton size="large" className={style.bottomSpace} onClick={auth}>
-          Entrar
+          Confirmar
         </CustomButton>
-        <a className="login-forget-password">Esqueceu a senha?</a>
+        <a className="login-forget-password">Voltar para login</a>
         {isLoading && <CircularProgress className={style.center} />}
       </form>
     </>
   );
 }
 
-export default Login;
+export default RecoveryPassword;
