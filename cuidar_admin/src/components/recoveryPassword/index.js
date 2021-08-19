@@ -61,6 +61,10 @@ function RecoveryPassword({ flip }) {
 
   const validateInputs = () => validateValue() && validatePassword2();
 
+  const handleConfirm = () => {
+
+  }
+
   return (
     <>
       <form style={{ marginTop: '60px', flexDirection: 'column', display: 'flex', width: '100%' }}>
@@ -84,7 +88,7 @@ function RecoveryPassword({ flip }) {
             onChange={(e) => setPassword2(e.target.value)}
           />
         )}
-        <CustomButton size="large" className={style.bottomSpace}>
+        <CustomButton size="large" className={style.bottomSpace} onClick={handleConfirm}>
           Confirmar
         </CustomButton>
         <a className="login-forget-password" onClick={goToLogin}>
