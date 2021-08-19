@@ -87,6 +87,16 @@ function RecoveryPassword({ flip }) {
       }
     } else if (state === RECOVERY_PASSWORD_CODE) {
       if (validateValue()) {
+        const code = value;
+        const result = await verifyCode(email, code, setIsLoading);
+
+        if (result) {
+          const { token } = result.data;
+
+          await localStorage.setItem('cuidar_access_token', token);
+          setValue('');
+          setState(RECOVERY_PASSWORD_PASSWORD);
+        }
       }
     } else {
     }
@@ -109,6 +119,7 @@ function RecoveryPassword({ flip }) {
             className={style.bottomSpace}
             label="Confirmar senha"
             variant="outlined"
+            helperText="Confirme a senha"
             error={errorPassword2}
             type="password"
             value={password2}
