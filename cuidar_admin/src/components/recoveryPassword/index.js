@@ -25,76 +25,52 @@ const useStyles = makeStyles({
   },
 });
 
-function RecoveryPassword() {
+function RecoveryPassword({ flip }) {
   const style = useStyles();
 
-  const [email, setEmail] = useState('');
-  const [errorEmail, setErrorEmail] = useState(false);
-  const [code, setCode] = useState('');
-  const [errorCode, setErrorCode] = useState(false);
-  const [password, setPassword] = useState('');
-  const [errorPassword, setErrorPassword] = useState(false);
+  const [value, setValue] = useState('');
+  const [errorValue, setErrorValue] = useState(false);
   const [password2, setPassword2] = useState('');
   const [errorPassword2, setErrorPassword2] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [state, setState] = useState(RECOVERY_PASSWORD_EMAIL);
 
-  const validateEmail = () => {
-    const validated = !email || email === '';
-    setErrorEmail(validated);
-
-    return !validated;
+  const goToLogin = () => {
+    flip(false);
   };
 
-  const validateCode = () => {
-    const validated = !email || email === '';
-    setErrorCode(validated);
-
-    return !validated;
+  const getLabel = () => {
+    if (state === RECOVERY_PASSWORD_EMAIL) return 'Email';
+    else if (state === RECOVERY_PASSWORD_CODE) return 'Código';
+    else return 'Senha';
   };
 
-  const validatePassword = () => {
-    const validated = !password || password === '';
+  const validateValue = () => {
+    const validated = !value || value === '';
     setErrorPassword(validated);
 
     return !validated;
   };
 
   const validatePassword2 = () => {
-    const validated = !password || password === '' || password !== password2;
+    const validated = !password2 || password2 === '' || value !== password2;
     setErrorPassword2(validated);
 
     return !validated;
   };
 
-  const validateInputs = () =>
-    validateEmail() && validateCode() && validatePassword() && validatePassword2();
-
-  const auth = async () => {
-    if (validateInputs()) {
-      const result = await login(email, password, setIsLoading);
-
-      if (result) {
-        const { token, user } = result.data;
-
-        await localStorage.setItem('cuidar_access_token', token);
-
-        toast(`Bem-vindo de volta ${user.name}!`);
-        window.location.replace('/home');
-      }
-    }
-  };
+  const validateInputs = () => validateValue() && validatePassword2();
 
   return (
     <>
       <form style={{ marginTop: '60px', flexDirection: 'column', display: 'flex', width: '100%' }}>
         <CustomTextField
           className={style.bottomSpace}
-          label="Email"
+          label={getLabel()}
           variant="outlined"
-          helperText={RECOVERY_PASSWORD_EMAIL}
-          error={errorEmail}
-          value={email}
+          helperText={state}
+          error={errorValue}
+          value={value}
           onChange={(e) => setEmail(e.target.value)}
         />
         {state === RECOVERY_PASSWORD_PASSWORD && (
@@ -108,10 +84,12 @@ function RecoveryPassword() {
             onChange={(e) => setPassword2(e.target.value)}
           />
         )}
-        <CustomButton size="large" className={style.bottomSpace} onClick={auth}>
+        <CustomButton size="large" className={style.bottomSpace}>
           Confirmar
         </CustomButton>
-        <a className="login-forget-password">Voltar para login</a>
+        <a className="login-forget-password" onClick={goToLogin}>
+          Voltar para login
+        </a>
         {isLoading && <CircularProgress className={style.center} />}
       </form>
     </>

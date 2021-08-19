@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   },
 });
 
-function Login() {
+function Login({ flip }) {
   const style = useStyles();
 
   const [email, setEmail] = useState('');
@@ -28,6 +28,10 @@ function Login() {
   const [password, setPassword] = useState('');
   const [errorPassword, setErrorPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const goToRecoveryPassword = () => {
+    flip(true);
+  };
 
   const validateEmail = () => {
     const validated = !email || email === '';
@@ -83,7 +87,9 @@ function Login() {
         <CustomButton size="large" className={style.bottomSpace} onClick={auth}>
           Entrar
         </CustomButton>
-        <a className="login-forget-password">Esqueceu a senha?</a>
+        <a className="login-forget-password" onClick={goToRecoveryPassword}>
+          Esqueceu a senha?
+        </a>
         {isLoading && <CircularProgress className={style.center} />}
       </form>
     </>

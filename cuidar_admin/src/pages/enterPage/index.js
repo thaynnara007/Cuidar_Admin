@@ -37,8 +37,8 @@ function Enter() {
           flipDirection="horizontal"
           containerStyle={{ width: '100%' }}
         >
-          <Login />
-          <RecoveryPassword />
+          <Login flip={setIsFlipped} />
+          <RecoveryPassword flip={setIsFlipped} />
         </ReactCardFlip>
       </Container>
     </div>
