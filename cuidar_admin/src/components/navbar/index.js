@@ -19,6 +19,11 @@ import Avatar from '@material-ui/core/Avatar';
 
 import MenuIcon from '../icons/iconMenu';
 import ProfileIcon from '../icons/iconProfile';
+import ArrowLeftIcon from '../icons/iconArrowLeft';
+import UsersIcon from '../icons/iconUsers';
+import BabyIcon from '../icons/iconBaby';
+import CalendarIcon from '../icons/iconCalendar';
+import ActivityIcon from '../icons/iconActivity'
 
 const drawerWidth = 240;
 
