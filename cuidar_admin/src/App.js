@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Enter from './pages/enterPage';
 import Home from './pages/homepage';
 import NotFound from './pages/notFound';
+import Navbar from './components/navbar';
 
 const queryClient = new QueryClient();
 
@@ -21,7 +22,7 @@ function App() {
                 <Enter />
               </Route>
               <Route exact path="/home">
-                <Home />
+                <Navbar />
               </Route>
               <Route exact path="/*">
                 <NotFound />
