@@ -1,4 +1,3 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import React, { useState } from 'react';
 import clsx from 'clsx';
@@ -26,7 +25,6 @@ import BabyIcon from '../icons/iconBaby';
 import CalendarIcon from '../icons/iconCalendar';
 import ActivityIcon from '../icons/iconActivity';
 import BoardIcon from '../icons/iconBoard';
-import Home from '../../pages/homepage';
 
 const drawerWidth = 240;
 
@@ -93,9 +91,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
@@ -106,14 +101,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Navbar() {
+function Navbar({ children }) {
   const history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
   const logout = async () => {
-    await localStorage.removeItem('cuidar_aceess_token');
+    await localStorage.removeItem('cuidar_access_token');
     history.push('/');
   };
 
@@ -183,19 +178,19 @@ function Navbar() {
         </div>
         <Divider />
         <List>
-          <ListItem button key="how_to_use">
+          <ListItem button key="how_to_use" onClick={() => history.push('/home')}>
             <ListItemIcon>
               <BoardIcon />
             </ListItemIcon>
             <ListItemText primary="Como usar" />
           </ListItem>
-          <ListItem button key="users">
+          <ListItem button key="users" onClick={() => history.push('/users')}>
             <ListItemIcon>
               <UsersIcon />
             </ListItemIcon>
             <ListItemText primary="Usuários" />
           </ListItem>
-          <ListItem button key="patients">
+          <ListItem button key="patients" onClick={() => history.push('/patients')}>
             <ListItemIcon>
               <BabyIcon />
             </ListItemIcon>
@@ -204,13 +199,13 @@ function Navbar() {
         </List>
         <Divider />
         <List>
-          <ListItem button key="activitys">
+          <ListItem button key="activitys" onClick={() => history.push('/activities')}>
             <ListItemIcon>
               <ActivityIcon />
             </ListItemIcon>
             <ListItemText primary="Atividades" />
           </ListItem>
-          <ListItem button key="history">
+          <ListItem button key="history" onClick={() => history.push('/history')}>
             <ListItemIcon>
               <CalendarIcon />
             </ListItemIcon>
@@ -220,13 +215,7 @@ function Navbar() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Router>
-          <Switch>
-            <Route exact path="/home">
-              <Home />
-            </Route>
-          </Switch>
-        </Router>
+        {children}
       </main>
     </div>
   );

@@ -2,12 +2,12 @@ import React from 'react';
 
 import Navbar from '../../components/navbar';
 
-function Home() {
+function Patients() {
   return (
     <Navbar>
-      <h1>Home</h1>
+      <h1>Patients</h1>
     </Navbar>
   );
 }
 
-export default Home;
+export default Patients;

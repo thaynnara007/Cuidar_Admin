@@ -1,11 +1,16 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Enter from './pages/enterPage';
 import NotFound from './pages/notFound';
-import Navbar from './components/navbar';
+import Home from './pages/homepage';
+import Users from './pages/users';
+import Patients from './pages/patients';
+import Activities from './pages/activities';
+import History from './pages/history';
 
 const queryClient = new QueryClient();
 
@@ -21,7 +26,19 @@ function App() {
                 <Enter />
               </Route>
               <Route exact path="/home">
-                <Navbar />
+                <Home />
+              </Route>
+              <Route exact path="/users">
+                <Users />
+              </Route>
+              <Route exact path="/patients">
+                <Patients />
+              </Route>
+              <Route exact path="/activities">
+                <Activities />
+              </Route>
+              <Route exact path="/history">
+                <History />
               </Route>
               <Route exact path="/*">
                 <NotFound />
