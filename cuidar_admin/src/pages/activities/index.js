@@ -2,12 +2,12 @@ import React from 'react';
 
 import Navbar from '../../components/navbar';
 
-function Home() {
+function Activities() {
   return (
     <Navbar>
-      <h1>Home</h1>
+      <h1>Activitis</h1>
     </Navbar>
   );
 }
 
-export default Home;
+export default Activities;
