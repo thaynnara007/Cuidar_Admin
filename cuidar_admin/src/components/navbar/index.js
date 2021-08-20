@@ -1,3 +1,4 @@
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import React, { useState } from 'react';
 import clsx from 'clsx';
@@ -23,7 +24,9 @@ import ArrowLeftIcon from '../icons/iconArrowLeft';
 import UsersIcon from '../icons/iconUsers';
 import BabyIcon from '../icons/iconBaby';
 import CalendarIcon from '../icons/iconCalendar';
-import ActivityIcon from '../icons/iconActivity'
+import ActivityIcon from '../icons/iconActivity';
+import BoardIcon from '../icons/iconBoard';
+import Home from '../../pages/homepage';
 
 const drawerWidth = 240;
 
@@ -69,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
+    backgroundColor: '#3112D4E',
   },
   drawerOpen: {
     width: drawerWidth,
@@ -170,28 +174,60 @@ function Navbar() {
       >
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <MenuIcon /> : <ProfileIcon />}
+            {theme.direction === 'rtl' ? (
+              <MenuIcon color="#F9F7F7" />
+            ) : (
+              <ArrowLeftIcon color="#112D4E" />
+            )}
           </IconButton>
         </div>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <MenuIcon /> : <ProfileIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem button key="how_to_use">
+            <ListItemIcon>
+              <BoardIcon />
+            </ListItemIcon>
+            <ListItemText primary="Como usar" />
+          </ListItem>
+          <ListItem button key="users">
+            <ListItemIcon>
+              <UsersIcon />
+            </ListItemIcon>
+            <ListItemText primary="Usuários" />
+          </ListItem>
+          <ListItem button key="patients">
+            <ListItemIcon>
+              <BabyIcon />
+            </ListItemIcon>
+            <ListItemText primary="Pacientes" />
+          </ListItem>
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <MenuIcon /> : <ProfileIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem button key="activitys">
+            <ListItemIcon>
+              <ActivityIcon />
+            </ListItemIcon>
+            <ListItemText primary="Atividades" />
+          </ListItem>
+          <ListItem button key="history">
+            <ListItemIcon>
+              <CalendarIcon />
+            </ListItemIcon>
+            <ListItemText primary="Histórico" />
+          </ListItem>
         </List>
       </Drawer>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <Router>
+          <Switch>
+            <Route exact path="/home">
+              <Home />
+            </Route>
+          </Switch>
+        </Router>
+      </main>
     </div>
   );
 }

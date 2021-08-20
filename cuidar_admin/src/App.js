@@ -4,7 +4,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Enter from './pages/enterPage';
-import Home from './pages/homepage';
 import NotFound from './pages/notFound';
 import Navbar from './components/navbar';
 
