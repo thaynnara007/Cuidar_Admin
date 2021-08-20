@@ -1,4 +1,6 @@
 import React from 'react';
+import { useHistory } from 'react-router';
+
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -34,6 +36,12 @@ const useStyles = makeStyles({
 
 function Navbar() {
   const classes = useStyles();
+  const history = useHistory();
+
+  const logout = async () => {
+    await localStorage.removeItem('cuidar_aceess_token');
+    history.push('/');
+  };
 
   return (
     <div className={classes.root}>
@@ -45,12 +53,12 @@ function Navbar() {
           <Typography variant="h5" className={classes.title}>
             Cuidar
           </Typography>
-          <IconButton color="inherit" aria-label="profile">
+          <IconButton color="inherit" aria-label="profile" onClick={() => history.push('/profile')}>
             <Avatar className={classes.avatar}>
-              <ProfileIcon color="#112D4E" />
+              <ProfileIcon size="1x" color="#112D4E" />
             </Avatar>
           </IconButton>
-          <Button color="inherit" className={classes.button}>
+          <Button color="inherit" className={classes.button} onClick={logout}>
             SAIR
           </Button>
         </Toolbar>
