@@ -19,7 +19,7 @@ import TrashIcon from '../icons/iconTrash';
 import { AccordionButton } from '../styles/buttons.style';
 import { getUsers } from '../../api';
 import Loading from '../loading';
-import CustomModal from '../modal';
+import FormModal from '../modal/formModal';
 
 const useStyles = makeStyles({
   heading: {
@@ -45,12 +45,17 @@ const useStyles = makeStyles({
     margin: '20px auto',
     width: 'fit-content',
   },
+  label: {
+    margin: '8px 0px',
+    fontWeight: 'bold',
+  },
 });
 
 function ListUser() {
   const classes = useStyles();
   const [page, setPage] = useState(1);
   const [openAddressModal, setOpenAddressModal] = useState(false);
+  const [address, setAddress] = useState([]);
 
   const { data, isFetching, refetch } = useQuery('users', () => getUsers(page), {
     refetchOnWindowFocus: false,
@@ -63,6 +68,23 @@ function ListUser() {
 
   const handlePagination = (event, value) => {
     setPage(value);
+  };
+
+  const handleShowAddress = (addressObj) => {
+    const addressInfo = {
+      Estado: addressObj?.state,
+      Bairro: addressObj?.district,
+      Rua: addressObj?.street,
+      Complemento: addressObj?.complement,
+      Cidade: addressObj?.city,
+      CEP: addressObj?.zipCode,
+      Numero: addressObj?.number,
+    };
+
+    const entries = address ? Object.entries(addressInfo) : [];
+
+    setAddress(entries);
+    setOpenAddressModal(true);
   };
 
   const accordionUserItens = (users) =>
@@ -90,7 +112,9 @@ function ListUser() {
         </AccordionDetails>
         <Divider />
         <AccordionActions>
-          <AccordionButton onClick={() => setOpenAddressModal(true)}>Ver endereço</AccordionButton>
+          <AccordionButton onClick={() => handleShowAddress(user.address)}>
+            Ver endereço
+          </AccordionButton>
           <AccordionButton>Editar permissões</AccordionButton>
           <IconButton color="inherit">
             <TrashIcon size="1x" color="#BD4B4B" />
@@ -113,12 +137,13 @@ function ListUser() {
             shape="rounded"
           />
           {accordionUserItens(data?.data.rows)}
-          <CustomModal open={openAddressModal} handleClose={() => setOpenAddressModal(false)}>
-            <Typography variant="h4" style={{ textAlign: 'center' }}>
-              Endereço
-            </Typography>
-            <Divider />
-          </CustomModal>
+          <FormModal
+            open={openAddressModal}
+            handleClose={() => setOpenAddressModal(false)}
+            title="Endereço"
+          >
+            {address}
+          </FormModal>
         </>
       )}
     </div>
