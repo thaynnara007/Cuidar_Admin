@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useQuery } from 'react-query'
+import React, { useState } from 'react';
+import { useQuery } from 'react-query';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -12,9 +12,10 @@ import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
 import Divider from '@material-ui/core/Divider';
 
-
 import AngleDownIcon from '../icons/iconAngleDown';
 import { AccordionButton } from '../styles/buttons.style';
+import { getUsers } from '../../api';
+import Loading from '../loading';
 
 const useStyles = makeStyles({
   heading: {
@@ -24,7 +25,9 @@ const useStyles = makeStyles({
   },
   secondaryHeading: {
     fontSize: '15px',
-    color: "#7F7C82",
+    color: '#7F7C82',
+    flexShrink: 0,
+    flexBasis: '33.33%',
   },
   box: {
     listStyle: 'none',
@@ -32,62 +35,53 @@ const useStyles = makeStyles({
     flexDirection: 'row',
   },
   chip: {
-    margin: '5px'
-  }
-})
-
-const cu =  [
-  {name: "criar usuário", description: "permite a criação e edição de usuários"},
-  {name: "remove usuário", description: "permite a criação e edição de usuários"},
-  {name: "criar atividade", description: "permite a criação e edição de usuários"},
-  {name: "editar usuário", description: "permite a criação e edição de usuários"},
-]
+    margin: '5px',
+  },
+});
 
 function ListUser() {
-  const classes = useStyles()
-  const [expanded, setExpanded] = useState(false);
+  const classes = useStyles();
+  const { data, isFetching } = useQuery('users', () => getUsers(), {
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
-
-  return(
-    <div style={{ width: '100%', marginTop: '2px'}}>
-      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+  const accordionUserItens = (users) =>
+    users.map((user) => (
+      <Accordion key={user.id}>
         <AccordionSummary
           aria-controls="panel1bh-content"
           id="panel1bh-header"
-          expandIcon={<AngleDownIcon size='1x' color="#7F7C82"/>}
+          expandIcon={<AngleDownIcon size="1x" color="#7F7C82" />}
         >
-          <Typography className={classes.heading}>Thaynnara Gonçalves</Typography>
-          <Typography className={classes.secondaryHeading}>thaynnara.goncalves@ccc.ufcg.edu.br</Typography>
+          <Typography className={classes.heading}>{`${user.name} ${user.lastName}`}</Typography>
+          <Typography className={classes.secondaryHeading}>{`${user.email}`}</Typography>
+          <Typography className={classes.secondaryHeading}>{`${user.phoneNumber}`}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Box className={classes.box}>
-            {
-              cu.map( c => {
-                return (
-                  <li key={c.name}>
-                    <Tooltip title={c.description}>
-                      <Chip 
-                        label={c.name}
-                        className={classes.chip}
-                      />
-                    </Tooltip>
-                  </li>
-                )
-              })
-            }
+            {user.permissions.map((permission) => (
+              <li key={permission.id}>
+                <Tooltip title={permission.description}>
+                  <Chip label={permission.name} className={classes.chip} />
+                </Tooltip>
+              </li>
+            ))}
           </Box>
         </AccordionDetails>
         <Divider />
         <AccordionActions>
-          <AccordionButton>Detalhes</AccordionButton>
+          <AccordionButton>Ver endereço</AccordionButton>
           <AccordionButton>Editar permissões</AccordionButton>
         </AccordionActions>
       </Accordion>
+    ));
+
+  return (
+    <div style={{ width: '100%', marginTop: '2px' }}>
+      {isFetching ? <Loading /> : accordionUserItens(data?.data.rows)}
     </div>
-  )
+  );
 }
 
-export default ListUser
+export default ListUser;

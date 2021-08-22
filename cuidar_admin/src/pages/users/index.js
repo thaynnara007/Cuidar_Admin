@@ -22,7 +22,7 @@ function Users() {
           Usuários
         </Typography>
       </Header>
-      <div style={{ marginTop: '0px'}}>
+      <div style={{ marginTop: '0px' }}>
         <ListUser />
       </div>
     </Navbar>

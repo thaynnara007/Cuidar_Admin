@@ -31,4 +31,4 @@ export const AccordionButton = withStyles({
     margin: '0px 20px',
     padding: '10px 20px',
   },
-})(Button)
+})(Button);

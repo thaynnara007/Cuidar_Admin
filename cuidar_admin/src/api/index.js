@@ -99,3 +99,19 @@ export async function changePassword(password, setIsLoading) {
     toast.error(msg);
   }
 }
+
+export async function getUsers(page = 1, pageSize = 10) {
+  try {
+    const url = `/user?page=${page}&pageSize=${pageSize}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
