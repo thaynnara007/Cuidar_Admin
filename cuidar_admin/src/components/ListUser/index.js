@@ -20,6 +20,7 @@ import { AccordionButton } from '../styles/buttons.style';
 import { getUsers } from '../../api';
 import Loading from '../loading';
 import FormModal from '../modal/formModal';
+import ConfirmationModal from '../modal/confirmationModal';
 
 const useStyles = makeStyles({
   heading: {
@@ -56,6 +57,8 @@ function ListUser() {
   const [page, setPage] = useState(1);
   const [openAddressModal, setOpenAddressModal] = useState(false);
   const [address, setAddress] = useState([]);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [idToDelete, setIdToDelete] = useState(null);
 
   const { data, isFetching, refetch } = useQuery('users', () => getUsers(page), {
     refetchOnWindowFocus: false,
@@ -87,6 +90,11 @@ function ListUser() {
     setOpenAddressModal(true);
   };
 
+  const handleShowDeleteModal = (id) => {
+    setIdToDelete(id);
+    setOpenDeleteModal(true);
+  };
+
   const accordionUserItens = (users) =>
     users.map((user) => (
       <Accordion key={user.id}>
@@ -116,9 +124,11 @@ function ListUser() {
             Ver endereço
           </AccordionButton>
           <AccordionButton>Editar permissões</AccordionButton>
-          <IconButton color="inherit">
-            <TrashIcon size="1x" color="#BD4B4B" />
-          </IconButton>
+          {user.email !== 'master@email.com' && (
+            <IconButton color="inherit" onClick={() => handleShowDeleteModal(user.id)}>
+              <TrashIcon size="1x" color="#BD4B4B" />
+            </IconButton>
+          )}
         </AccordionActions>
       </Accordion>
     ));
@@ -144,6 +154,13 @@ function ListUser() {
           >
             {address}
           </FormModal>
+          <ConfirmationModal
+            open={openDeleteModal}
+            handleClose={() => setOpenDeleteModal(false)}
+            title="Remover usuário"
+            description="Esta ação não poderá ser revertida, você tem certeza que quer de apagar este usuário?"
+            confirmButtonName="Remover"
+          />
         </>
       )}
     </div>
