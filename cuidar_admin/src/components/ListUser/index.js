@@ -12,8 +12,10 @@ import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
 import Divider from '@material-ui/core/Divider';
 import Pagination from '@material-ui/lab/Pagination';
+import IconButton from '@material-ui/core/IconButton';
 
 import AngleDownIcon from '../icons/iconAngleDown';
+import TrashIcon from '../icons/iconTrash';
 import { AccordionButton } from '../styles/buttons.style';
 import { getUsers } from '../../api';
 import Loading from '../loading';
@@ -88,6 +90,9 @@ function ListUser() {
         <AccordionActions>
           <AccordionButton>Ver endereço</AccordionButton>
           <AccordionButton>Editar permissões</AccordionButton>
+          <IconButton color="inherit">
+            <TrashIcon size="1x" color="#BD4B4B" />
+          </IconButton>
         </AccordionActions>
       </Accordion>
     ));
