@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -22,7 +23,7 @@ function Users() {
           Usuários
         </Typography>
       </Header>
-      <div style={{ marginTop: '0px' }}>
+      <div>
         <ListUser />
       </div>
     </Navbar>

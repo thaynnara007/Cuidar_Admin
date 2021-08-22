@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
 import Divider from '@material-ui/core/Divider';
+import Pagination from '@material-ui/lab/Pagination';
 
 import AngleDownIcon from '../icons/iconAngleDown';
 import { AccordionButton } from '../styles/buttons.style';
@@ -37,14 +38,28 @@ const useStyles = makeStyles({
   chip: {
     margin: '5px',
   },
+  pagination: {
+    margin: '20px auto',
+    width: 'fit-content',
+  },
 });
 
 function ListUser() {
   const classes = useStyles();
-  const { data, isFetching } = useQuery('users', () => getUsers(), {
+  const [page, setPage] = useState(1);
+
+  const { data, isFetching, refetch } = useQuery('users', () => getUsers(page), {
     refetchOnWindowFocus: false,
     retry: false,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [page]);
+
+  const handlePagination = (event, value) => {
+    setPage(value);
+  };
 
   const accordionUserItens = (users) =>
     users.map((user) => (
@@ -79,7 +94,20 @@ function ListUser() {
 
   return (
     <div style={{ width: '100%', marginTop: '2px' }}>
-      {isFetching ? <Loading /> : accordionUserItens(data?.data.rows)}
+      {isFetching ? (
+        <Loading />
+      ) : (
+        <>
+          <Pagination
+            className={classes.pagination}
+            count={data?.data.pages}
+            page={page}
+            onChange={handlePagination}
+            shape="rounded"
+          />
+          {accordionUserItens(data?.data.rows)}
+        </>
+      )}
     </div>
   );
 }
