@@ -19,6 +19,7 @@ import TrashIcon from '../icons/iconTrash';
 import { AccordionButton } from '../styles/buttons.style';
 import { getUsers } from '../../api';
 import Loading from '../loading';
+import CustomModal from '../modal';
 
 const useStyles = makeStyles({
   heading: {
@@ -49,6 +50,7 @@ const useStyles = makeStyles({
 function ListUser() {
   const classes = useStyles();
   const [page, setPage] = useState(1);
+  const [openAddressModal, setOpenAddressModal] = useState(false);
 
   const { data, isFetching, refetch } = useQuery('users', () => getUsers(page), {
     refetchOnWindowFocus: false,
@@ -88,7 +90,7 @@ function ListUser() {
         </AccordionDetails>
         <Divider />
         <AccordionActions>
-          <AccordionButton>Ver endereço</AccordionButton>
+          <AccordionButton onClick={() => setOpenAddressModal(true)}>Ver endereço</AccordionButton>
           <AccordionButton>Editar permissões</AccordionButton>
           <IconButton color="inherit">
             <TrashIcon size="1x" color="#BD4B4B" />
@@ -111,6 +113,12 @@ function ListUser() {
             shape="rounded"
           />
           {accordionUserItens(data?.data.rows)}
+          <CustomModal open={openAddressModal} handleClose={() => setOpenAddressModal(false)}>
+            <Typography variant="h4" style={{ textAlign: 'center' }}>
+              Endereço
+            </Typography>
+            <Divider />
+          </CustomModal>
         </>
       )}
     </div>
