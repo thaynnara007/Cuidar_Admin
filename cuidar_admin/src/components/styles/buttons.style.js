@@ -24,3 +24,11 @@ export const HeaderButton = withStyles({
     padding: '10px 20px',
   },
 })(Button);
+
+export const AccordionButton = withStyles({
+  root: {
+    color: '#3F72AF',
+    margin: '0px 20px',
+    padding: '10px 20px',
+  },
+})(Button)

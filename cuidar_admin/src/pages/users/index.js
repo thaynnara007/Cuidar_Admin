@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Navbar from '../../components/navbar';
 import Header from '../../components/header';
+import ListUser from '../../components/ListUser';
 
 const useStyles = makeStyles({
   headerTitle: {
@@ -21,6 +22,9 @@ function Users() {
           Usuários
         </Typography>
       </Header>
+      <div style={{ marginTop: '0px'}}>
+        <ListUser />
+      </div>
     </Navbar>
   );
 }
