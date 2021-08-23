@@ -1,11 +1,21 @@
 import React from 'react';
 import { useQuery } from 'react-query';
 
-import { Container, makeStyles, Typography } from '@material-ui/core';
+import {
+  Container,
+  makeStyles,
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  FormControlLabel,
+  Checkbox,
+} from '@material-ui/core';
 
 import { FormTextField } from '../styles/inputs.style';
 import { getPermissions } from '../../api';
 import Loading from '../loading';
+import AngleDownIcon from '../icons/iconAngleDown';
 
 const useStyles = makeStyles({
   title: {
@@ -29,10 +39,32 @@ const useStyles = makeStyles({
 function CreateUser() {
   const classes = useStyles();
 
-  const { data, isFething } = useQuery('permissions', () => getPermissions(), {
+  const { data, isFetching } = useQuery('permissions', () => getPermissions(), {
     refetchOnWindowFocus: false,
     retry: false,
   });
+
+  const listPermissions = (permissions) =>
+    permissions.map((permission) => (
+      <Accordion key={permission.id}>
+        <AccordionSummary
+          expandIcon={<AngleDownIcon size="1x" color="#7F7C82" />}
+          style={{ backgroundColor: '#F9F7F7' }}
+        >
+          <FormControlLabel
+            onClick={(event) => event.stopPropagation()}
+            onFocus={(event) => event.stopPropagation()}
+            control={<Checkbox />}
+            label={permission.name}
+          />
+        </AccordionSummary>
+        <AccordionDetails style={{ backgroundColor: '#F9F7F7' }}>
+          <Typography variant="body1" color="textSecondary">
+            {permission.description}
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+    ));
 
   return (
     <Container maxWidth="md">
@@ -74,7 +106,7 @@ function CreateUser() {
       <Typography className={classes.title} variant="h5">
         Permissões
       </Typography>
-      <div>{isFething ? <Loading /> : <p>permissoes</p>}</div>
+      <div>{isFetching ? <Loading /> : listPermissions(data?.data)}</div>
     </Container>
   );
 }
