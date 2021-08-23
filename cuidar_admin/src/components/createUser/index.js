@@ -1,8 +1,11 @@
 import React from 'react';
+import { useQuery } from 'react-query';
 
 import { Container, makeStyles, Typography } from '@material-ui/core';
 
 import { FormTextField } from '../styles/inputs.style';
+import { getPermissions } from '../../api';
+import Loading from '../loading';
 
 const useStyles = makeStyles({
   title: {
@@ -25,6 +28,11 @@ const useStyles = makeStyles({
 
 function CreateUser() {
   const classes = useStyles();
+
+  const { data, isFething } = useQuery('permissions', () => getPermissions(), {
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 
   return (
     <Container maxWidth="md">
@@ -62,6 +70,11 @@ function CreateUser() {
         <FormTextField label="Número" variant="outlined" className={classes.input3Width} />
       </div>
       <FormTextField label="Complemento" fullWidth variant="outlined" />
+
+      <Typography className={classes.title} variant="h5">
+        Permissões
+      </Typography>
+      <div>{isFething ? <Loading /> : <p>permissoes</p>}</div>
     </Container>
   );
 }

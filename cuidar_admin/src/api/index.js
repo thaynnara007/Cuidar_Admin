@@ -134,3 +134,19 @@ export async function deleteUser(id, setIsLoading) {
     toast.error(msg);
   }
 }
+
+export async function getPermissions() {
+  try {
+    const url = `/permission`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
