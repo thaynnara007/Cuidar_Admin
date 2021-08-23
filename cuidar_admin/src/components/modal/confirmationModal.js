@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Divider, Button } from '@material-ui/core';
+import { Typography, Divider, Button, CircularProgress } from '@material-ui/core';
 
 import CustomModal from '.';
 
@@ -36,6 +36,9 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row-reverse',
   },
+  loading: {
+    justifyContent: 'center',
+  },
 });
 
 function ConfirmationModal({
@@ -45,6 +48,7 @@ function ConfirmationModal({
   confirmButtonName,
   handleClose,
   handleConfirm,
+  isLoading,
 }) {
   const classes = useStyles();
 
@@ -65,6 +69,7 @@ function ConfirmationModal({
           Cancelar
         </Button>
       </div>
+      {isLoading && <CircularProgress className={classes.loading} />}
     </CustomModal>
   );
 }

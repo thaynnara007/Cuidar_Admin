@@ -13,11 +13,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Divider from '@material-ui/core/Divider';
 import Pagination from '@material-ui/lab/Pagination';
 import IconButton from '@material-ui/core/IconButton';
+import { toast } from 'react-toastify';
 
 import AngleDownIcon from '../icons/iconAngleDown';
 import TrashIcon from '../icons/iconTrash';
 import { AccordionButton } from '../styles/buttons.style';
-import { getUsers } from '../../api';
+import { getUsers, deleteUser } from '../../api';
 import Loading from '../loading';
 import FormModal from '../modal/formModal';
 import ConfirmationModal from '../modal/confirmationModal';
@@ -59,6 +60,7 @@ function ListUser() {
   const [address, setAddress] = useState([]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { data, isFetching, refetch } = useQuery('users', () => getUsers(page), {
     refetchOnWindowFocus: false,
@@ -93,6 +95,18 @@ function ListUser() {
   const handleShowDeleteModal = (id) => {
     setIdToDelete(id);
     setOpenDeleteModal(true);
+  };
+
+  const handleDelete = async () => {
+    const id = idToDelete;
+    const result = await deleteUser(id, setIsLoading);
+
+    if (result) {
+      toast.success('Usário deletado com sucesso.');
+      refetch();
+    }
+
+    setOpenDeleteModal(false);
   };
 
   const accordionUserItens = (users) =>
@@ -160,6 +174,8 @@ function ListUser() {
             title="Remover usuário"
             description="Esta ação não poderá ser revertida, você tem certeza que quer de apagar este usuário?"
             confirmButtonName="Remover"
+            handleConfirm={handleDelete}
+            isLoading={isLoading}
           />
         </>
       )}
