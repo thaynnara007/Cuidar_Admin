@@ -32,3 +32,25 @@ export const CustomTextField = withStyles({
     },
   },
 })(TextField);
+
+export const FormTextField = withStyles({
+  root: {
+    '& label.Mui-focused': {
+      color: '#3F72AF',
+    },
+    '& p.Mui-focused': {
+      color: '#3F72AF',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: '#DBE2EF',
+    },
+    '& .MuiOutlinedInput-root': {
+      '&.Mui-focused fieldset': {
+        borderColor: '#DBE2EF',
+      },
+      '&:hover fieldset': {
+        borderColor: '#DBE2EF',
+      },
+    },
+  },
+})(TextField);
