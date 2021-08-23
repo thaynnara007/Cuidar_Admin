@@ -22,10 +22,10 @@ const useStyles = makeStyles({
     },
   },
   buttonCancel: {
-    color: '#F9F7F7',
-    backgroundColor: '#B2B1B9',
+    color: 'white',
+    backgroundColor: '#DBE2EF',
     '&:hover': {
-      backgroundColor: '#7F7C82',
+      backgroundColor: '#93B5C6',
     },
   },
   box: {
