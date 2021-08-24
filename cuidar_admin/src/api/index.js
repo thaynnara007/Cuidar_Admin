@@ -99,3 +99,74 @@ export async function changePassword(password, setIsLoading) {
     toast.error(msg);
   }
 }
+
+export async function getUsers(page = 1, pageSize = 10) {
+  try {
+    const url = `/user?page=${page}&pageSize=${pageSize}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
+
+export async function deleteUser(id, setIsLoading) {
+  try {
+    setIsLoading(true);
+    const url = `/user/${id}`;
+
+    const result = await api.delete(url);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function createUser(body, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const url = '/user';
+
+    const result = await api.post(url, body);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function getPermissions() {
+  try {
+    const url = `/permission`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}

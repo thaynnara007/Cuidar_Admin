@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Navbar from '../../components/navbar';
+import ListUser from '../../components/ListUser';
+import CreateUser from '../../components/createUser';
 
 function Users() {
+  const [state, setState] = useState('list_user');
+
   return (
     <Navbar>
-      <h1>USers</h1>
+      {state === 'list_user' ? (
+        <ListUser setPageState={setState} />
+      ) : (
+        <CreateUser setPageState={setState} />
+      )}
     </Navbar>
   );
 }

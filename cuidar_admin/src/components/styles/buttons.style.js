@@ -10,3 +10,25 @@ export const CustomButton = withStyles({
     },
   },
 })(Button);
+
+export const HeaderButton = withStyles({
+  root: {
+    color: '#3F72AF',
+    border: 'solid 1px #3F72AF',
+    '&:hover': {
+      backgroundColor: '#DBE2EF',
+      border: 'solid 1px #DBE2EF',
+    },
+    margin: '0px 20px',
+    marginBottom: '10px',
+    padding: '10px 20px',
+  },
+})(Button);
+
+export const AccordionButton = withStyles({
+  root: {
+    color: '#3F72AF',
+    margin: '0px 20px',
+    padding: '10px 20px',
+  },
+})(Button);
