@@ -44,7 +44,9 @@ function FormModal({ title, open, handleClose, children }) {
                 padding: '4px',
               }}
             >
-              <Typography variant="body2">{item[1] ?? 'Não informado'}</Typography>
+              <Typography variant="body2">
+                {item[1] && item[1] !== '' ? item[1] : 'Não informado'}
+              </Typography>
             </div>
           </div>
         ))}

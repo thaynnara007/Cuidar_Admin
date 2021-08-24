@@ -135,6 +135,26 @@ export async function deleteUser(id, setIsLoading) {
   }
 }
 
+export async function createUser(body, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const url = '/user';
+
+    const result = await api.post(url, body);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
 export async function getPermissions() {
   try {
     const url = `/permission`;

@@ -13,8 +13,9 @@ import {
   IconButton,
 } from '@material-ui/core';
 
+import { toast } from 'react-toastify';
 import { FormTextField } from '../styles/inputs.style';
-import { getPermissions } from '../../api';
+import { getPermissions, createUser } from '../../api';
 import Loading from '../loading';
 import AngleDownIcon from '../icons/iconAngleDown';
 import Header from '../header';
@@ -43,6 +44,7 @@ function CreateUser({ setPageState }) {
   const classes = useStyles();
 
   const [permissionsIds, setPermissionsIds] = useState(new Set());
+  const [isLoading, setIsLoading] = useState(false);
 
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -156,22 +158,45 @@ function CreateUser({ setPageState }) {
       </Accordion>
     ));
 
-  const createUser = async () => {
+  const handleCreateUser = async () => {
     const validateUser = validateUserInfo();
     const validateAddress = validateAddressInfo();
 
     if (validateUser && validateAddress) {
+      const permissions = Array.from(permissionsIds);
+      const body = {
+        user: {
+          name,
+          lastName,
+          email,
+          phoneNumber,
+          password,
+        },
+        address: {
+          state,
+          city,
+          zipCode,
+          district,
+          street,
+          number,
+          complement,
+        },
+        permissions,
+      };
+
+      const result = await createUser(body, setIsLoading);
+
+      if (result) toast.success('Usuário criado com sucesso');
+      setPageState('list_user');
     }
   };
 
   return (
     <>
-      <Header buttonName="Registrar usuário" onClick={createUser}>
-        {
-          <IconButton color="inherit" onClick={() => setPageState('list_user')}>
-            <ArrowLeftIcon />
-          </IconButton>
-        }
+      <Header buttonName="Registrar usuário" onClick={handleCreateUser}>
+        <IconButton color="inherit" onClick={() => setPageState('list_user')}>
+          <ArrowLeftIcon />
+        </IconButton>
       </Header>
       <Container maxWidth="md">
         <Typography className={classes.title} variant="h5">
@@ -298,7 +323,7 @@ function CreateUser({ setPageState }) {
         <Typography className={classes.title} variant="h5">
           Permissões
         </Typography>
-        <div>{isFetching ? <Loading /> : listPermissions(data?.data)}</div>
+        <div>{isFetching || isLoading ? <Loading /> : listPermissions(data?.data)}</div>
       </Container>
     </>
   );
