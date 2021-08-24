@@ -111,7 +111,7 @@ function ListUser({ setPageState }) {
   };
 
   const accordionUserItens = (users) =>
-    users.map((user) => (
+    users?.map((user) => (
       <Accordion key={user.id}>
         <AccordionSummary
           aria-controls="panel1bh-content"
@@ -151,11 +151,9 @@ function ListUser({ setPageState }) {
   return (
     <>
       <Header buttonName="Novo usuário" onClick={() => setPageState('create_user')}>
-        {
-          <Typography className={classes.headerTitle} variant="h4">
-            Usuários
-          </Typography>
-        }
+        <Typography className={classes.headerTitle} variant="h4">
+          Usuários
+        </Typography>
       </Header>
       <div style={{ width: '100%', marginTop: '2px' }}>
         {isFetching ? (

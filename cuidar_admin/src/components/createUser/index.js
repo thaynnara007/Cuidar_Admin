@@ -136,7 +136,7 @@ function CreateUser({ setPageState }) {
   };
 
   const listPermissions = (permissions) =>
-    permissions.map((permission) => (
+    permissions?.map((permission) => (
       <Accordion key={permission.id}>
         <AccordionSummary
           expandIcon={<AngleDownIcon size="1x" color="#7F7C82" />}
@@ -186,8 +186,10 @@ function CreateUser({ setPageState }) {
 
       const result = await createUser(body, setIsLoading);
 
-      if (result) toast.success('Usuário criado com sucesso');
-      setPageState('list_user');
+      if (result) {
+        toast.success('Usuário criado com sucesso');
+        setPageState('list_user');
+      }
     }
   };
 
