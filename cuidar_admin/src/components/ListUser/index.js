@@ -53,19 +53,6 @@ const useStyles = makeStyles({
     margin: '8px 0px',
     fontWeight: 'bold',
   },
-  modalTitle: {
-    textAlign: 'center',
-    color: '#112D4E',
-    margin: '10px 0px',
-  },
-  modalBox: {
-    maxHeight: '400px',
-    overflow: 'auto',
-  },
-  modalButton: {
-    margin: '10px auto',
-    width: 'fit-content',
-  },
 });
 
 function ListUser({ setPageState }) {
@@ -76,8 +63,10 @@ function ListUser({ setPageState }) {
   const [address, setAddress] = useState([]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
+  const [idToEdit, setIdToEdit] = useState(null);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
-  const [openPermissionModal, setOpenPermissionModal] = useState(true);
+  const [openPermissionModal, setOpenPermissionModal] = useState(false);
+  const [initPermissions, setInitPermisisons] = useState(new Set());
 
   const {
     data: usersRes,
@@ -127,6 +116,12 @@ function ListUser({ setPageState }) {
     setOpenDeleteModal(true);
   };
 
+  const handleShowPermissionsModal = (id, permissions) => {
+    setIdToEdit(id);
+    setInitPermisisons(new Set(permissions.map((permission) => permission.id)));
+    setOpenPermissionModal(true);
+  };
+
   const handleDelete = async () => {
     const id = idToDelete;
     const result = await deleteUser(id, setIsLoadingDelete);
@@ -168,7 +163,9 @@ function ListUser({ setPageState }) {
             Ver endereço
           </AccordionButton>
           {user.email !== 'master@email.com' && (
-            <AccordionButton>Editar permissões</AccordionButton>
+            <AccordionButton onClick={() => handleShowPermissionsModal(user.id, user.permissions)}>
+              Editar permissões
+            </AccordionButton>
           )}
           {user.email !== 'master@email.com' && (
             <IconButton color="inherit" onClick={() => handleShowDeleteModal(user.id)}>
@@ -218,7 +215,10 @@ function ListUser({ setPageState }) {
             <EditPermissionsModal
               open={openPermissionModal}
               handleClose={() => setOpenPermissionModal(false)}
+              userId={idToEdit}
               allPermissions={permissionsRes?.data}
+              initPermissions={initPermissions}
+              refetch={refetch}
             />
           </>
         )}

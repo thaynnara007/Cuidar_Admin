@@ -1,15 +1,19 @@
-import React from 'react';
+/* eslint-disable no-lonely-if */
+
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
-import { FormControlLabel, Checkbox } from '@material-ui/core';
+import { FormControlLabel, Checkbox, CircularProgress } from '@material-ui/core';
 
 import AngleDownIcon from '../icons/iconAngleDown';
 import { HeaderButton } from '../styles/buttons.style';
 import CustomModal from '.';
+import { updateUser } from '../../api';
 
 const useStyles = makeStyles({
   modalTitle: {
@@ -27,8 +31,58 @@ const useStyles = makeStyles({
   },
 });
 
-function EditPermissionsModal({ open, handleClose, allPermissions, initPermissions }) {
+function EditPermissionsModal({
+  open,
+  handleClose,
+  userId,
+  allPermissions,
+  initPermissions,
+  refetch,
+}) {
   const classes = useStyles();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [permissionsToUpdate, setPermissionsToUpdate] = useState(new Set());
+
+  const addPermisison = (id) => {
+    setPermissionsToUpdate((previos) => {
+      previos.add(id);
+
+      return previos;
+    });
+  };
+
+  const removePermission = (id) => {
+    setPermissionsToUpdate((previos) => {
+      previos.delete(id);
+
+      return previos;
+    });
+  };
+
+  const handleCheck = (event, id) => {
+    if (event.target.checked) {
+      if (initPermissions.has(id)) removePermission(id);
+      else addPermisison(id);
+    } else {
+      if (initPermissions.has(id)) addPermisison(id);
+      else removePermission(id);
+    }
+  };
+
+  const updatePermissions = async () => {
+    const body = {
+      permissions: Array.from(permissionsToUpdate),
+    };
+
+    const result = await updateUser(userId, body, setIsLoading);
+
+    if (result) {
+      toast.success('Permissões atualizadas com sucesso.');
+      handleClose();
+      refetch();
+    }
+  };
 
   return (
     <CustomModal open={open} handleClose={handleClose}>
@@ -45,8 +99,10 @@ function EditPermissionsModal({ open, handleClose, allPermissions, initPermissio
               <FormControlLabel
                 onClick={(event) => event.stopPropagation()}
                 onFocus={(event) => event.stopPropagation()}
-                onChange={(event) => {}}
-                control={<Checkbox color="primary" />}
+                onChange={(event) => handleCheck(event, permission.id)}
+                control={
+                  <Checkbox color="primary" defaultChecked={initPermissions.has(permission.id)} />
+                }
                 label={permission.name}
               />
             </AccordionSummary>
@@ -59,7 +115,11 @@ function EditPermissionsModal({ open, handleClose, allPermissions, initPermissio
         ))}
       </div>
       <div className={classes.modalButton}>
-        <HeaderButton onClick={() => {}}>Salvar</HeaderButton>
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <HeaderButton onClick={updatePermissions}>Salvar</HeaderButton>
+        )}
       </div>
     </CustomModal>
   );
