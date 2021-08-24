@@ -22,6 +22,7 @@ import { getUsers, deleteUser } from '../../api';
 import Loading from '../loading';
 import FormModal from '../modal/formModal';
 import ConfirmationModal from '../modal/confirmationModal';
+import Header from '../header';
 
 const useStyles = makeStyles({
   heading: {
@@ -53,7 +54,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ListUser() {
+function ListUser({ setPageState }) {
   const classes = useStyles();
   const [page, setPage] = useState(1);
   const [openAddressModal, setOpenAddressModal] = useState(false);
@@ -148,38 +149,47 @@ function ListUser() {
     ));
 
   return (
-    <div style={{ width: '100%', marginTop: '2px' }}>
-      {isFetching ? (
-        <Loading />
-      ) : (
-        <>
-          <Pagination
-            className={classes.pagination}
-            count={data?.data.pages}
-            page={page}
-            onChange={handlePagination}
-            shape="rounded"
-          />
-          {accordionUserItens(data?.data.rows)}
-          <FormModal
-            open={openAddressModal}
-            handleClose={() => setOpenAddressModal(false)}
-            title="Endereço"
-          >
-            {address}
-          </FormModal>
-          <ConfirmationModal
-            open={openDeleteModal}
-            handleClose={() => setOpenDeleteModal(false)}
-            title="Remover usuário"
-            description="Esta ação não poderá ser revertida, você tem certeza que quer de apagar este usuário?"
-            confirmButtonName="Remover"
-            handleConfirm={handleDelete}
-            isLoading={isLoading}
-          />
-        </>
-      )}
-    </div>
+    <>
+      <Header buttonName="Novo usuário" onClick={() => setPageState('create_user')}>
+        {
+          <Typography className={classes.headerTitle} variant="h4">
+            Usuários
+          </Typography>
+        }
+      </Header>
+      <div style={{ width: '100%', marginTop: '2px' }}>
+        {isFetching ? (
+          <Loading />
+        ) : (
+          <>
+            <Pagination
+              className={classes.pagination}
+              count={data?.data.pages}
+              page={page}
+              onChange={handlePagination}
+              shape="rounded"
+            />
+            {accordionUserItens(data?.data.rows)}
+            <FormModal
+              open={openAddressModal}
+              handleClose={() => setOpenAddressModal(false)}
+              title="Endereço"
+            >
+              {address}
+            </FormModal>
+            <ConfirmationModal
+              open={openDeleteModal}
+              handleClose={() => setOpenDeleteModal(false)}
+              title="Remover usuário"
+              description="Esta ação não poderá ser revertida, você tem certeza que quer de apagar este usuário?"
+              confirmButtonName="Remover"
+              handleConfirm={handleDelete}
+              isLoading={isLoading}
+            />
+          </>
+        )}
+      </div>
+    </>
   );
 }
 
