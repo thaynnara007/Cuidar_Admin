@@ -14,7 +14,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Divider from '@material-ui/core/Divider';
 import Pagination from '@material-ui/lab/Pagination';
 import IconButton from '@material-ui/core/IconButton';
-import { FormControlLabel, Checkbox } from '@material-ui/core';
 
 import AngleDownIcon from '../icons/iconAngleDown';
 import TrashIcon from '../icons/iconTrash';
@@ -23,7 +22,7 @@ import { getUsers, deleteUser, getPermissions } from '../../api';
 import Loading from '../loading';
 import FormModal from '../modal/formModal';
 import ConfirmationModal from '../modal/confirmationModal';
-import CustomModal from '../modal';
+import EditPermissionsModal from '../modal/editPermissionModal';
 import Header from '../header';
 
 const useStyles = makeStyles({
@@ -54,10 +53,24 @@ const useStyles = makeStyles({
     margin: '8px 0px',
     fontWeight: 'bold',
   },
+  modalTitle: {
+    textAlign: 'center',
+    color: '#112D4E',
+    margin: '10px 0px',
+  },
+  modalBox: {
+    maxHeight: '400px',
+    overflow: 'auto',
+  },
+  modalButton: {
+    margin: '10px auto',
+    width: 'fit-content',
+  },
 });
 
 function ListUser({ setPageState }) {
   const classes = useStyles();
+
   const [page, setPage] = useState(1);
   const [openAddressModal, setOpenAddressModal] = useState(false);
   const [address, setAddress] = useState([]);
@@ -154,7 +167,9 @@ function ListUser({ setPageState }) {
           <AccordionButton onClick={() => handleShowAddress(user.address)}>
             Ver endereço
           </AccordionButton>
-          <AccordionButton>Editar permissões</AccordionButton>
+          {user.email !== 'master@email.com' && (
+            <AccordionButton>Editar permissões</AccordionButton>
+          )}
           {user.email !== 'master@email.com' && (
             <IconButton color="inherit" onClick={() => handleShowDeleteModal(user.id)}>
               <TrashIcon size="1x" color="#BD4B4B" />
@@ -163,36 +178,6 @@ function ListUser({ setPageState }) {
         </AccordionActions>
       </Accordion>
     ));
-
-  const permissionsModal = (permissions) => (
-    <CustomModal open={openPermissionModal} handleClose={() => setOpenPermissionModal(false)}>
-      <Typography variant="h4" className={classes.title}>
-        Permissões
-      </Typography>
-      <Divider />
-      {permissions?.map((permission) => (
-        <Accordion key={permission.id}>
-          <AccordionSummary
-            expandIcon={<AngleDownIcon size="1x" color="#7F7C82" />}
-            style={{ backgroundColor: '#F9F7F7' }}
-          >
-            <FormControlLabel
-              onClick={(event) => event.stopPropagation()}
-              onFocus={(event) => event.stopPropagation()}
-              onChange={(event) => {}}
-              control={<Checkbox color="primary" />}
-              label={permission.name}
-            />
-          </AccordionSummary>
-          <AccordionDetails style={{ backgroundColor: '#F9F7F7' }}>
-            <Typography variant="body1" color="textSecondary">
-              {permission.description}
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-      ))}
-    </CustomModal>
-  );
 
   return (
     <>
@@ -230,7 +215,11 @@ function ListUser({ setPageState }) {
               handleConfirm={handleDelete}
               isLoading={isLoadingDelete}
             />
-            {permissionsModal(permissionsRes?.data)}
+            <EditPermissionsModal
+              open={openPermissionModal}
+              handleClose={() => setOpenPermissionModal(false)}
+              allPermissions={permissionsRes?.data}
+            />
           </>
         )}
       </div>
