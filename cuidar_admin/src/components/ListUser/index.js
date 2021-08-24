@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
+import { toast } from 'react-toastify';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -13,15 +14,16 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Divider from '@material-ui/core/Divider';
 import Pagination from '@material-ui/lab/Pagination';
 import IconButton from '@material-ui/core/IconButton';
-import { toast } from 'react-toastify';
+import { FormControlLabel, Checkbox } from '@material-ui/core';
 
 import AngleDownIcon from '../icons/iconAngleDown';
 import TrashIcon from '../icons/iconTrash';
 import { AccordionButton } from '../styles/buttons.style';
-import { getUsers, deleteUser } from '../../api';
+import { getUsers, deleteUser, getPermissions } from '../../api';
 import Loading from '../loading';
 import FormModal from '../modal/formModal';
 import ConfirmationModal from '../modal/confirmationModal';
+import CustomModal from '../modal';
 import Header from '../header';
 
 const useStyles = makeStyles({
@@ -61,12 +63,26 @@ function ListUser({ setPageState }) {
   const [address, setAddress] = useState([]);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const [openPermissionModal, setOpenPermissionModal] = useState(true);
 
-  const { data, isFetching, refetch } = useQuery('users', () => getUsers(page), {
+  const {
+    data: usersRes,
+    isFetching: isFetchingUsers,
+    refetch,
+  } = useQuery('users', () => getUsers(page), {
     refetchOnWindowFocus: false,
     retry: false,
   });
+
+  const { data: permissionsRes, isFetching: isFetchingPermissions } = useQuery(
+    'permissions',
+    () => getPermissions(),
+    {
+      refetchOnWindowFocus: false,
+      retry: false,
+    }
+  );
 
   useEffect(() => {
     refetch();
@@ -100,7 +116,7 @@ function ListUser({ setPageState }) {
 
   const handleDelete = async () => {
     const id = idToDelete;
-    const result = await deleteUser(id, setIsLoading);
+    const result = await deleteUser(id, setIsLoadingDelete);
 
     if (result) {
       toast.success('Usário deletado com sucesso.');
@@ -148,6 +164,36 @@ function ListUser({ setPageState }) {
       </Accordion>
     ));
 
+  const permissionsModal = (permissions) => (
+    <CustomModal open={openPermissionModal} handleClose={() => setOpenPermissionModal(false)}>
+      <Typography variant="h4" className={classes.title}>
+        Permissões
+      </Typography>
+      <Divider />
+      {permissions?.map((permission) => (
+        <Accordion key={permission.id}>
+          <AccordionSummary
+            expandIcon={<AngleDownIcon size="1x" color="#7F7C82" />}
+            style={{ backgroundColor: '#F9F7F7' }}
+          >
+            <FormControlLabel
+              onClick={(event) => event.stopPropagation()}
+              onFocus={(event) => event.stopPropagation()}
+              onChange={(event) => {}}
+              control={<Checkbox color="primary" />}
+              label={permission.name}
+            />
+          </AccordionSummary>
+          <AccordionDetails style={{ backgroundColor: '#F9F7F7' }}>
+            <Typography variant="body1" color="textSecondary">
+              {permission.description}
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </CustomModal>
+  );
+
   return (
     <>
       <Header buttonName="Novo usuário" onClick={() => setPageState('create_user')}>
@@ -156,18 +202,18 @@ function ListUser({ setPageState }) {
         </Typography>
       </Header>
       <div style={{ width: '100%', marginTop: '2px' }}>
-        {isFetching ? (
+        {isFetchingUsers || isFetchingPermissions ? (
           <Loading />
         ) : (
           <>
             <Pagination
               className={classes.pagination}
-              count={data?.data.pages}
+              count={usersRes?.data.pages}
               page={page}
               onChange={handlePagination}
               shape="rounded"
             />
-            {accordionUserItens(data?.data.rows)}
+            {accordionUserItens(usersRes?.data.rows)}
             <FormModal
               open={openAddressModal}
               handleClose={() => setOpenAddressModal(false)}
@@ -182,8 +228,9 @@ function ListUser({ setPageState }) {
               description="Esta ação não poderá ser revertida, você tem certeza que quer de apagar este usuário?"
               confirmButtonName="Remover"
               handleConfirm={handleDelete}
-              isLoading={isLoading}
+              isLoading={isLoadingDelete}
             />
+            {permissionsModal(permissionsRes?.data)}
           </>
         )}
       </div>
