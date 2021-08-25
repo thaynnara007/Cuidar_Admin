@@ -116,6 +116,22 @@ export async function getUsers(page = 1, pageSize = 10) {
   }
 }
 
+export async function getMe() {
+  try {
+    const url = `/user/me`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
+
 export async function deleteUser(id, setIsLoading) {
   try {
     setIsLoading(true);
