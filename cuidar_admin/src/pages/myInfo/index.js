@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { Container, makeStyles, Typography } from '@material-ui/core';
 
 import { FormTextField } from '../../components/styles/inputs.style';
-import { getMe } from '../../api';
+import { getMe, updateMe } from '../../api';
 import Header from '../../components/header';
 import Navbar from '../../components/navbar';
 import Loading from '../../components/loading';
@@ -41,7 +41,6 @@ function MyInfo() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneNumberError, setPhoneNumberError] = useState(false);
   const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState(false);
   const [password2, setPassword2] = useState('');
   const [password2Error, setPassword2Error] = useState(false);
 
@@ -88,13 +87,10 @@ function MyInfo() {
     const validatedPhone = phoneNumber && phoneNumber !== '';
     setPhoneNumberError(!validatedPhone);
 
-    const validatedPassword = password && password !== '';
-    setPasswordError(!validatedPassword);
-
-    const validatedPassword2 = password2 && password2 !== '' && password2 === password;
+    const validatedPassword2 = password2 === password;
     setPassword2Error(!validatedPassword2);
 
-    return validatedEmail && validatedPhone && validatedPassword && validatedPassword2;
+    return validatedEmail && validatedPhone && validatedPassword2;
   };
 
   const validateAddressInfo = () => {
@@ -137,7 +133,7 @@ function MyInfo() {
           lastName,
           email,
           phoneNumber,
-          password,
+          password: password2,
         },
         address: {
           state,
@@ -150,7 +146,7 @@ function MyInfo() {
         },
       };
 
-      const result = await createUser(body, setIsLoading);
+      const result = await updateMe(body, setIsLoading);
 
       if (result) {
         toast.success('Informações atualizadas com sucesso');
@@ -163,7 +159,7 @@ function MyInfo() {
       <Header buttonName="Atualizar" onClick={handleUpdateUser}>
         <Typography variant="h4">Minhas informações</Typography>
       </Header>
-      {isFetching ? (
+      {isFetching || isLoading ? (
         <Loading />
       ) : (
         <Container maxWidth="md">
@@ -211,7 +207,6 @@ function MyInfo() {
               variant="outlined"
               className={classes.inputHalf}
               value={password}
-              error={passwordError}
               onChange={(e) => setPassword(e.target.value)}
             />
             <FormTextField

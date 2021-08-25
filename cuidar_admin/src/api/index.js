@@ -190,6 +190,25 @@ export async function updateUser(userId, body, setIsLoading) {
   }
 }
 
+export async function updateMe(body, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const url = `/user/me`;
+    const result = await api.put(url, body);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
 export async function getPermissions() {
   try {
     const url = `/permission`;
