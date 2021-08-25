@@ -116,6 +116,22 @@ export async function getUsers(page = 1, pageSize = 10) {
   }
 }
 
+export async function getMe() {
+  try {
+    const url = `/user/me`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
+
 export async function deleteUser(id, setIsLoading) {
   try {
     setIsLoading(true);
@@ -160,6 +176,25 @@ export async function updateUser(userId, body, setIsLoading) {
     setIsLoading(true);
 
     const url = `/user/${userId}`;
+    const result = await api.put(url, body);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function updateMe(body, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const url = `/user/me`;
     const result = await api.put(url, body);
 
     setIsLoading(false);

@@ -11,6 +11,7 @@ import Users from './pages/users';
 import Patients from './pages/patients';
 import Activities from './pages/activities';
 import History from './pages/history';
+import MyInfo from './pages/myInfo';
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,9 @@ function App() {
               </Route>
               <Route exact path="/history">
                 <History />
+              </Route>
+              <Route exact path="/profile">
+                <MyInfo />
               </Route>
               <Route exact path="/*">
                 <NotFound />
