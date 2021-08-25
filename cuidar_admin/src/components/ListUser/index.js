@@ -179,9 +179,7 @@ function ListUser({ setPageState }) {
   return (
     <>
       <Header buttonName="Novo usuário" onClick={() => setPageState('create_user')}>
-        <Typography className={classes.headerTitle} variant="h4">
-          Usuários
-        </Typography>
+        <Typography variant="h4">Usuários</Typography>
       </Header>
       <div style={{ width: '100%', marginTop: '2px' }}>
         {isFetchingUsers || isFetchingPermissions ? (
