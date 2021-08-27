@@ -91,15 +91,17 @@ function ListPatients({ setPageState }) {
     setOpenDeleteModal(false);
   };
 
-  const accordionPatientItens = (patients) =>
-    patients?.map((patient) => (
+  const accordionPatientItens = (patientsList) =>
+    patientsList?.map((patient) => (
       <Accordion key={patient.id}>
         <AccordionSummary
           aria-controls="panel1bh-content"
           id="panel1bh-header"
           expandIcon={<AngleDownIcon size="1x" color="#7F7C82" />}
         >
-          <Typography className={classes.heading}>{`${patient?.name} ${patient?.lastName}`}</Typography>
+          <Typography
+            className={classes.heading}
+          >{`${patient?.name} ${patient?.lastName}`}</Typography>
           <Typography className={classes.secondaryHeading}>{`${patient.cpfFormatted}`}</Typography>
           <Typography className={classes.secondaryHeading}>{`${patient.email}`}</Typography>
           <Typography className={classes.secondaryHeading}>{`${patient?.phoneNumber}`}</Typography>

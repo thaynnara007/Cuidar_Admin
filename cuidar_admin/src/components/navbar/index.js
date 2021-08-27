@@ -19,7 +19,7 @@ import Avatar from '@material-ui/core/Avatar';
 
 import MenuIcon from '../icons/iconMenu';
 import ProfileIcon from '../icons/iconProfile';
-import ArrowLeftIcon from '../icons/iconArrowLeft';
+import AngleLeftIcon from '../icons/iconAngleLeft';
 import UsersIcon from '../icons/iconUsers';
 import BabyIcon from '../icons/iconBaby';
 import CalendarIcon from '../icons/iconCalendar';
@@ -175,7 +175,7 @@ function Navbar({ children }) {
             {theme.direction === 'rtl' ? (
               <MenuIcon color="#F9F7F7" />
             ) : (
-              <ArrowLeftIcon color="#112D4E" />
+              <AngleLeftIcon color="#112D4E" />
             )}
           </IconButton>
         </div>
