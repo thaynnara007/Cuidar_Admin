@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Navbar from '../../components/navbar';
+import ListPatients from '../../components/listPatients';
 
 function Patients() {
+  const [state, setState] = useState('list_patients');
+
   return (
     <Navbar>
-      <h1>Patients</h1>
+      <ListPatients setPageState={setState} />
     </Navbar>
   );
 }
