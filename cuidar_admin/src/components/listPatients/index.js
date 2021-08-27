@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AngleDownIcon from '../icons/iconAngleDown';
 import TrashIcon from '../icons/iconTrash';
 import { AccordionButton } from '../styles/buttons.style';
-import { getPatients, deleteUser } from '../../api';
+import { getPatients, deletePatient } from '../../api';
 import Loading from '../loading';
 import ConfirmationModal from '../modal/confirmationModal';
 import Header from '../header';
@@ -56,6 +56,7 @@ function ListPatients({ setPageState }) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const [name, setName] = useState('');
 
   const {
     data: patients,
@@ -74,14 +75,15 @@ function ListPatients({ setPageState }) {
     setPage(value);
   };
 
-  const handleShowDeleteModal = (id) => {
+  const handleShowDeleteModal = (id, namePatient) => {
     setIdToDelete(id);
+    setName(namePatient);
     setOpenDeleteModal(true);
   };
 
   const handleDelete = async () => {
     const id = idToDelete;
-    const result = await deleteUser(id, setIsLoadingDelete);
+    const result = await deletePatient(id, setIsLoadingDelete);
 
     if (result) {
       toast.success('Paciente deletado com sucesso.');
@@ -109,7 +111,12 @@ function ListPatients({ setPageState }) {
         <Divider />
         <AccordionActions>
           <AccordionButton onClick={() => {}}>Detalhes</AccordionButton>
-          <IconButton color="inherit" onClick={() => handleShowDeleteModal(patient.id)}>
+          <IconButton
+            color="inherit"
+            onClick={() =>
+              handleShowDeleteModal(patient.id, `${patient?.name} ${patient?.lastName}`)
+            }
+          >
             <TrashIcon size="1x" color="#BD4B4B" />
           </IconButton>
         </AccordionActions>
@@ -138,7 +145,9 @@ function ListPatients({ setPageState }) {
               open={openDeleteModal}
               handleClose={() => setOpenDeleteModal(false)}
               title="Remover paciente"
-              description="Esta ação não poderá ser revertida, você tem certeza que quer de apagar este paciente?"
+              description={`Esta ação não poderá ser revertida, você tem certeza que quer apagar o paciente ${
+                name ?? ''
+              } ?`}
               confirmButtonName="Remover"
               handleConfirm={handleDelete}
               isLoading={isLoadingDelete}

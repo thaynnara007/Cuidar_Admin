@@ -67,6 +67,7 @@ function ListUser({ setPageState }) {
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [openPermissionModal, setOpenPermissionModal] = useState(false);
   const [initPermissions, setInitPermisisons] = useState(new Set());
+  const [name, setName] = useState('');
 
   const {
     data: usersRes,
@@ -111,8 +112,9 @@ function ListUser({ setPageState }) {
     setOpenAddressModal(true);
   };
 
-  const handleShowDeleteModal = (id) => {
+  const handleShowDeleteModal = (id, nameUser) => {
     setIdToDelete(id);
+    setName(nameUser);
     setOpenDeleteModal(true);
   };
 
@@ -168,7 +170,10 @@ function ListUser({ setPageState }) {
             </AccordionButton>
           )}
           {user.email !== 'master@email.com' && (
-            <IconButton color="inherit" onClick={() => handleShowDeleteModal(user.id)}>
+            <IconButton
+              color="inherit"
+              onClick={() => handleShowDeleteModal(user.id, `${user.name} ${user.lastName}`)}
+            >
               <TrashIcon size="1x" color="#BD4B4B" />
             </IconButton>
           )}
@@ -205,7 +210,9 @@ function ListUser({ setPageState }) {
               open={openDeleteModal}
               handleClose={() => setOpenDeleteModal(false)}
               title="Remover usuário"
-              description="Esta ação não poderá ser revertida, você tem certeza que quer de apagar este usuário?"
+              description={`Esta ação não poderá ser revertida, você tem certeza que quer de apagar o usuário ${
+                name ?? ''
+              } ?`}
               confirmButtonName="Remover"
               handleConfirm={handleDelete}
               isLoading={isLoadingDelete}

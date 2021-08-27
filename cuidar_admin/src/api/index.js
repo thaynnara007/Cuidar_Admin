@@ -240,3 +240,22 @@ export async function getPatients(page = 1, pageSize = 10) {
     toast.error(msg);
   }
 }
+
+export async function deletePatient(id, setIsLoading) {
+  try {
+    setIsLoading(true);
+    const url = `/patient/${id}`;
+
+    const result = await api.delete(url);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
