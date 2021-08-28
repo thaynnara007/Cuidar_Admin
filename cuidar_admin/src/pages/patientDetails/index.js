@@ -59,14 +59,14 @@ function PatientDetails() {
             <div className={classes.boxInput}>
               <FormTextField
                 label="Nome"
-                value={data?.data.name}
+                value={data?.data.name ?? ''}
                 className={classes.inputHalf}
                 onChange={() => {}}
                 variant="outlined"
               />
               <FormTextField
                 label="Sobrenome"
-                value={data?.data.lastName}
+                value={data?.data.lastName ?? ''}
                 className={classes.inputHalf}
                 onChange={() => {}}
                 variant="outlined"
@@ -77,13 +77,13 @@ function PatientDetails() {
                 label="Email"
                 variant="outlined"
                 className={classes.inputHalf}
-                value={data?.data.email}
+                value={data?.data.email ?? ''}
               />
               <FormTextField
                 label="Número de telefone"
                 variant="outlined"
                 className={classes.inputHalf}
-                value={data?.data.phoneNumber}
+                value={data?.data.phoneNumber ?? ''}
               />
             </div>
             <div className={classes.boxInput}>
@@ -92,7 +92,7 @@ function PatientDetails() {
                 variant="outlined"
                 helperText="Ex: 08910513310"
                 className={classes.inputHalf}
-                value={data?.data.cpfFormatted}
+                value={data?.data.cpfFormatted ?? ''}
               />
               <FormTextField
                 label="Data de nascimento"
@@ -102,7 +102,7 @@ function PatientDetails() {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                value={data?.data.birthday}
+                value={data?.data.birthday?.split('T')[0] ?? ''}
               />
             </div>
 
@@ -114,19 +114,19 @@ function PatientDetails() {
                 label="Estado"
                 variant="outlined"
                 className={classes.input3Width}
-                value={data?.data.address?.state}
+                value={data?.data.address?.state ?? ''}
               />
               <FormTextField
                 label="Cidade"
                 variant="outlined"
                 className={classes.input3Width}
-                value={data?.data.address?.city}
+                value={data?.data.address?.city ?? ''}
               />
               <FormTextField
                 label="CEP"
                 variant="outlined"
                 className={classes.input3Width}
-                value={data?.data.address?.zipCode}
+                value={data?.data.address?.zipCode ?? ''}
               />
             </div>
             <div className={classes.boxInput}>
@@ -134,26 +134,26 @@ function PatientDetails() {
                 label="Bairro"
                 variant="outlined"
                 className={classes.input3Width}
-                value={data?.data.address?.district}
+                value={data?.data.address?.district ?? ''}
               />
               <FormTextField
                 label="Rua"
                 variant="outlined"
                 className={classes.input3Width}
-                value={data?.data.address?.street}
+                value={data?.data.address?.street ?? ''}
               />
               <FormTextField
                 label="Número"
                 variant="outlined"
                 className={classes.input3Width}
-                value={data?.data.address?.number}
+                value={data?.data.address?.number ?? ''}
               />
             </div>
             <FormTextField
               label="Complemento"
               fullWidth
               variant="outlined"
-              value={data?.data.address?.complement}
+              value={data?.data.address?.complement ?? ''}
             />
           </>
         )}
