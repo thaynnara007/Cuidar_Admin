@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { Container, makeStyles, Typography, IconButton } from '@material-ui/core';
 
-import { toast } from 'react-toastify';
 import { FormTextField } from '../styles/inputs.style';
-import { createUser } from '../../api';
-import Loading from '../loading';
+import { createPatient } from '../../api';
 import Header from '../header';
 import ArrowLeftIcon from '../icons/iconArrowLeft';
+import ConfirmationModal from '../modal/confirmationModal';
 
 const useStyles = makeStyles({
   title: {
@@ -32,6 +32,7 @@ function CreatePatient({ setPageState }) {
   const classes = useStyles();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -61,7 +62,7 @@ function CreatePatient({ setPageState }) {
     const validatedEmail = email && email !== '';
     setEmailError(!validatedEmail);
 
-    const validatedCpf = cpf && cpf !== '';
+    const validatedCpf = cpf && cpf.length === 11;
     setCpfError(!validatedCpf);
 
     const validatedPhone = phoneNumber && phoneNumber !== '';
@@ -99,41 +100,46 @@ function CreatePatient({ setPageState }) {
     );
   };
 
-  const handleCreateUser = async () => {
+  const handleCreatePatient = async () => {
+    const body = {
+      patient: {
+        name,
+        lastName,
+        email,
+        phoneNumber,
+        cpf,
+        birthday,
+      },
+      address: {
+        state,
+        city,
+        zipCode,
+        district,
+        street,
+        number,
+        complement,
+      },
+    };
+
+    const result = await createPatient(body, setIsLoading);
+
+    if (result) {
+      toast.success('Paciente criado com sucesso');
+      setOpenModal(false);
+      setPageState('list_patients');
+    }
+  };
+
+  const handleShowModal = async () => {
     const validatePatient = validatePacientInfo();
     const validateAddress = validateAddressInfo();
 
-    if (validatePatient && validateAddress) {
-      const body = {
-        user: {
-          name,
-          lastName,
-          email,
-          phoneNumber,
-        },
-        address: {
-          state,
-          city,
-          zipCode,
-          district,
-          street,
-          number,
-          complement,
-        },
-      };
-
-      const result = await createUser(body, setIsLoading);
-
-      if (result) {
-        toast.success('Paciente criado com sucesso');
-        setPageState('list_patient');
-      }
-    }
+    if (validatePatient && validateAddress) setOpenModal(true);
   };
 
   return (
     <>
-      <Header buttonName="Registrar paciente" onClick={handleCreateUser}>
+      <Header buttonName="Registrar paciente" onClick={handleShowModal}>
         <IconButton color="inherit" onClick={() => setPageState('list_patients')}>
           <ArrowLeftIcon />
         </IconButton>
@@ -180,6 +186,7 @@ function CreatePatient({ setPageState }) {
           <FormTextField
             label="CPF"
             variant="outlined"
+            helperText="Ex: 08910513310"
             className={classes.inputHalf}
             value={cpf}
             error={cpfError}
@@ -260,7 +267,16 @@ function CreatePatient({ setPageState }) {
           value={complement}
           onChange={(e) => setComplement(e.target.value)}
         />
-        {isLoading && <Loading />}
+        <ConfirmationModal
+          open={openModal}
+          title="Registrar paciente"
+          description="A senha deste paciente será o CPF do mesmo. Recomende que ele troque sua senha assim que possível."
+          confirmButtonName="Registrar"
+          handleClose={() => setOpenModal(false)}
+          handleConfirm={handleCreatePatient}
+          isLoading={isLoading}
+          danger={false}
+        />
       </Container>
     </>
   );
