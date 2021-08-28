@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 
 import Navbar from '../../components/navbar';
 import ListPatients from '../../components/listPatients';
+import CreatePatient from '../../components/createPatient';
 
 function Patients() {
   const [state, setState] = useState('list_patients');
 
   return (
     <Navbar>
-      <ListPatients setPageState={setState} />
+      {state === 'list_patients' ? (
+        <ListPatients setPageState={setState} />
+      ) : (
+        <CreatePatient setPageState={setState} />
+      )}
     </Navbar>
   );
 }
