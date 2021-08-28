@@ -14,11 +14,18 @@ const useStyles = makeStyles({
     padding: '8px',
     marginLeft: '20px',
   },
-  buttonConfirm: {
+  buttonConfirmDanger: {
     color: '#F9F7F7',
     backgroundColor: '#F6A9A9',
     '&:hover': {
       backgroundColor: '#BD4B4B',
+    },
+  },
+  buttonConfirm: {
+    color: '#F9F7F7',
+    backgroundColor: '#CEE5D0',
+    '&:hover': {
+      backgroundColor: '#7EB5A6',
     },
   },
   buttonCancel: {
@@ -49,6 +56,7 @@ function ConfirmationModal({
   handleClose,
   handleConfirm,
   isLoading,
+  danger = true,
 }) {
   const classes = useStyles();
 
@@ -62,7 +70,12 @@ function ConfirmationModal({
         <Typography variant="body1">{description}</Typography>
       </div>
       <div className={classes.footer}>
-        <Button onClick={handleConfirm} className={`${classes.button} ${classes.buttonConfirm}`}>
+        <Button
+          onClick={handleConfirm}
+          className={`${classes.button} ${
+            danger ? classes.buttonConfirmDanger : classes.buttonConfirm
+          }`}
+        >
           {confirmButtonName}
         </Button>
         <Button onClick={handleClose} className={`${classes.button} ${classes.buttonCancel}`}>

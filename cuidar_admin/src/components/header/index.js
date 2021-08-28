@@ -14,15 +14,17 @@ const useStyles = makeStyles({
   },
 });
 
-function Header({ onClick, buttonName, children }) {
+function Header({ hasButton = true, onClick, buttonName, children }) {
   const classes = useStyles();
 
   return (
     <Box className={classes.root}>
       {children}
-      <HeaderButton onClick={onClick} variant="outlined">
-        {buttonName}
-      </HeaderButton>
+      {hasButton && (
+        <HeaderButton onClick={onClick} variant="outlined">
+          {buttonName}
+        </HeaderButton>
+      )}
     </Box>
   );
 }
