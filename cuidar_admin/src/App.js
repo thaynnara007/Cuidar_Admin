@@ -12,6 +12,7 @@ import Patients from './pages/patients';
 import Activities from './pages/activities';
 import History from './pages/history';
 import MyInfo from './pages/myInfo';
+import PatientDetails from './pages/patientDetails';
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,9 @@ function App() {
               </Route>
               <Route exact path="/patients">
                 <Patients />
+              </Route>
+              <Route exact path="/patient/:id">
+                <PatientDetails />
               </Route>
               <Route exact path="/activities">
                 <Activities />

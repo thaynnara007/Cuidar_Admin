@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import { useQuery } from 'react-query';
 import { toast } from 'react-toastify';
 
@@ -50,6 +51,7 @@ const useStyles = makeStyles({
 });
 
 function ListPatients({ setPageState }) {
+  const history = useHistory();
   const classes = useStyles();
 
   const [page, setPage] = useState(1);
@@ -110,7 +112,9 @@ function ListPatients({ setPageState }) {
         </AccordionSummary>
         <Divider />
         <AccordionActions>
-          <AccordionButton onClick={() => {}}>Detalhes</AccordionButton>
+          <AccordionButton onClick={() => history.push(`/patient/${patient?.id}`)}>
+            Detalhes
+          </AccordionButton>
           <IconButton
             color="inherit"
             onClick={() =>
