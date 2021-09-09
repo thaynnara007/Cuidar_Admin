@@ -9,7 +9,7 @@ import NotFound from './pages/notFound';
 import Home from './pages/homepage';
 import Users from './pages/users';
 import Patients from './pages/patients';
-import Activities from './pages/activities';
+import Categories from './pages/categories';
 import History from './pages/history';
 import MyInfo from './pages/myInfo';
 import PatientDetails from './pages/patientDetails';
@@ -39,8 +39,8 @@ function App() {
               <Route exact path="/patient/:id">
                 <PatientDetails />
               </Route>
-              <Route exact path="/activities">
-                <Activities />
+              <Route exact path="/categories">
+                <Categories />
               </Route>
               <Route exact path="/history">
                 <History />
