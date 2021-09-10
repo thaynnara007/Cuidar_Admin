@@ -1,6 +1,6 @@
 import React from 'react';
 
-function HygineIcon({ color = '#2a3984', width = '36px', height = '50px', viewBox = '0 0 62 50' }) {
+function HygineIcon({ color = '#2a3984', width = '40px', height = '50px', viewBox = '0 0 62 50' }) {
   return (
     <svg
       version="1.0"

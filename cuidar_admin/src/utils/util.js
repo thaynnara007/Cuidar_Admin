@@ -9,7 +9,7 @@ import ShirtIcon from '../components/icons/iconShirt';
 import SoupIcon from '../components/icons/iconSoup';
 import ToothIcon from '../components/icons/iconTooth';
 
-export default function getIcon(name, props) {
+export function getIcon(name, props) {
   switch (name) {
     case 'PLATE':
       return <MealIcon {...props} />;

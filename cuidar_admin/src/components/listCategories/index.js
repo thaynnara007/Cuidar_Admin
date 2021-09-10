@@ -15,23 +15,26 @@ import IconButton from '@material-ui/core/IconButton';
 import AngleDownIcon from '../icons/iconAngleDown';
 import TrashIcon from '../icons/iconTrash';
 import { AccordionButton } from '../styles/buttons.style';
-import { getCategories, deletePatient } from '../../api';
+import { getCategories, deleteCategory } from '../../api';
 import Loading from '../loading';
 import ConfirmationModal from '../modal/confirmationModal';
 import Header from '../header';
-import AppleIcon from '../icons/iconApple';
+import { getIcon } from '../../utils/util';
+import ShowColor from '../color';
 
 const useStyles = makeStyles({
   heading: {
     fontSize: '15px',
-    flexBasis: '30%',
+    flexBasis: '40%',
     flexShrink: 0,
   },
   secondaryHeading: {
-    fontSize: '15px',
-    color: '#7F7C82',
+    fontSize: '18px',
+    display: 'flex',
+    alignItems: 'center',
+    color: '#112D4E',
     flexShrink: 0,
-    flexBasis: '30%',
+    flexBasis: '40%',
   },
   box: {
     listStyle: 'none',
@@ -78,18 +81,18 @@ function ListCategories({ setPageState }) {
     setPage(value);
   };
 
-  const handleShowDeleteModal = (id, namePatient) => {
+  const handleShowDeleteModal = (id, nameCategory) => {
     setIdToDelete(id);
-    setName(namePatient);
+    setName(nameCategory);
     setOpenDeleteModal(true);
   };
 
   const handleDelete = async () => {
     const id = idToDelete;
-    const result = await deletePatient(id, setIsLoadingDelete);
+    const result = await deleteCategory(id, setIsLoadingDelete);
 
     if (result) {
-      toast.success('Paciente deletado com sucesso.');
+      toast.success('Categoria deletada com sucesso.');
       refetch();
     }
 
@@ -104,22 +107,21 @@ function ListCategories({ setPageState }) {
           id="panel1bh-header"
           expandIcon={<AngleDownIcon size="xs" color="#7F7C82" />}
         >
-          <div className={classes.heading}>
-            <AppleIcon />
-          </div>
+          <div className={classes.heading}>{getIcon(category.icon)}</div>
           <Typography className={classes.secondaryHeading}>{`${category.name}`}</Typography>
-          <Typography className={classes.secondaryHeading}>{`${category.email}`}</Typography>
+          <ShowColor color={category.color} styles={{ flexShrink: 0, flexBasis: '12%' }} />
         </AccordionSummary>
         <Divider />
         <AccordionActions>
-          <AccordionButton onClick={() => history.push(`/patient/${category?.id}`)}>
+          <AccordionButton onClick={() => history.push(`/category/${category?.id}/activities`)}>
+            Ver atividades
+          </AccordionButton>
+          <AccordionButton onClick={() => history.push(`/category/${category?.id}`)}>
             Detalhes
           </AccordionButton>
           <IconButton
             color="inherit"
-            onClick={() =>
-              handleShowDeleteModal(category.id, `${category?.name} ${category?.lastName}`)
-            }
+            onClick={() => handleShowDeleteModal(category.id, `${category?.name}`)}
           >
             <TrashIcon size="1x" color="#BD4B4B" />
           </IconButton>
@@ -148,10 +150,10 @@ function ListCategories({ setPageState }) {
             <ConfirmationModal
               open={openDeleteModal}
               handleClose={() => setOpenDeleteModal(false)}
-              title="Remover paciente"
-              description={`Esta ação não poderá ser revertida, você tem certeza que quer apagar o paciente ${
-                name ?? ''
-              } ?`}
+              title="Remover categoria"
+              description={`Esta ação não poderá ser revertida, ao apagar uma categoria, 
+                todas as atividades dessa categoria também serão apagadas. 
+                Você tem certeza que quer apagar a categoria ${name ?? ''} ?`}
               confirmButtonName="Remover"
               handleConfirm={handleDelete}
               isLoading={isLoadingDelete}

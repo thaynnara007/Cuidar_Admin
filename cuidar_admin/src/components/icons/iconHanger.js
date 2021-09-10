@@ -1,6 +1,6 @@
 import React from 'react';
 
-function HangerIcon({ color = '#2a3984', width = '50px', height = '50px', viewBox = '0 0 72 50' }) {
+function HangerIcon({ color = '#2a3984', width = '46px', height = '50px', viewBox = '0 0 72 30' }) {
   return (
     <svg
       version="1.0"
