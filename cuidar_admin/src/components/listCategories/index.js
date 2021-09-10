@@ -20,6 +20,9 @@ import Loading from '../loading';
 import ConfirmationModal from '../modal/confirmationModal';
 import Header from '../header';
 import LiquidIcon from '../icons/iconLiquid';
+import HygineIcon from '../icons/iconHygine';
+import HangerIcon from '../icons/iconHanger';
+import ClipboardIcon from '../icons/iconClipboard';
 
 const useStyles = makeStyles({
   heading: {
@@ -105,7 +108,7 @@ function ListCategories({ setPageState }) {
           expandIcon={<AngleDownIcon size="xs" color="#7F7C82" />}
         >
           <div className={classes.heading}>
-            <LiquidIcon />
+            <ClipboardIcon />
           </div>
           <Typography className={classes.secondaryHeading}>{`${category.name}`}</Typography>
           <Typography className={classes.secondaryHeading}>{`${category.email}`}</Typography>
