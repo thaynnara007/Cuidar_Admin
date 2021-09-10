@@ -8,7 +8,7 @@ function Categories() {
 
   return (
     <Navbar>
-      <ListCategories setPageState={setState}/>
+      <ListCategories setPageState={setState} />
     </Navbar>
   );
 }

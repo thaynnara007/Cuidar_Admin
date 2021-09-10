@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify';
 
+import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../utils/constants';
 import api from './api';
 
 export async function login(email, password, setIsLoading) {
@@ -100,7 +101,7 @@ export async function changePassword(password, setIsLoading) {
   }
 }
 
-export async function getUsers(page = 1, pageSize = 10) {
+export async function getUsers(page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
   try {
     const url = `/user?page=${page}&pageSize=${pageSize}`;
 
@@ -225,7 +226,7 @@ export async function getPermissions() {
   }
 }
 
-export async function getPatients(page = 1, pageSize = 10) {
+export async function getPatients(page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
   try {
     const url = `/patient?page=${page}&pageSize=${pageSize}`;
 
@@ -291,6 +292,22 @@ export async function createPatient(body, setIsLoading) {
     else msg = 'Network failed';
 
     setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function getCategories(page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
+  try {
+    const url = `/category?page=${page}&pageSize=${pageSize}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
     toast.error(msg);
   }
 }

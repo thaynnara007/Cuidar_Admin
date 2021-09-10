@@ -14,23 +14,26 @@ import IconButton from '@material-ui/core/IconButton';
 
 import AngleDownIcon from '../icons/iconAngleDown';
 import TrashIcon from '../icons/iconTrash';
+import BodyIcon from '../icons/iconBody';
 import { AccordionButton } from '../styles/buttons.style';
-import { getPatients, deletePatient } from '../../api';
+import { getCategories, deletePatient } from '../../api';
 import Loading from '../loading';
 import ConfirmationModal from '../modal/confirmationModal';
 import Header from '../header';
+import SoupIcon from '../icons/iconSoup';
+import ShirtIcon from '../icons/iconShirt';
 
 const useStyles = makeStyles({
   heading: {
     fontSize: '15px',
-    flexBasis: '25%',
+    flexBasis: '30%',
     flexShrink: 0,
   },
   secondaryHeading: {
     fontSize: '15px',
     color: '#7F7C82',
     flexShrink: 0,
-    flexBasis: '25%',
+    flexBasis: '30%',
   },
   box: {
     listStyle: 'none',
@@ -61,10 +64,10 @@ function ListCategories({ setPageState }) {
   const [name, setName] = useState('');
 
   const {
-    data: patients,
+    data: categories,
     isFetching,
     refetch,
-  } = useQuery('patients', () => getPatients(page), {
+  } = useQuery('categories', () => getCategories(page), {
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -95,30 +98,29 @@ function ListCategories({ setPageState }) {
     setOpenDeleteModal(false);
   };
 
-  const accordionPatientItens = (patientsList) =>
-    patientsList?.map((patient) => (
-      <Accordion key={patient.id}>
+  const accordionCategoryItens = (categoriesList) =>
+    categoriesList?.map((category) => (
+      <Accordion key={category.id}>
         <AccordionSummary
           aria-controls="panel1bh-content"
           id="panel1bh-header"
-          expandIcon={<AngleDownIcon size="1x" color="#7F7C82" />}
+          expandIcon={<AngleDownIcon size="xs" color="#7F7C82" />}
         >
-          <Typography
-            className={classes.heading}
-          >{`${patient?.name} ${patient?.lastName}`}</Typography>
-          <Typography className={classes.secondaryHeading}>{`${patient.cpfFormatted}`}</Typography>
-          <Typography className={classes.secondaryHeading}>{`${patient.email}`}</Typography>
-          <Typography className={classes.secondaryHeading}>{`${patient?.phoneNumber}`}</Typography>
+          <div className={classes.heading}>
+            <ShirtIcon />
+          </div>
+          <Typography className={classes.secondaryHeading}>{`${category.name}`}</Typography>
+          <Typography className={classes.secondaryHeading}>{`${category.email}`}</Typography>
         </AccordionSummary>
         <Divider />
         <AccordionActions>
-          <AccordionButton onClick={() => history.push(`/patient/${patient?.id}`)}>
+          <AccordionButton onClick={() => history.push(`/patient/${category?.id}`)}>
             Detalhes
           </AccordionButton>
           <IconButton
             color="inherit"
             onClick={() =>
-              handleShowDeleteModal(patient.id, `${patient?.name} ${patient?.lastName}`)
+              handleShowDeleteModal(category.id, `${category?.name} ${category?.lastName}`)
             }
           >
             <TrashIcon size="1x" color="#BD4B4B" />
@@ -139,12 +141,12 @@ function ListCategories({ setPageState }) {
           <>
             <Pagination
               className={classes.pagination}
-              count={patients?.data.pages}
+              count={categories?.data.pages}
               page={page}
               onChange={handlePagination}
               shape="rounded"
             />
-            {accordionPatientItens(patients?.data.rows)}
+            {accordionCategoryItens(categories?.data.rows)}
             <ConfirmationModal
               open={openDeleteModal}
               handleClose={() => setOpenDeleteModal(false)}
