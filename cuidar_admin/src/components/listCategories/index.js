@@ -19,11 +19,6 @@ import { getCategories, deletePatient } from '../../api';
 import Loading from '../loading';
 import ConfirmationModal from '../modal/confirmationModal';
 import Header from '../header';
-import LiquidIcon from '../icons/iconLiquid';
-import HygineIcon from '../icons/iconHygine';
-import HangerIcon from '../icons/iconHanger';
-import ClipboardIcon from '../icons/iconClipboard';
-import MyCalendarIcon from '../icons/iconMyCalendar';
 import ToothIcon from '../icons/iconTooth';
 
 const useStyles = makeStyles({
