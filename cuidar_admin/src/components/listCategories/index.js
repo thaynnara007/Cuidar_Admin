@@ -14,14 +14,12 @@ import IconButton from '@material-ui/core/IconButton';
 
 import AngleDownIcon from '../icons/iconAngleDown';
 import TrashIcon from '../icons/iconTrash';
-import BodyIcon from '../icons/iconBody';
 import { AccordionButton } from '../styles/buttons.style';
 import { getCategories, deletePatient } from '../../api';
 import Loading from '../loading';
 import ConfirmationModal from '../modal/confirmationModal';
 import Header from '../header';
-import SoupIcon from '../icons/iconSoup';
-import ShirtIcon from '../icons/iconShirt';
+import LiquidIcon from '../icons/iconLiquid';
 
 const useStyles = makeStyles({
   heading: {
@@ -107,7 +105,7 @@ function ListCategories({ setPageState }) {
           expandIcon={<AngleDownIcon size="xs" color="#7F7C82" />}
         >
           <div className={classes.heading}>
-            <ShirtIcon />
+            <LiquidIcon />
           </div>
           <Typography className={classes.secondaryHeading}>{`${category.name}`}</Typography>
           <Typography className={classes.secondaryHeading}>{`${category.email}`}</Typography>
