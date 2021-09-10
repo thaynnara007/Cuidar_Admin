@@ -19,7 +19,7 @@ import { getCategories, deletePatient } from '../../api';
 import Loading from '../loading';
 import ConfirmationModal from '../modal/confirmationModal';
 import Header from '../header';
-import ToothIcon from '../icons/iconTooth';
+import AppleIcon from '../icons/iconApple';
 
 const useStyles = makeStyles({
   heading: {
@@ -105,7 +105,7 @@ function ListCategories({ setPageState }) {
           expandIcon={<AngleDownIcon size="xs" color="#7F7C82" />}
         >
           <div className={classes.heading}>
-            <ToothIcon />
+            <AppleIcon />
           </div>
           <Typography className={classes.secondaryHeading}>{`${category.name}`}</Typography>
           <Typography className={classes.secondaryHeading}>{`${category.email}`}</Typography>

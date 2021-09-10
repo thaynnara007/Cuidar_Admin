@@ -1,3 +1,4 @@
+import AppleIcon from '../components/icons/iconApple';
 import BodyIcon from '../components/icons/iconBody';
 import HangerIcon from '../components/icons/iconHanger';
 import HygineIcon from '../components/icons/iconHygine';
@@ -17,7 +18,7 @@ export default function getIcon(name, props) {
     case 'HANGER':
       return <HangerIcon {...props} />;
     case 'APPLE':
-      return <div></div>;
+      return <AppleIcon {...props} />;
     case 'SOUP':
       return <SoupIcon {...props} />;
     case 'DRINK':
