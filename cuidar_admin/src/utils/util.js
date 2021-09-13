@@ -1,5 +1,6 @@
 import AppleIcon from '../components/icons/iconApple';
 import BodyIcon from '../components/icons/iconBody';
+import CategoryIconDefault from '../components/icons/iconCategoryDefault';
 import HangerIcon from '../components/icons/iconHanger';
 import HygineIcon from '../components/icons/iconHygine';
 import LiquidIcon from '../components/icons/iconLiquid';
@@ -32,6 +33,6 @@ export function getIcon(name, props) {
     case 'PANTS':
       return <PantsIcon {...props} />;
     default:
-      return <div></div>;
+      return <CategoryIconDefault {...props} />;
   }
 }

@@ -1,5 +1,8 @@
+/* eslint-disable no-dupe-keys */
+
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { ChromePicker } from 'react-color';
 
 import { Container, makeStyles, Typography, IconButton } from '@material-ui/core';
 
@@ -7,6 +10,8 @@ import { FormTextField } from '../styles/inputs.style';
 import { createPatient } from '../../api';
 import Header from '../header';
 import ArrowLeftIcon from '../icons/iconArrowLeft';
+import { HeaderButton } from '../styles/buttons.style';
+import { getIcon } from '../../utils/util';
 
 const useStyles = makeStyles({
   title: {
@@ -25,7 +30,18 @@ const useStyles = makeStyles({
     width: '35%',
   },
   input: {
-    marginBottom: '12px',
+    marginBottom: '15px',
+  },
+  colorDiv: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    marginBottom: '15px',
+  },
+  iconDiv: {
+    width: '-moz-fit-content',
+    width: 'fit-content',
+    margin: '20px auto',
   },
 });
 
@@ -37,8 +53,8 @@ function CreateCategory({ setPageState }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [pageDescription, setPageDescription] = useState('');
-  const [icon, setIcon] = useState(false);
-  const [color, setColor] = useState('');
+  const [icon, setIcon] = useState('');
+  const [color, setColor] = useState('#1EAE98');
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
 
@@ -107,6 +123,20 @@ function CreateCategory({ setPageState }) {
               className={classes.input}
               onChange={(e) => setPageDescription(e.target.value)}
             />
+            <div className={classes.colorDiv}>
+              <div>
+                <Typography variant="subtitle1" style={{ color: 'grey', marginLeft: '5px' }}>
+                  Cor:{' '}
+                </Typography>
+                <div style={{ width: '25%' }}></div>
+                <ChromePicker color={color} onChangeComplete={(colorObj) => setColor(colorObj.hex)} />
+              </div>
+              <div style={{ width: '15%' }}></div>
+              <div>
+                <HeaderButton>Escolher ícone</HeaderButton>
+                <div className={classes.iconDiv}>{getIcon(icon, { size: '4x' })}</div>
+              </div>
+            </div>
           </div>
           <div></div>
         </Container>
