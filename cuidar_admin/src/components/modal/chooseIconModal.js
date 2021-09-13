@@ -1,4 +1,5 @@
 /* eslint-disable no-dupe-keys */
+/* eslint-disable no-shadow */
 
 import { Typography, makeStyles, Divider, RadioGroup, FormControlLabel } from '@material-ui/core';
 import React from 'react';
@@ -36,8 +37,8 @@ function ChooseIconModal({ open, handleClose, icon, setIcon }) {
   };
 
   const listIcons = () =>
-    allIcons.map(({ iconn, value }) => {
-      const iconComponent = React.cloneElement(iconn, {
+    allIcons.map(({ icon, value }) => {
+      const iconComponent = React.cloneElement(icon, {
         size: '3x',
         styles: { marginRight: '6px', marginTop: '6px' },
       });

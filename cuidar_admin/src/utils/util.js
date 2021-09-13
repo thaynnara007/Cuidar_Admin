@@ -1,4 +1,5 @@
 import AppleIcon from '../components/icons/iconApple';
+import BabyCarriageIcon from '../components/icons/iconBabyCarriage';
 import BodyIcon from '../components/icons/iconBody';
 import CategoryIconDefault from '../components/icons/iconCategoryDefault';
 import HangerIcon from '../components/icons/iconHanger';
@@ -11,6 +12,7 @@ import SoupIcon from '../components/icons/iconSoup';
 import ToothIcon from '../components/icons/iconTooth';
 import {
   APPLE_ICON,
+  BABBY_CARRIAGE_ICON,
   BODY_ICON,
   DEFAULT_ICON,
   DRINK_ICON,
@@ -45,6 +47,8 @@ export function getIcon(name, props) {
       return <ShirtIcon {...props} />;
     case PANTS_ICON:
       return <PantsIcon {...props} />;
+    case BABBY_CARRIAGE_ICON:
+      return <BabyCarriageIcon {...props} />;
     default:
       return <CategoryIconDefault {...props} />;
   }
@@ -62,6 +66,7 @@ export function getAllIcons(props) {
     { icon: <ToothIcon {...(props?.tooth ?? {})} />, value: TOOTH_ICON },
     { icon: <ShirtIcon {...(props?.shirt ?? {})} />, value: SHIRT_ICON },
     { icon: <PantsIcon {...(props?.pants ?? {})} />, value: PANTS_ICON },
+    { icon: <BabyCarriageIcon {...(props?.baby ?? {})} />, value: BABBY_CARRIAGE_ICON },
     { icon: <CategoryIconDefault {...(props?.default ?? {})} />, value: DEFAULT_ICON },
   ];
 }
