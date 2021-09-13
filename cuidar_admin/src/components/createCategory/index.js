@@ -14,6 +14,7 @@ import { HeaderButton } from '../styles/buttons.style';
 import { getIcon } from '../../utils/util';
 import ChooseIconModal from '../modal/chooseIconModal';
 import { DEFAULT_ICON } from '../../utils/constants';
+import CardOption from '../cardOption';
 
 const useStyles = makeStyles({
   title: {
@@ -146,7 +147,9 @@ function CreateCategory({ setPageState }) {
               </div>
             </div>
           </div>
-          <div></div>
+          <div>
+            <CardOption></CardOption>
+          </div>
         </Container>
         <ChooseIconModal
           open={openModal}
