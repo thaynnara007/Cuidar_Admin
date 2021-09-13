@@ -12,6 +12,7 @@ import Header from '../header';
 import ArrowLeftIcon from '../icons/iconArrowLeft';
 import { HeaderButton } from '../styles/buttons.style';
 import { getIcon } from '../../utils/util';
+import ChooseIconModal from '../modal/chooseIconModal';
 
 const useStyles = makeStyles({
   title: {
@@ -49,6 +50,7 @@ function CreateCategory({ setPageState }) {
   const classes = useStyles();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -126,20 +128,29 @@ function CreateCategory({ setPageState }) {
             <div className={classes.colorDiv}>
               <div>
                 <Typography variant="subtitle1" style={{ color: 'grey', marginLeft: '5px' }}>
-                  Cor:{' '}
+                  Cor:
                 </Typography>
                 <div style={{ width: '25%' }}></div>
-                <ChromePicker color={color} onChangeComplete={(colorObj) => setColor(colorObj.hex)} />
+                <ChromePicker
+                  color={color}
+                  onChangeComplete={(colorObj) => setColor(colorObj.hex)}
+                />
               </div>
               <div style={{ width: '15%' }}></div>
               <div>
-                <HeaderButton>Escolher ícone</HeaderButton>
+                <HeaderButton onClick={() => setOpenModal(true)}>Escolher ícone</HeaderButton>
                 <div className={classes.iconDiv}>{getIcon(icon, { size: '4x' })}</div>
               </div>
             </div>
           </div>
           <div></div>
         </Container>
+        <ChooseIconModal
+          open={openModal}
+          handleClose={() => setOpenModal(false)}
+          icon={icon}
+          setIcon={setIcon}
+        />
       </Container>
     </>
   );
