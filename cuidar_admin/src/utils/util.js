@@ -1,7 +1,13 @@
 import AppleIcon from '../components/icons/iconApple';
 import BabyCarriageIcon from '../components/icons/iconBabyCarriage';
+import BallIcon from '../components/icons/iconBall';
+import BandAidIcon from '../components/icons/iconBandAid';
+import BedIcon from '../components/icons/iconBed';
 import BodyIcon from '../components/icons/iconBody';
+import BookIcon from '../components/icons/iconBook';
+import CatIcon from '../components/icons/iconCat';
 import CategoryIconDefault from '../components/icons/iconCategoryDefault';
+import DogIcon from '../components/icons/iconDog';
 import HangerIcon from '../components/icons/iconHanger';
 import HygineIcon from '../components/icons/iconHygine';
 import LiquidIcon from '../components/icons/iconLiquid';
@@ -13,8 +19,14 @@ import ToothIcon from '../components/icons/iconTooth';
 import {
   APPLE_ICON,
   BABBY_CARRIAGE_ICON,
+  BALL_ICON,
+  BANDAID_ICON,
+  BED_ICON,
   BODY_ICON,
+  BOOK_ICON,
+  CAT_ICON,
   DEFAULT_ICON,
+  DOG_ICON,
   DRINK_ICON,
   HANGER_ICON,
   HYGIENE_ICON,
@@ -49,24 +61,34 @@ export function getIcon(name, props) {
       return <PantsIcon {...props} />;
     case BABBY_CARRIAGE_ICON:
       return <BabyCarriageIcon {...props} />;
+    case BALL_ICON:
+      return <BallIcon {...props} />;
+    case DOG_ICON:
+      return <DogIcon {...props} />;
     default:
       return <CategoryIconDefault {...props} />;
   }
 }
 
-export function getAllIcons(props) {
+export function getAllIcons() {
   return [
-    { icon: <MealIcon {...(props?.meal ?? {})} />, value: PLATE_ICON },
-    { icon: <HygineIcon {...(props?.hygine ?? {})} />, value: HYGIENE_ICON },
-    { icon: <HangerIcon {...(props?.hanger ?? {})} />, value: HANGER_ICON },
-    { icon: <AppleIcon {...(props?.apple ?? {})} />, value: APPLE_ICON },
-    { icon: <SoupIcon {...(props?.soup ?? {})} />, value: SOUP_ICON },
-    { icon: <LiquidIcon {...(props?.liquid ?? {})} />, value: DRINK_ICON },
-    { icon: <BodyIcon {...(props?.body ?? {})} />, value: BODY_ICON },
-    { icon: <ToothIcon {...(props?.tooth ?? {})} />, value: TOOTH_ICON },
-    { icon: <ShirtIcon {...(props?.shirt ?? {})} />, value: SHIRT_ICON },
-    { icon: <PantsIcon {...(props?.pants ?? {})} />, value: PANTS_ICON },
-    { icon: <BabyCarriageIcon {...(props?.baby ?? {})} />, value: BABBY_CARRIAGE_ICON },
-    { icon: <CategoryIconDefault {...(props?.default ?? {})} />, value: DEFAULT_ICON },
+    { icon: <MealIcon />, value: PLATE_ICON },
+    { icon: <HygineIcon />, value: HYGIENE_ICON },
+    { icon: <HangerIcon />, value: HANGER_ICON },
+    { icon: <AppleIcon />, value: APPLE_ICON },
+    { icon: <SoupIcon />, value: SOUP_ICON },
+    { icon: <LiquidIcon />, value: DRINK_ICON },
+    { icon: <BodyIcon />, value: BODY_ICON },
+    { icon: <ToothIcon />, value: TOOTH_ICON },
+    { icon: <ShirtIcon />, value: SHIRT_ICON },
+    { icon: <PantsIcon />, value: PANTS_ICON },
+    { icon: <BabyCarriageIcon />, value: BABBY_CARRIAGE_ICON },
+    { icon: <BallIcon />, value: BALL_ICON },
+    { icon: <DogIcon />, value: DOG_ICON },
+    { icon: <CatIcon />, value: CAT_ICON },
+    { icon: <BandAidIcon />, value: BANDAID_ICON },
+    { icon: <BedIcon />, value: BED_ICON },
+    { icon: <BookIcon />, value: BOOK_ICON },
+    { icon: <CategoryIconDefault />, value: DEFAULT_ICON },
   ];
 }

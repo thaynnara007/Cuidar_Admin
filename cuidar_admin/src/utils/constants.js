@@ -15,7 +15,13 @@ export const BODY_ICON = 'BODY';
 export const TOOTH_ICON = 'TOOTH';
 export const SHIRT_ICON = 'SHIRT';
 export const PANTS_ICON = 'PANTS';
-export const DEFAULT_ICON = 'DEFAULT';
 export const BABBY_CARRIAGE_ICON = 'BABBY_CARRIAGE';
+export const BALL_ICON = 'BALL';
+export const DOG_ICON = 'DOG';
+export const CAT_ICON = 'CAT';
+export const BANDAID_ICON = 'BANDAID';
+export const BED_ICON = 'BED';
+export const BOOK_ICON = 'BOOK';
+export const DEFAULT_ICON = 'DEFAULT';
 
 export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3030';
