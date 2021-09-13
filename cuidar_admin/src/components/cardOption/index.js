@@ -2,15 +2,15 @@ import React from 'react';
 
 import { Card, Typography, makeStyles } from '@material-ui/core';
 
-import MealIcon from '../icons/iconMeal';
 import { CardButton } from '../styles/buttons.style';
+import { getIcon } from '../../utils/util';
 
 const useStyles = makeStyles({
   root: {
     display: 'flex',
     flexDirection: 'row',
-    width: '295px',
-    height: '126px',
+    width: '310px',
+    height: '130px',
   },
   div: {
     width: '50%',
@@ -24,21 +24,31 @@ const useStyles = makeStyles({
   },
 });
 
-function CardOption() {
+function CardOption({ icon, name, description }) {
   const classes = useStyles();
+
+  const iconComponent = getIcon(icon);
+
+  const iconClone = React.cloneElement(iconComponent, {
+    size: '3x',
+    styles: { marginBottom: '6px' },
+    width: '60px',
+    height: '60px',
+    viewBox: '0 0 72 50',
+  });
 
   return (
     <Card className={classes.root}>
       <div className={classes.div}>
-        <MealIcon width="60px" height="60px" viewBox="0 0 62 50" />
+        {iconClone}
         <Typography variant="h6" className={classes.textColor}>
-          Refeições
+          {name}
         </Typography>
       </div>
       <div className={classes.div}>
-        <Typography variant="caption" className={classes.textColor}>
-          Aqui você encontra alimentos sólidos, líquidos e pastosos.
-        </Typography>
+        <p className={classes.textColor} style={{ margin: '0px', fontSize: '13px' }}>
+          {description}
+        </p>
         <CardButton>Iniciar</CardButton>
       </div>
     </Card>

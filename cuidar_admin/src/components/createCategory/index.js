@@ -32,6 +32,11 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     width: '35%',
   },
+  layoutBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '60%',
+  },
   input: {
     marginBottom: '15px',
   },
@@ -147,8 +152,8 @@ function CreateCategory({ setPageState }) {
               </div>
             </div>
           </div>
-          <div>
-            <CardOption></CardOption>
+          <div className={classes.layoutBox}>
+            <CardOption icon={icon} name={name} description={description} />
           </div>
         </Container>
         <ChooseIconModal
