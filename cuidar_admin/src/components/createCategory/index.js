@@ -13,6 +13,7 @@ import ArrowLeftIcon from '../icons/iconArrowLeft';
 import { HeaderButton } from '../styles/buttons.style';
 import { getIcon } from '../../utils/util';
 import ChooseIconModal from '../modal/chooseIconModal';
+import { DEFAULT_ICON } from '../../utils/constants';
 
 const useStyles = makeStyles({
   title: {
@@ -55,7 +56,7 @@ function CreateCategory({ setPageState }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [pageDescription, setPageDescription] = useState('');
-  const [icon, setIcon] = useState('default');
+  const [icon, setIcon] = useState(DEFAULT_ICON);
   const [color, setColor] = useState('#1EAE98');
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
@@ -141,7 +142,7 @@ function CreateCategory({ setPageState }) {
               <div style={{ width: '15%' }}></div>
               <div>
                 <HeaderButton onClick={() => setOpenModal(true)}>Escolher ícone</HeaderButton>
-                <div className={classes.iconDiv}>{getIcon(icon, { size: '4x' })}</div>
+                <div className={classes.iconDiv}>{getIcon(icon, { size: '3x' })}</div>
               </div>
             </div>
           </div>

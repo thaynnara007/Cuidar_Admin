@@ -12,6 +12,7 @@ import ToothIcon from '../components/icons/iconTooth';
 import {
   APPLE_ICON,
   BODY_ICON,
+  DEFAULT_ICON,
   DRINK_ICON,
   HANGER_ICON,
   HYGIENE_ICON,
@@ -51,16 +52,16 @@ export function getIcon(name, props) {
 
 export function getAllIcons(props) {
   return [
-    <MealIcon {...(props.meal ?? {})} />,
-    <HygineIcon {...(props.hygine ?? {})} />,
-    <HangerIcon {...(props.hanger ?? {})} />,
-    <AppleIcon {...(props.apple ?? {})} />,
-    <SoupIcon {...(props.soup ?? {})} />,
-    <LiquidIcon {...(props.liquid ?? {})} />,
-    <BodyIcon {...(props.body ?? {})} />,
-    <ToothIcon {...(props.tooth ?? {})} />,
-    <ShirtIcon {...(props.shirt ?? {})} />,
-    <PantsIcon {...(props.pants ?? {})} />,
-    <CategoryIconDefault {...(props.default ?? {})} />,
+    { icon: <MealIcon {...(props?.meal ?? {})} />, value: PLATE_ICON },
+    { icon: <HygineIcon {...(props?.hygine ?? {})} />, value: HYGIENE_ICON },
+    { icon: <HangerIcon {...(props?.hanger ?? {})} />, value: HANGER_ICON },
+    { icon: <AppleIcon {...(props?.apple ?? {})} />, value: APPLE_ICON },
+    { icon: <SoupIcon {...(props?.soup ?? {})} />, value: SOUP_ICON },
+    { icon: <LiquidIcon {...(props?.liquid ?? {})} />, value: DRINK_ICON },
+    { icon: <BodyIcon {...(props?.body ?? {})} />, value: BODY_ICON },
+    { icon: <ToothIcon {...(props?.tooth ?? {})} />, value: TOOTH_ICON },
+    { icon: <ShirtIcon {...(props?.shirt ?? {})} />, value: SHIRT_ICON },
+    { icon: <PantsIcon {...(props?.pants ?? {})} />, value: PANTS_ICON },
+    { icon: <CategoryIconDefault {...(props?.default ?? {})} />, value: DEFAULT_ICON },
   ];
 }

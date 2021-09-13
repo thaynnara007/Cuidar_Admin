@@ -15,5 +15,6 @@ export const BODY_ICON = 'BODY';
 export const TOOTH_ICON = 'TOOTH';
 export const SHIRT_ICON = 'SHIRT';
 export const PANTS_ICON = 'PANTS';
+export const DEFAULT_ICON = 'DEFAULT';
 
 export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3030';

@@ -4,8 +4,8 @@ import { Typography, makeStyles, Divider, RadioGroup, FormControlLabel } from '@
 import React from 'react';
 
 import CustomModal from '.';
-import AppleIcon from '../icons/iconApple';
 import { BlueRadio } from '../styles/radio.style';
+import { getAllIcons } from '../../utils/util';
 
 const useStyles = makeStyles({
   modalTitle: {
@@ -29,10 +29,26 @@ const useStyles = makeStyles({
 
 function ChooseIconModal({ open, handleClose, icon, setIcon }) {
   const classes = useStyles();
+  const allIcons = getAllIcons();
 
   const handleChange = (event) => {
     setIcon(event.target.value);
   };
+
+  const listIcons = () =>
+    allIcons.map(({ iconn, value }) => {
+      const iconComponent = React.cloneElement(iconn, {
+        size: '3x',
+        styles: { marginRight: '6px', marginTop: '6px' },
+      });
+
+      return (
+        <di className={classes.itemBox} key={value}>
+          {iconComponent}
+          <FormControlLabel value={value} control={<BlueRadio />} />
+        </di>
+      );
+    });
 
   return (
     <CustomModal open={open} handleClose={handleClose}>
@@ -46,10 +62,7 @@ function ChooseIconModal({ open, handleClose, icon, setIcon }) {
         onChange={handleChange}
         className={classes.modalBox}
       >
-        <div className={classes.itemBox}>
-          <AppleIcon />
-          <FormControlLabel value="APPLE" control={<BlueRadio />} />
-        </div>
+        {listIcons()}
       </RadioGroup>
     </CustomModal>
   );
