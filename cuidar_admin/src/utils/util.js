@@ -65,6 +65,14 @@ export function getIcon(name, props) {
       return <BallIcon {...props} />;
     case DOG_ICON:
       return <DogIcon {...props} />;
+    case CAT_ICON:
+      return <CatIcon {...props} />;
+    case BANDAID_ICON:
+      return <BandAidIcon {...props} />;
+    case BED_ICON:
+      return <BedIcon {...props} />;
+    case BOOK_ICON:
+      return <BookIcon {...props} />;
     default:
       return <CategoryIconDefault {...props} />;
   }
