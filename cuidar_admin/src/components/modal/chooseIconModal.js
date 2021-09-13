@@ -1,12 +1,6 @@
 /* eslint-disable no-dupe-keys */
 
-import {
-  Typography,
-  makeStyles,
-  Divider,
-  RadioGroup,
-  FormControlLabel,
-} from '@material-ui/core';
+import { Typography, makeStyles, Divider, RadioGroup, FormControlLabel } from '@material-ui/core';
 import React from 'react';
 
 import CustomModal from '.';

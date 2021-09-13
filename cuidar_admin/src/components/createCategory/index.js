@@ -55,7 +55,7 @@ function CreateCategory({ setPageState }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [pageDescription, setPageDescription] = useState('');
-  const [icon, setIcon] = useState('');
+  const [icon, setIcon] = useState('default');
   const [color, setColor] = useState('#1EAE98');
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
@@ -71,19 +71,21 @@ function CreateCategory({ setPageState }) {
   };
 
   const handleCreateCategory = async () => {
-    const body = {
-      name,
-      description,
-      pageDescription,
-      icon,
-      color,
-    };
+    if (validateInfo()) {
+      const body = {
+        name,
+        description,
+        pageDescription,
+        icon,
+        color,
+      };
 
-    const result = await createPatient(body, setIsLoading);
+      const result = await createPatient(body, setIsLoading);
 
-    if (result) {
-      toast.success('Categoria criada com sucesso');
-      setPageState('list_categories');
+      if (result) {
+        toast.success('Categoria criada com sucesso');
+        setPageState('list_categories');
+      }
     }
   };
 
