@@ -13,6 +13,7 @@ import Categories from './pages/categories';
 import History from './pages/history';
 import MyInfo from './pages/myInfo';
 import PatientDetails from './pages/patientDetails';
+import EditCategory from './pages/categories/editCategory';
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,9 @@ function App() {
               </Route>
               <Route exact path="/categories">
                 <Categories />
+              </Route>
+              <Route exact path="/category/:id">
+                <EditCategory />
               </Route>
               <Route exact path="/history">
                 <History />

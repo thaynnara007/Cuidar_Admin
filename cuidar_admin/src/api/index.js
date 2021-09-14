@@ -349,3 +349,19 @@ export async function createCategory(body, setIsLoading) {
     toast.error(msg);
   }
 }
+
+export async function getCategory(id) {
+  try {
+    const url = `/category/${id}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
