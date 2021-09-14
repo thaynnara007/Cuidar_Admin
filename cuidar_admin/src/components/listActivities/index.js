@@ -12,15 +12,15 @@ import Divider from '@material-ui/core/Divider';
 import Pagination from '@material-ui/lab/Pagination';
 import IconButton from '@material-ui/core/IconButton';
 
+import { AccordionDetails } from '@material-ui/core';
 import AngleDownIcon from '../icons/iconAngleDown';
 import TrashIcon from '../icons/iconTrash';
 import { AccordionButton } from '../styles/buttons.style';
-import { getCategory, deleteCategory } from '../../api';
+import { getActivities, deleteActivity } from '../../api';
 import Loading from '../loading';
 import ConfirmationModal from '../modal/confirmationModal';
 import Header from '../header';
 import { getIcon } from '../../utils/util';
-import ShowColor from '../color';
 
 const useStyles = makeStyles({
   heading: {
@@ -52,6 +52,9 @@ const useStyles = makeStyles({
     margin: '8px 0px',
     fontWeight: 'bold',
   },
+  descriptionDiv: {
+    width: '48%',
+  },
 });
 
 function ListActivities({ setPageState }) {
@@ -65,11 +68,7 @@ function ListActivities({ setPageState }) {
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [name, setName] = useState('');
 
-  const {
-    data: category,
-    isFetching,
-    refetch,
-  } = useQuery('category', () => getCategory(id), {
+  const { data, isFetching, refetch } = useQuery('category', () => getActivities(id, page), {
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -82,18 +81,18 @@ function ListActivities({ setPageState }) {
     setPage(value);
   };
 
-  const handleShowDeleteModal = (id, nameCategory) => {
-    setIdToDelete(id);
+  const handleShowDeleteModal = (idActivity, nameCategory) => {
+    setIdToDelete(idActivity);
     setName(nameCategory);
     setOpenDeleteModal(true);
   };
 
   const handleDelete = async () => {
-    const id = idToDelete;
-    const result = await deleteCategory(id, setIsLoadingDelete);
+    const idActivity = idToDelete;
+    const result = await deleteActivity(idActivity, setIsLoadingDelete);
 
     if (result) {
-      toast.success('Categoria deletada com sucesso.');
+      toast.success('Atividade deletada com sucesso.');
       refetch();
     }
 
@@ -123,6 +122,21 @@ function ListActivities({ setPageState }) {
           <Typography className={classes.secondaryHeading}>{`${activity.name}`}</Typography>
         </AccordionSummary>
         <Divider />
+        <AccordionDetails style={{ justifyContent: 'space-between' }}>
+          <div className={classes.descriptionDiv}>
+            <Typography variant="overline">Descrição:</Typography>
+            <Typography variant="body2" style={{ color: '#7F7C82' }}>
+              {activity.description}
+            </Typography>
+          </div>
+          <div className={classes.descriptionDiv}>
+            <Typography variant="overline">Descrição da página:</Typography>
+            <Typography variant="body2" style={{ color: '#7F7C82' }}>
+              {activity.pageDescription}
+            </Typography>
+          </div>
+        </AccordionDetails>
+        <Divider />
         <AccordionActions>
           <AccordionButton onClick={() => history.push(`/activity/${activity?.id}/steps`)}>
             Ver passos
@@ -143,7 +157,7 @@ function ListActivities({ setPageState }) {
   return (
     <>
       <Header buttonName="Nova atividade" onClick={() => setPageState('create_acitvity')}>
-        <Typography variant="h4">{category?.data?.name ?? ''}</Typography>
+        <Typography variant="h4">{data?.data.category.name ?? ''}</Typography>
       </Header>
       <div style={{ width: '100%', marginTop: '2px' }}>
         {isFetching ? (
@@ -152,19 +166,19 @@ function ListActivities({ setPageState }) {
           <>
             <Pagination
               className={classes.pagination}
-              count={1}
+              count={data?.data.pages}
               page={page}
               onChange={handlePagination}
               shape="rounded"
             />
-            {accordionActivityItens(category?.data.activities)}
+            {accordionActivityItens(data?.data.rows)}
             <ConfirmationModal
               open={openDeleteModal}
               handleClose={() => setOpenDeleteModal(false)}
-              title="Remover categoria"
-              description={`Esta ação não poderá ser revertida, ao apagar uma categoria, 
-                todas as atividades dessa categoria também serão apagadas. 
-                Você tem certeza que quer apagar a categoria ${name ?? ''} ?`}
+              title="Remover atividade"
+              description={`Esta ação não poderá ser revertida, ao apagar uma atividade 
+                todos os passos dessa atividade também serão apagados. 
+                Você tem certeza que quer apagar a atividade ${name ?? ''} ?`}
               confirmButtonName="Remover"
               handleConfirm={handleDelete}
               isLoading={isLoadingDelete}

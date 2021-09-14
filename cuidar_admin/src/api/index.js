@@ -384,3 +384,38 @@ export async function updateCategory(body, id, setIsLoading) {
     toast.error(msg);
   }
 }
+
+export async function getActivities(categoryId, page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
+  try {
+    const url = `/activity/category/${categoryId}/?page=${page}&pageSize=${pageSize}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
+
+export async function deleteActivity(id, setIsLoading) {
+  try {
+    setIsLoading(true);
+    const url = `/activity/${id}`;
+
+    const result = await api.delete(url);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
