@@ -15,6 +15,7 @@ import { getIcon } from '../../utils/util';
 import ChooseIconModal from '../modal/chooseIconModal';
 import { DEFAULT_ICON } from '../../utils/constants';
 import CardOption from '../cardOption';
+import CategoryScreen from '../mobile/categoryPage';
 
 const useStyles = makeStyles({
   title: {
@@ -154,6 +155,8 @@ function CreateCategory({ setPageState }) {
           </div>
           <div className={classes.layoutBox}>
             <CardOption icon={icon} name={name} description={description} />
+            <div style={{ width: '5%' }} />
+            <CategoryScreen title={name} description={pageDescription} color={color} />
           </div>
         </Container>
         <ChooseIconModal

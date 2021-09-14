@@ -13,7 +13,6 @@ const useStyles = makeStyles({
     height: '130px',
   },
   div: {
-    width: '50%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -39,14 +38,17 @@ function CardOption({ icon, name, description }) {
 
   return (
     <Card className={classes.root}>
-      <div className={classes.div}>
+      <div className={classes.div} style={{ width: '40%' }}>
         {iconClone}
         <Typography variant="h6" className={classes.textColor}>
           {name}
         </Typography>
       </div>
-      <div className={classes.div}>
-        <p className={classes.textColor} style={{ margin: '0px', fontSize: '13px' }}>
+      <div className={classes.div} style={{ width: '60%' }}>
+        <p
+          className={classes.textColor}
+          style={{ margin: '0px', fontSize: '13px', marginRight: '5px' }}
+        >
           {description}
         </p>
         <CardButton>Iniciar</CardButton>
