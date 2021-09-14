@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import Navbar from '../../components/navbar';
-import CreateCategory from '../../components/createCategory';
 import ListActivities from '../../components/listActivities';
+import CreateActivity from '../../components/createActivity';
 
 function Activities() {
   const [state, setState] = useState('list_activities');
@@ -12,7 +12,7 @@ function Activities() {
       {state === 'list_activities' ? (
         <ListActivities setPageState={setState} />
       ) : (
-        <CreateCategory setPageState={setState} />
+        <CreateActivity setPageState={setState} />
       )}
     </Navbar>
   );
