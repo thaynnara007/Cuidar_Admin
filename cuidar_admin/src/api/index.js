@@ -330,3 +330,22 @@ export async function deleteCategory(id, setIsLoading) {
     toast.error(msg);
   }
 }
+
+export async function createCategory(body, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const url = '/category';
+    const result = await api.post(url, body);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}

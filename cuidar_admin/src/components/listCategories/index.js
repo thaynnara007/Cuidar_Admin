@@ -99,6 +99,17 @@ function ListCategories({ setPageState }) {
     setOpenDeleteModal(false);
   };
 
+  const handleShowIcon = (iconName) => {
+    const icon = getIcon(iconName);
+
+    const iconComponent = React.cloneElement(icon, {
+      size: '3x',
+      styles: { marginRight: '6px', marginTop: '6px' },
+    });
+
+    return iconComponent;
+  };
+
   const accordionCategoryItens = (categoriesList) =>
     categoriesList?.map((category) => (
       <Accordion key={category.id}>
@@ -107,7 +118,7 @@ function ListCategories({ setPageState }) {
           id="panel1bh-header"
           expandIcon={<AngleDownIcon size="xs" color="#7F7C82" />}
         >
-          <div className={classes.heading}>{getIcon(category.icon)}</div>
+          <div className={classes.heading}>{handleShowIcon(category.icon)}</div>
           <Typography className={classes.secondaryHeading}>{`${category.name}`}</Typography>
           <ShowColor color={category.color} styles={{ flexShrink: 0, flexBasis: '12%' }} />
         </AccordionSummary>
