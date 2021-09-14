@@ -11,7 +11,6 @@ import { createPatient } from '../../api';
 import Header from '../header';
 import ArrowLeftIcon from '../icons/iconArrowLeft';
 import { HeaderButton } from '../styles/buttons.style';
-import { getIcon } from '../../utils/util';
 import ChooseIconModal from '../modal/chooseIconModal';
 import { DEFAULT_ICON } from '../../utils/constants';
 import CardOption from '../cardOption';
@@ -20,7 +19,7 @@ import CategoryScreen from '../mobile/categoryPage';
 const useStyles = makeStyles({
   title: {
     textAlign: 'center',
-    margin: '20px 0px',
+    margin: '25px 0px',
     color: '#112D4E',
   },
   box: {
@@ -64,7 +63,8 @@ function CreateCategory({ setPageState }) {
   const [description, setDescription] = useState('');
   const [pageDescription, setPageDescription] = useState('');
   const [icon, setIcon] = useState(DEFAULT_ICON);
-  const [color, setColor] = useState('#1EAE98');
+  const [color, setColor] = useState('#C6FFC1');
+  const [textColor, setTextColor] = useState('#24267E');
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
 
@@ -106,7 +106,7 @@ function CreateCategory({ setPageState }) {
       </Header>
       <Container maxWidth="xl">
         <Typography className={classes.title} variant="h5">
-          Informações da categoria
+          Prototipação da categoria
         </Typography>
         <Container maxWidth="xl" className={classes.box}>
           <div className={classes.formBox}>
@@ -138,9 +138,8 @@ function CreateCategory({ setPageState }) {
             <div className={classes.colorDiv}>
               <div>
                 <Typography variant="subtitle1" style={{ color: 'grey', marginLeft: '5px' }}>
-                  Cor:
+                  Cor de fundo:
                 </Typography>
-                <div style={{ width: '25%' }}></div>
                 <ChromePicker
                   color={color}
                   onChangeComplete={(colorObj) => setColor(colorObj.hex)}
@@ -148,15 +147,32 @@ function CreateCategory({ setPageState }) {
               </div>
               <div style={{ width: '15%' }}></div>
               <div>
-                <HeaderButton onClick={() => setOpenModal(true)}>Escolher ícone</HeaderButton>
-                <div className={classes.iconDiv}>{getIcon(icon, { size: '3x' })}</div>
+                <Typography variant="subtitle1" style={{ color: 'grey', marginLeft: '5px' }}>
+                  Cor do texto:
+                </Typography>
+                <ChromePicker
+                  color={textColor}
+                  onChangeComplete={(colorObj) => setTextColor(colorObj.hex)}
+                />
               </div>
             </div>
           </div>
           <div className={classes.layoutBox}>
-            <CardOption icon={icon} name={name} description={description} />
+            <div>
+              <CardOption icon={icon} name={name} description={description} />
+              <div className={classes.iconDiv}>
+                <HeaderButton onClick={() => setOpenModal(true)} style={{ margin: '0 auto' }}>
+                  Escolher ícone
+                </HeaderButton>
+              </div>
+            </div>
             <div style={{ width: '5%' }} />
-            <CategoryScreen title={name} description={pageDescription} color={color} />
+            <CategoryScreen
+              title={name}
+              description={pageDescription}
+              color={color}
+              textColor={textColor}
+            />
           </div>
         </Container>
         <ChooseIconModal

@@ -1,12 +1,13 @@
 /* eslint-disable no-dupe-keys */
 /* eslint-disable no-shadow */
 
-import { Typography, makeStyles, Divider, RadioGroup, FormControlLabel } from '@material-ui/core';
+import { Typography, makeStyles, RadioGroup, FormControlLabel } from '@material-ui/core';
 import React from 'react';
 
 import CustomModal from '.';
 import { BlueRadio } from '../styles/radio.style';
 import { getAllIcons } from '../../utils/util';
+import { HeaderButton } from '../styles/buttons.style';
 
 const useStyles = makeStyles({
   modalTitle: {
@@ -25,6 +26,11 @@ const useStyles = makeStyles({
     width: '-moz-fit-content',
     width: 'fit-content',
     margin: '10px',
+  },
+  modalButton: {
+    margin: '0px auto',
+    marginTop: '25px',
+    width: 'fit-content',
   },
 });
 
@@ -56,7 +62,6 @@ function ChooseIconModal({ open, handleClose, icon, setIcon }) {
       <Typography variant="h4" className={classes.modalTitle}>
         Ícones
       </Typography>
-      <Divider />
       <RadioGroup
         name="choose_icon"
         value={icon}
@@ -65,6 +70,9 @@ function ChooseIconModal({ open, handleClose, icon, setIcon }) {
       >
         {listIcons()}
       </RadioGroup>
+      <div className={classes.modalButton}>
+        <HeaderButton onClick={handleClose}>Fechar</HeaderButton>
+      </div>
     </CustomModal>
   );
 }
