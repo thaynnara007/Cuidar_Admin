@@ -202,7 +202,7 @@ function Navbar({ children }) {
         </List>
         <Divider />
         <List>
-          <ListItem button key="activitys" onClick={() => history.push('/activities')}>
+          <ListItem button key="activitys" onClick={() => history.push('/categories')}>
             <ListItemIcon>
               <ActivityIcon />
             </ListItemIcon>

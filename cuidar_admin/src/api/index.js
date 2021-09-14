@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify';
 
+import { PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../utils/constants';
 import api from './api';
 
 export async function login(email, password, setIsLoading) {
@@ -100,7 +101,7 @@ export async function changePassword(password, setIsLoading) {
   }
 }
 
-export async function getUsers(page = 1, pageSize = 10) {
+export async function getUsers(page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
   try {
     const url = `/user?page=${page}&pageSize=${pageSize}`;
 
@@ -225,7 +226,7 @@ export async function getPermissions() {
   }
 }
 
-export async function getPatients(page = 1, pageSize = 10) {
+export async function getPatients(page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
   try {
     const url = `/patient?page=${page}&pageSize=${pageSize}`;
 
@@ -282,6 +283,95 @@ export async function createPatient(body, setIsLoading) {
 
     const url = '/patient';
     const result = await api.post(url, body);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function getCategories(page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
+  try {
+    const url = `/category?page=${page}&pageSize=${pageSize}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
+
+export async function deleteCategory(id, setIsLoading) {
+  try {
+    setIsLoading(true);
+    const url = `/category/${id}`;
+
+    const result = await api.delete(url);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function createCategory(body, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const url = '/category';
+    const result = await api.post(url, body);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function getCategory(id) {
+  try {
+    const url = `/category/${id}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
+
+export async function updateCategory(body, id, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const url = `/category/${id}`;
+    const result = await api.put(url, body);
 
     setIsLoading(false);
     return result;

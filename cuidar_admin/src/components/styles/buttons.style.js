@@ -32,3 +32,21 @@ export const AccordionButton = withStyles({
     padding: '10px 20px',
   },
 })(Button);
+
+export const CardButton = withStyles({
+  root: {
+    width: '80%',
+    marginRight: '30px',
+    marginTop: '4px',
+    textTransform: 'none',
+    fontStyle: 'bold',
+    color: '#FFFFFF',
+    backgroundColor: '#24267E',
+    '&:hover': {
+      backgroundColor: '#24267E',
+      color: '#FFFFFF',
+    },
+    paddingTop: '2px',
+    paddingBottom: '2px',
+  },
+})(Button);
