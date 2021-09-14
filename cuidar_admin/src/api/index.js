@@ -365,3 +365,22 @@ export async function getCategory(id) {
     toast.error(msg);
   }
 }
+
+export async function updateCategory(body, id, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const url = `/category/${id}`;
+    const result = await api.put(url, body);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}

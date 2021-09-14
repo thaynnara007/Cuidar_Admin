@@ -17,7 +17,7 @@ import { HeaderButton } from '../../components/styles/buttons.style';
 import ChooseIconModal from '../../components/modal/chooseIconModal';
 import { DEFAULT_ICON } from '../../utils/constants';
 import Navbar from '../../components/navbar';
-import { getCategory } from '../../api';
+import { getCategory, updateCategory } from '../../api';
 
 const useStyles = makeStyles({
   title: {
@@ -56,7 +56,7 @@ const useStyles = makeStyles({
   },
 });
 
-function EditCategory({ setPageState }) {
+function EditCategory() {
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams();
@@ -79,7 +79,6 @@ function EditCategory({ setPageState }) {
   });
 
   useEffect(() => {
-
     setName(category?.data?.name ?? '');
     setDescription(category?.data?.description ?? '');
     setPageDescription(category?.data?.pageDescription ?? '');
@@ -98,7 +97,7 @@ function EditCategory({ setPageState }) {
     return validatedName && validatedDescription;
   };
 
-  const handleCreateCategory = async () => {
+  const handleUpdate = async () => {
     if (validateInfo()) {
       const body = {
         name,
@@ -109,11 +108,11 @@ function EditCategory({ setPageState }) {
         textColor,
       };
 
-      const result = await createCategory(body, setIsLoading);
+      const result = await updateCategory(body, id, setIsLoading);
 
       if (result) {
-        toast.success('Categoria criada com sucesso');
-        setPageState('list_categories');
+        toast.success('Categoria atualizada com sucesso');
+        history.push('/categories');
       }
     }
   };
@@ -124,7 +123,7 @@ function EditCategory({ setPageState }) {
         <Loading />
       ) : (
         <>
-          <Header buttonName="Atualizar categoria" onClick={handleCreateCategory}>
+          <Header buttonName="Atualizar categoria" onClick={handleUpdate}>
             <IconButton color="inherit" onClick={() => history.push('/categories')}>
               <ArrowLeftIcon />
             </IconButton>
