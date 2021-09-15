@@ -4,7 +4,8 @@ import React from 'react';
 const useStyles = makeStyles({
   screen: {
     minHeight: '640px',
-    width: '360px',
+    minWidth: '360px',
+    maxWidth: '360px',
   },
 });
 

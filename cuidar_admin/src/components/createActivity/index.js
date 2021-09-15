@@ -146,6 +146,7 @@ function CreateActivity({ setPageState, categoryId, category }) {
                   title={name}
                   subtitle={category?.data.name}
                   description={pageDescription}
+                  icon={icon}
                   color={category?.data.color ?? '#C6FFC1'}
                   textColor={category?.data.textColor ?? '#24267E'}
                 />

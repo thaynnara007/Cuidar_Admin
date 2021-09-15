@@ -1,6 +1,20 @@
+/* eslint-disable no-param-reassign */
+
 import React from 'react';
 
-function MealIcon({ color = '#2a3984', width = '40px', height = '50px', viewBox = '0 0 62 50' }) {
+function MealIcon({
+  color = '#2a3984',
+  width = '40px',
+  height = '50px',
+  viewBox = '0 0 62 50',
+  viewBoxLeft,
+}) {
+  if (viewBoxLeft) {
+    const values = viewBox.split(' ');
+
+    viewBox = `${viewBoxLeft} ${values[1]} ${values[2]} ${values[3]}`;
+  }
+
   return (
     <svg
       version="1.0"
