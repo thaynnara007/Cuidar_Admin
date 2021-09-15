@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router';
+import { useHistory } from 'react-router';
 import { useQuery } from 'react-query';
 import { toast } from 'react-toastify';
 
@@ -57,10 +57,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ListActivities({ setPageState }) {
+function ListActivities({ setPageState, idCategory }) {
   const history = useHistory();
   const classes = useStyles();
-  const { id } = useParams();
 
   const [page, setPage] = useState(1);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -68,10 +67,14 @@ function ListActivities({ setPageState }) {
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [name, setName] = useState('');
 
-  const { data, isFetching, refetch } = useQuery('category', () => getActivities(id, page), {
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
+  const { data, isFetching, refetch } = useQuery(
+    'activities',
+    () => getActivities(idCategory, page),
+    {
+      refetchOnWindowFocus: false,
+      retry: false,
+    }
+  );
 
   useEffect(() => {
     refetch();

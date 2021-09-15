@@ -54,7 +54,7 @@ const useStyles = makeStyles({
   },
 });
 
-function CreateActivity({ setPageState }) {
+function CreateActivity({ setPageState, category }) {
   const classes = useStyles();
 
   const [isLoading, setIsLoading] = useState(false);

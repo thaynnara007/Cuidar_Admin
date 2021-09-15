@@ -350,9 +350,11 @@ export async function createCategory(body, setIsLoading) {
   }
 }
 
-export async function getCategory(id) {
+export async function getCategory(id, includeActivities = true) {
   try {
-    const url = `/category/${id}`;
+    let url = `/category/${id}`;
+
+    if (!includeActivities) url = `/category/${id}?includeActivities=false`;
 
     const result = await api.get(url);
 
