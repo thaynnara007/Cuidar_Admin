@@ -13,8 +13,8 @@ import { HeaderButton } from '../styles/buttons.style';
 import ChooseIconModal from '../modal/chooseIconModal';
 import { DEFAULT_ICON } from '../../utils/constants';
 import CardOption from '../cardOption';
-import CategoryScreen from '../mobile/categoryPage';
 import Loading from '../loading';
+import ActivityScreen from '../mobile/activityPage';
 
 const useStyles = makeStyles({
   title: {
@@ -142,8 +142,9 @@ function CreateActivity({ setPageState, categoryId, category }) {
                   </div>
                 </div>
                 <div style={{ width: '5%' }} />
-                <CategoryScreen
+                <ActivityScreen
                   title={name}
+                  subtitle={category?.data.name}
                   description={pageDescription}
                   color={category?.data.color ?? '#C6FFC1'}
                   textColor={category?.data.textColor ?? '#24267E'}

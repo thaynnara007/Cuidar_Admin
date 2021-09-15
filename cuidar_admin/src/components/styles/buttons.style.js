@@ -39,7 +39,7 @@ export const CardButton = withStyles({
     marginRight: '30px',
     marginTop: '4px',
     textTransform: 'none',
-    fontStyle: 'bold',
+    fontWeight: 'bold',
     color: '#FFFFFF',
     backgroundColor: '#24267E',
     '&:hover': {
@@ -48,5 +48,24 @@ export const CardButton = withStyles({
     },
     paddingTop: '2px',
     paddingBottom: '2px',
+  },
+})(Button);
+
+export const ActivityButton = withStyles({
+  root: {
+    width: '56%',
+    margin: '0px auto',
+    marginBottom: '90px',
+    marginTop: '20px',
+    borderRadius: '15px',
+    textTransform: 'none',
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    fontSize: '30px',
+    backgroundColor: '#24267E',
+    '&:hover': {
+      backgroundColor: '#24267E',
+      color: '#FFFFFF',
+    },
   },
 })(Button);
