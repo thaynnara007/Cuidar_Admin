@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
+
 import Navbar from '../../components/navbar';
 import ListActivities from '../../components/listActivities';
 import CreateActivity from '../../components/createActivity';

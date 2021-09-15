@@ -1,10 +1,12 @@
 /* eslint-disable no-dupe-keys */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useHistory, useParams } from 'react-router';
 
 import { Container, makeStyles, Typography, IconButton } from '@material-ui/core';
 
+import { useQuery } from 'react-query';
 import { DEFAULT_ICON } from '../../utils/constants';
 import Loading from '../../components/loading';
 import Header from '../../components/header';
@@ -15,6 +17,7 @@ import { HeaderButton } from '../../components/styles/buttons.style';
 import ActivityScreen from '../../components/mobile/activityPage';
 import ChooseIconModal from '../../components/modal/chooseIconModal';
 import Navbar from '../../components/navbar';
+import { getActivity, updateActivity } from '../../api';
 
 const useStyles = makeStyles({
   title: {
@@ -50,6 +53,9 @@ const useStyles = makeStyles({
 function EditActivity() {
   const classes = useStyles();
 
+  const history = useHistory();
+  const { id } = useParams();
+
   const [isLoading, setIsLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
@@ -59,6 +65,18 @@ function EditActivity() {
   const [icon, setIcon] = useState(DEFAULT_ICON);
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
+
+  const { data: activity, isFetching } = useQuery('activity', () => getActivity(id), {
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
+
+  useEffect(() => {
+    setName(activity?.data.name);
+    setDescription(activity?.data.description);
+    setPageDescription(activity?.data.pageDescription);
+    setIcon(activity?.data.icon);
+  }, [activity]);
 
   const validateInfo = () => {
     const validatedName = name && name !== '';
@@ -70,33 +88,36 @@ function EditActivity() {
     return validatedName && validatedDescription;
   };
 
-  const handleCreateActivity = async () => {
+  const backToActivitiesList = () => {
+    history.push(`/category/${activity?.data.categoryId}/activities`);
+  };
+
+  const handleEditActivity = async () => {
     if (validateInfo()) {
       const body = {
         name,
         description,
         pageDescription,
         icon,
-        categoryId,
       };
 
-      const result = await createActivity(body, setIsLoading);
+      const result = await updateActivity(body, id, setIsLoading);
 
       if (result) {
-        toast.success('Atividade criada com sucesso');
-        setPageState('list_activities');
+        toast.success('Atividade atualizada com sucesso');
+        backToActivitiesList();
       }
     }
   };
 
   return (
     <Navbar>
-      {isLoading ? (
+      {isLoading || isFetching ? (
         <Loading />
       ) : (
         <>
-          <Header buttonName="Registrar atividade" onClick={handleCreateActivity}>
-            <IconButton color="inherit" onClick={() => setPageState('list_activities')}>
+          <Header buttonName="Atualizar atividade" onClick={handleEditActivity}>
+            <IconButton color="inherit" onClick={() => backToActivitiesList()}>
               <ArrowLeftIcon />
             </IconButton>
           </Header>
@@ -144,11 +165,11 @@ function EditActivity() {
                 <div style={{ width: '5%' }} />
                 <ActivityScreen
                   title={name}
-                  subtitle={category?.data.name}
+                  subtitle={activity?.data.category.name}
                   description={pageDescription}
                   icon={icon}
-                  color={category?.data.color ?? '#C6FFC1'}
-                  textColor={category?.data.textColor ?? '#24267E'}
+                  color={activity?.data.category.color ?? '#C6FFC1'}
+                  textColor={activity?.data.category.textColor ?? '#24267E'}
                 />
               </div>
             </Container>
