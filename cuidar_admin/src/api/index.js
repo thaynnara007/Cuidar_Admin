@@ -441,9 +441,11 @@ export async function createActivity(body, setIsLoading) {
   }
 }
 
-export async function getActivity(id) {
+export async function getActivity(id, includeSteps = true) {
   try {
-    const url = `/activity/${id}`;
+    let url = `/activity/${id}`;
+
+    if (!includeSteps) url = `/activity/${id}?includeSteps=false`;
 
     const result = await api.get(url);
 

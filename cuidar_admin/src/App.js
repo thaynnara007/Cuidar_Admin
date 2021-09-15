@@ -16,6 +16,7 @@ import PatientDetails from './pages/patientDetails';
 import EditCategory from './pages/categories/editCategory';
 import Activities from './pages/activities';
 import EditActivity from './pages/activities/editActivity';
+import ActivitySteps from './pages/steps';
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,9 @@ function App() {
               </Route>
               <Route exact path="/category/:id">
                 <EditCategory />
+              </Route>
+              <Route exact path="/activity/:id/steps">
+                <ActivitySteps />
               </Route>
               <Route exact path="/activity/:id">
                 <EditActivity />
