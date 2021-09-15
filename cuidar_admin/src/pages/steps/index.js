@@ -3,15 +3,14 @@ import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
 
 import Navbar from '../../components/navbar';
-import ListActivities from '../../components/listActivities';
-import CreateActivity from '../../components/createActivity';
 import { getActivity } from '../../api';
+import ListSteps from '../../components/listSteps';
 
 function ActivitySteps() {
   const [state, setState] = useState('list_steps');
   const { id } = useParams();
 
-  const { data } = useQuery('activity', () => getActivity(id, false), {
+  const { data: activity } = useQuery('activity', () => getActivity(id, false), {
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -19,9 +18,14 @@ function ActivitySteps() {
   return (
     <Navbar>
       {state === 'list_steps' ? (
-        <ListActivities setPageState={setState} idCategory={id} />
+        <ListSteps
+          setPageState={setState}
+          activityId={id}
+          categoryId={activity?.data.categoryId}
+          activityName={activity?.data.name}
+        />
       ) : (
-        <CreateActivity setPageState={setState} categoryId={id} category={data} />
+        <></>
       )}
     </Navbar>
   );

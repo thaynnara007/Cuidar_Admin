@@ -477,3 +477,19 @@ export async function updateActivity(body, id, setIsLoading) {
     toast.error(msg);
   }
 }
+
+export async function getSteps(activitydId) {
+  try {
+    const url = `/step/activity/${activitydId}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
