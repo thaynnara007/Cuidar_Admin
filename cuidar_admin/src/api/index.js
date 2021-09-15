@@ -493,3 +493,22 @@ export async function getSteps(activitydId) {
     toast.error(msg);
   }
 }
+
+export async function deleteStep(id, setIsLoading) {
+  try {
+    setIsLoading(true);
+    const url = `/step/${id}`;
+
+    const result = await api.delete(url);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}

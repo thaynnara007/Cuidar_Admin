@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { useHistory } from 'react-router';
 
@@ -12,10 +12,13 @@ import {
   TimelineSeparator,
 } from '@material-ui/lab';
 
-import { getSteps } from '../../api';
+import { toast } from 'react-toastify';
+import { deleteStep, getSteps } from '../../api';
 import Header from '../header';
 import ArrowLeftIcon from '../icons/iconArrowLeft';
 import Loading from '../loading';
+import TrashIcon from '../icons/iconTrash';
+import ConfirmationModal from '../modal/confirmationModal';
 
 const useStyles = makeStyles({
   header: {
@@ -25,17 +28,48 @@ const useStyles = makeStyles({
   paper: {
     padding: '6px 16px',
   },
+  titleDiv: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
 });
 
 function ListSteps({ setPageState, activityId, categoryId, activityName }) {
   const classes = useStyles();
-
   const history = useHistory();
 
-  const { data: steps, isFetching } = useQuery('steps', () => getSteps(activityId), {
+  const [stepId, setStepId] = useState(null);
+  const [stepName, setStepName] = useState();
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+
+  const {
+    data: steps,
+    isFetching,
+    refetch,
+  } = useQuery('steps', () => getSteps(activityId), {
     refetchOnWindowFocus: false,
     retry: false,
   });
+
+  const handleShowDeleteModal = (idStep, nameStep) => {
+    setStepId(idStep);
+    setStepName(nameStep);
+    setOpenDeleteModal(true);
+  };
+
+  const handleDelete = async () => {
+    const idStep = stepId;
+    const result = await deleteStep(idStep, setIsLoadingDelete);
+
+    if (result) {
+      toast.success('Etapa deletada com sucesso.');
+      refetch();
+    }
+
+    setOpenDeleteModal(false);
+  };
 
   const generateSteps = () => {
     const sortedSteps = steps?.data.sort((step1, step2) => step1.number - step2.number);
@@ -49,9 +83,20 @@ function ListSteps({ setPageState, activityId, categoryId, activityName }) {
         </TimelineSeparator>
         <TimelineContent>
           <Paper elevation={3} className={classes.paper}>
-            <Typography variant="h6" component="h1">
-              {step.name}
-            </Typography>
+            <div
+              className={classes.titleDiv}
+              style={index % 2 !== 0 ? { flexDirection: 'row-reverse' } : {}}
+            >
+              <Typography variant="h6" component="h1">
+                {step.name}
+              </Typography>
+              <IconButton
+                style={{ padding: '8px' }}
+                onClick={() => handleShowDeleteModal(step.id, step.name)}
+              >
+                <TrashIcon size="xs" color="#BD4B4B" />
+              </IconButton>
+            </div>
             <Typography>{step.description}</Typography>
           </Paper>
         </TimelineContent>
@@ -61,7 +106,7 @@ function ListSteps({ setPageState, activityId, categoryId, activityName }) {
 
   return (
     <>
-      <Header buttonName="Novo passo" onClick={() => setPageState('create_step')}>
+      <Header buttonName="Nova etapa" onClick={() => setPageState('create_step')}>
         <div className={classes.header}>
           <IconButton
             color="inherit"
@@ -80,6 +125,16 @@ function ListSteps({ setPageState, activityId, categoryId, activityName }) {
         ) : (
           <>
             <Timeline align="alternate">{generateSteps()}</Timeline>
+            <ConfirmationModal
+              open={openDeleteModal}
+              handleClose={() => setOpenDeleteModal(false)}
+              title="Remover etapa"
+              description={`Esta ação não poderá ser revertida,
+                você tem certeza que quer apagar a etapa ${stepName ?? ''} ?`}
+              confirmButtonName="Remover"
+              handleConfirm={handleDelete}
+              isLoading={isLoadingDelete}
+            />
           </>
         )}
       </Container>
