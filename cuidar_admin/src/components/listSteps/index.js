@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { useHistory } from 'react-router';
 
-import { Container, IconButton, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Container, IconButton, Link, makeStyles, Paper, Typography } from '@material-ui/core';
 import {
   Timeline,
   TimelineConnector,
   TimelineContent,
-  TimelineDot,
   TimelineItem,
   TimelineSeparator,
 } from '@material-ui/lab';
@@ -19,6 +18,7 @@ import ArrowLeftIcon from '../icons/iconArrowLeft';
 import Loading from '../loading';
 import TrashIcon from '../icons/iconTrash';
 import ConfirmationModal from '../modal/confirmationModal';
+import { BlueTimelineDot, FinalTimelineDot } from '../styles/dot.style';
 
 const useStyles = makeStyles({
   header: {
@@ -32,6 +32,15 @@ const useStyles = makeStyles({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+  },
+  titleStyle: {
+    color: '#112D4E',
+  },
+  subtitleStyle: {
+    color: '#7F7C82',
+  },
+  tail: {
+    backgroundColor: '#DBE2EF',
   },
 });
 
@@ -78,8 +87,8 @@ function ListSteps({ setPageState, activityId, categoryId, activityName }) {
     return sortedSteps.map((step, index) => (
       <TimelineItem key={step.id}>
         <TimelineSeparator>
-          <TimelineDot />
-          {index < size && <TimelineConnector />}
+          {index === size ? <FinalTimelineDot /> : <BlueTimelineDot />}
+          {index < size && <TimelineConnector className={classes.tail} />}
         </TimelineSeparator>
         <TimelineContent>
           <Paper elevation={3} className={classes.paper}>
@@ -88,7 +97,9 @@ function ListSteps({ setPageState, activityId, categoryId, activityName }) {
               style={index % 2 !== 0 ? { flexDirection: 'row-reverse' } : {}}
             >
               <Typography variant="h6" component="h1">
-                {step.name}
+                <Link color="inherit" target="_blank" href={`/step/${step.id}`}>
+                  {step.name}
+                </Link>
               </Typography>
               <IconButton
                 style={{ padding: '8px' }}
@@ -97,7 +108,9 @@ function ListSteps({ setPageState, activityId, categoryId, activityName }) {
                 <TrashIcon size="xs" color="#BD4B4B" />
               </IconButton>
             </div>
-            <Typography>{step.description}</Typography>
+            <Typography variant="subtitle1" className={classes.subtitleStyle}>
+              {step.description}
+            </Typography>
           </Paper>
         </TimelineContent>
       </TimelineItem>
