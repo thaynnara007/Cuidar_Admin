@@ -2,12 +2,11 @@
 
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { ChromePicker } from 'react-color';
 
 import { Container, makeStyles, Typography, IconButton } from '@material-ui/core';
 
 import { FormTextField } from '../styles/inputs.style';
-import { createCategory } from '../../api';
+import { createActivity } from '../../api';
 import Header from '../header';
 import ArrowLeftIcon from '../icons/iconArrowLeft';
 import { HeaderButton } from '../styles/buttons.style';
@@ -41,12 +40,6 @@ const useStyles = makeStyles({
   input: {
     marginBottom: '15px',
   },
-  colorDiv: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    marginBottom: '15px',
-  },
   iconDiv: {
     width: '-moz-fit-content',
     width: 'fit-content',
@@ -54,7 +47,7 @@ const useStyles = makeStyles({
   },
 });
 
-function CreateActivity({ setPageState, category }) {
+function CreateActivity({ setPageState, categoryId, category }) {
   const classes = useStyles();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -64,8 +57,6 @@ function CreateActivity({ setPageState, category }) {
   const [description, setDescription] = useState('');
   const [pageDescription, setPageDescription] = useState('');
   const [icon, setIcon] = useState(DEFAULT_ICON);
-  const [color, setColor] = useState('#C6FFC1');
-  const [textColor, setTextColor] = useState('#24267E');
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
 
@@ -79,22 +70,21 @@ function CreateActivity({ setPageState, category }) {
     return validatedName && validatedDescription;
   };
 
-  const handleCreateCategory = async () => {
+  const handleCreateActivity = async () => {
     if (validateInfo()) {
       const body = {
         name,
         description,
         pageDescription,
         icon,
-        color,
-        textColor,
+        categoryId,
       };
 
-      const result = await createCategory(body, setIsLoading);
+      const result = await createActivity(body, setIsLoading);
 
       if (result) {
-        toast.success('Categoria criada com sucesso');
-        setPageState('list_categories');
+        toast.success('Atividade criada com sucesso');
+        setPageState('list_activities');
       }
     }
   };
@@ -105,14 +95,14 @@ function CreateActivity({ setPageState, category }) {
         <Loading />
       ) : (
         <>
-          <Header buttonName="Registrar categoria" onClick={handleCreateCategory}>
-            <IconButton color="inherit" onClick={() => setPageState('list_categories')}>
+          <Header buttonName="Registrar atividade" onClick={handleCreateActivity}>
+            <IconButton color="inherit" onClick={() => setPageState('list_activities')}>
               <ArrowLeftIcon />
             </IconButton>
           </Header>
           <Container maxWidth="xl">
             <Typography className={classes.title} variant="h5">
-              Prototipação da categoria
+              Prototipação da atividade
             </Typography>
             <Container maxWidth="xl" className={classes.box}>
               <div className={classes.formBox}>
@@ -141,27 +131,6 @@ function CreateActivity({ setPageState, category }) {
                   className={classes.input}
                   onChange={(e) => setPageDescription(e.target.value)}
                 />
-                <div className={classes.colorDiv}>
-                  <div>
-                    <Typography variant="subtitle1" style={{ color: 'grey', marginLeft: '5px' }}>
-                      Cor de fundo:
-                    </Typography>
-                    <ChromePicker
-                      color={color}
-                      onChangeComplete={(colorObj) => setColor(colorObj.hex)}
-                    />
-                  </div>
-                  <div style={{ width: '15%' }} />
-                  <div>
-                    <Typography variant="subtitle1" style={{ color: 'grey', marginLeft: '5px' }}>
-                      Cor do texto:
-                    </Typography>
-                    <ChromePicker
-                      color={textColor}
-                      onChangeComplete={(colorObj) => setTextColor(colorObj.hex)}
-                    />
-                  </div>
-                </div>
               </div>
               <div className={classes.layoutBox}>
                 <div>
@@ -176,8 +145,8 @@ function CreateActivity({ setPageState, category }) {
                 <CategoryScreen
                   title={name}
                   description={pageDescription}
-                  color={color}
-                  textColor={textColor}
+                  color={category?.data.color ?? '#C6FFC1'}
+                  textColor={category?.data.textColor ?? '#24267E'}
                 />
               </div>
             </Container>

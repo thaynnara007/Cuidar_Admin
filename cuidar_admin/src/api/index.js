@@ -421,3 +421,22 @@ export async function deleteActivity(id, setIsLoading) {
     toast.error(msg);
   }
 }
+
+export async function createActivity(body, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const url = '/activity';
+    const result = await api.post(url, body);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
