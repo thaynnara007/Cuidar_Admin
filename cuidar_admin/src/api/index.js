@@ -350,9 +350,11 @@ export async function createCategory(body, setIsLoading) {
   }
 }
 
-export async function getCategory(id) {
+export async function getCategory(id, includeActivities = true) {
   try {
-    const url = `/category/${id}`;
+    let url = `/category/${id}`;
+
+    if (!includeActivities) url = `/category/${id}?includeActivities=false`;
 
     const result = await api.get(url);
 
@@ -371,6 +373,95 @@ export async function updateCategory(body, id, setIsLoading) {
     setIsLoading(true);
 
     const url = `/category/${id}`;
+    const result = await api.put(url, body);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function getActivities(categoryId, page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
+  try {
+    const url = `/activity/category/${categoryId}/?page=${page}&pageSize=${pageSize}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
+
+export async function deleteActivity(id, setIsLoading) {
+  try {
+    setIsLoading(true);
+    const url = `/activity/${id}`;
+
+    const result = await api.delete(url);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function createActivity(body, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const url = '/activity';
+    const result = await api.post(url, body);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function getActivity(id) {
+  try {
+    const url = `/activity/${id}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
+
+export async function updateActivity(body, id, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const url = `/activity/${id}`;
     const result = await api.put(url, body);
 
     setIsLoading(false);

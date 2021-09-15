@@ -3,8 +3,9 @@ import React from 'react';
 
 const useStyles = makeStyles({
   screen: {
-    height: '640px',
-    width: '360px',
+    minHeight: '640px',
+    minWidth: '360px',
+    maxWidth: '360px',
   },
 });
 

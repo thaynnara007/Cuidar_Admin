@@ -13,12 +13,12 @@ const useStyles = makeStyles({
     textAlign: 'center',
     margin: '67px 0px 14px 0px',
     fontSize: '40px',
+    fontWeight: 'bold',
   },
   textStyle: {
     textAlign: 'center',
     fontSize: '14px',
     margin: '0px 50px',
-    fontWeight: 'bold',
   },
 });
 

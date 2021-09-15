@@ -1,6 +1,20 @@
+/* eslint-disable no-param-reassign */
+
 import React from 'react';
 
-function BodyIcon({ color = '#2a3984', width = '30px', height = '50px', viewBox = '0 0 39 50' }) {
+function BodyIcon({
+  color = '#2a3984',
+  width = '30px',
+  height = '50px',
+  viewBox = '0 0 39 50',
+  viewBoxLeft,
+}) {
+  if (viewBoxLeft) {
+    const values = viewBox.split(' ');
+
+    viewBox = `${viewBoxLeft - 5} ${values[1]} ${values[2]} ${values[3]}`;
+  }
+
   return (
     <svg
       version="1.0"
