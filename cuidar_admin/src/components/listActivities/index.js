@@ -145,7 +145,7 @@ function ListActivities({ setPageState, idCategory }) {
             Ver passos
           </AccordionButton>
           <AccordionButton onClick={() => history.push(`/activity/${activity?.id}`)}>
-            Detalhes
+            Editar
           </AccordionButton>
           <IconButton
             color="inherit"
