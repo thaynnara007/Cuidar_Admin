@@ -5,6 +5,7 @@ import { useParams } from 'react-router';
 import Navbar from '../../components/navbar';
 import { getActivity } from '../../api';
 import ListSteps from '../../components/listSteps';
+import CreateStep from '../../components/createStep';
 
 function ActivitySteps() {
   const [state, setState] = useState('list_steps');
@@ -25,7 +26,7 @@ function ActivitySteps() {
           activityName={activity?.data.name}
         />
       ) : (
-        <></>
+        <CreateStep setPageState={setState} activityId={id} activity={activity} />
       )}
     </Navbar>
   );
