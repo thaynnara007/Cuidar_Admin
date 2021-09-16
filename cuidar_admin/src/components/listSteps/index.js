@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useQuery } from 'react-query';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 
 import { Container, IconButton, Link, makeStyles, Paper, Typography } from '@material-ui/core';
@@ -12,7 +11,7 @@ import {
 } from '@material-ui/lab';
 
 import { toast } from 'react-toastify';
-import { deleteStep, getSteps } from '../../api';
+import { deleteStep } from '../../api';
 import Header from '../header';
 import ArrowLeftIcon from '../icons/iconArrowLeft';
 import Loading from '../loading';
@@ -44,7 +43,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ListSteps({ setPageState, activityId, categoryId, activityName }) {
+function ListSteps({ setPageState, isFetching, refetch, activityObj }) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -52,15 +51,11 @@ function ListSteps({ setPageState, activityId, categoryId, activityName }) {
   const [stepName, setStepName] = useState();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const [activity, setActivity] = useState(activityObj)
 
-  const {
-    data: steps,
-    isFetching,
-    refetch,
-  } = useQuery('steps', () => getSteps(activityId), {
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
+  useEffect(() => {
+    setActivity(activityObj)
+  }, [activityObj])
 
   const handleShowDeleteModal = (idStep, nameStep) => {
     setStepId(idStep);
@@ -81,10 +76,10 @@ function ListSteps({ setPageState, activityId, categoryId, activityName }) {
   };
 
   const generateSteps = () => {
-    const sortedSteps = steps?.data.sort((step1, step2) => step1.number - step2.number);
-    const size = sortedSteps.length - 1;
+    const sortedSteps = activity?.data.steps.sort((step1, step2) => step1.number - step2.number);
+    const size = sortedSteps?.length - 1;
 
-    return sortedSteps.map((step, index) => (
+    return sortedSteps?.map((step, index) => (
       <TimelineItem key={step.id}>
         <TimelineSeparator>
           {index === size ? <FinalTimelineDot /> : <BlueTimelineDot />}
@@ -123,12 +118,12 @@ function ListSteps({ setPageState, activityId, categoryId, activityName }) {
         <div className={classes.header}>
           <IconButton
             color="inherit"
-            onClick={() => history.push(`/category/${categoryId}/activities`)}
+            onClick={() => history.push(`/category/${activity?.data.categoryId}/activities`)}
           >
             <ArrowLeftIcon />
           </IconButton>
           <Typography variant="h4" style={{ marginLeft: '10px' }}>
-            {activityName}
+            {activity?.data.name}
           </Typography>
         </div>
       </Header>

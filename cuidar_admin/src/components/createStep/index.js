@@ -9,12 +9,9 @@ import { FormTextField } from '../styles/inputs.style';
 import { createActivity } from '../../api';
 import Header from '../header';
 import ArrowLeftIcon from '../icons/iconArrowLeft';
-import { HeaderButton } from '../styles/buttons.style';
-import ChooseIconModal from '../modal/chooseIconModal';
-import { DEFAULT_ICON } from '../../utils/constants';
-import CardOption from '../cardOption';
 import Loading from '../loading';
 import ActivityScreen from '../mobile/activityPage';
+import FileUploader from '../fileUploader';
 
 const useStyles = makeStyles({
   title: {
@@ -49,35 +46,46 @@ const useStyles = makeStyles({
 
 function CreateStep({ setPageState, activityId, activity }) {
   const classes = useStyles();
+  
+  const steps = activity?.data.steps
 
   const [isLoading, setIsLoading] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
-
+  
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [pageDescription, setPageDescription] = useState('');
-  const [icon, setIcon] = useState(DEFAULT_ICON);
+  const [number, setNumber] = useState((steps[steps.length - 1].number + 1) ?? 1);
+  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
+  const [numberError, setNumberError] = useState(false);
 
   const validateInfo = () => {
     const validatedName = name && name !== '';
     setNameError(!validatedName);
 
-    const validatedDescription = description && description;
+    const validatedDescription = description && description !== '';
     setDescriptionError(!validatedDescription);
 
-    return validatedName && validatedDescription;
+    const validatedNumber = number && number > 0;
+    setNumberError(!validatedNumber);
+
+    return validatedName && validatedDescription && validatedNumber;
   };
+
+  const handleUpload = (file) => {
+    const imageUrl = URL.createObjectURL(file)
+
+    setImageFile(file)
+    setImage(imageUrl)
+  }
 
   const handleCreateActivity = async () => {
     if (validateInfo()) {
       const body = {
         name,
         description,
-        pageDescription,
-        icon,
-        categoryId,
+        number,
       };
 
       const result = await createActivity(body, setIsLoading);
@@ -95,14 +103,14 @@ function CreateStep({ setPageState, activityId, activity }) {
         <Loading />
       ) : (
         <>
-          <Header buttonName="Registrar atividade" onClick={handleCreateActivity}>
-            <IconButton color="inherit" onClick={() => setPageState('list_activities')}>
+          <Header buttonName="Registrar etapa" onClick={handleCreateActivity}>
+            <IconButton color="inherit" onClick={() => setPageState('list_steps')}>
               <ArrowLeftIcon />
             </IconButton>
           </Header>
           <Container maxWidth="xl">
             <Typography className={classes.title} variant="h5">
-              Prototipação da atividade
+              Prototipação da etapa
             </Typography>
             <Container maxWidth="xl" className={classes.box}>
               <div className={classes.formBox}>
@@ -124,40 +132,30 @@ function CreateStep({ setPageState, activityId, activity }) {
                   onChange={(e) => setDescription(e.target.value)}
                 />
                 <FormTextField
-                  label="descrição da página"
+                  label="Número sequêncial"
                   variant="outlined"
-                  multiline
-                  value={pageDescription}
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={number}
+                  error={numberError}
                   className={classes.input}
-                  onChange={(e) => setPageDescription(e.target.value)}
+                  onChange={(e) => setNumber(e.target.value)}
                 />
+                <FileUploader handleUpload={handleUpload}>Escolher imagem</FileUploader>
               </div>
               <div className={classes.layoutBox}>
-                <div>
-                  <CardOption icon={icon} name={name} description={description} />
-                  <div className={classes.iconDiv}>
-                    <HeaderButton onClick={() => setOpenModal(true)} style={{ margin: '0 auto' }}>
-                      Escolher ícone
-                    </HeaderButton>
-                  </div>
-                </div>
                 <div style={{ width: '5%' }} />
                 <ActivityScreen
                   title={name}
-                  subtitle={category?.data.name}
-                  description={pageDescription}
-                  icon={icon}
-                  color={category?.data.color ?? '#C6FFC1'}
-                  textColor={category?.data.textColor ?? '#24267E'}
+                  description={description}
+                  icon={activity?.data.icon}
+                  color={activity?.data.category.color ?? '#C6FFC1'}
+                  textColor={activity?.data.category.textColor ?? '#24267E'}
                 />
               </div>
             </Container>
-            <ChooseIconModal
-              open={openModal}
-              handleClose={() => setOpenModal(false)}
-              icon={icon}
-              setIcon={setIcon}
-            />
           </Container>
         </>
       )}

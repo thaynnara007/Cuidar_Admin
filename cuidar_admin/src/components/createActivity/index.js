@@ -64,7 +64,7 @@ function CreateActivity({ setPageState, categoryId, category }) {
     const validatedName = name && name !== '';
     setNameError(!validatedName);
 
-    const validatedDescription = description && description;
+    const validatedDescription = description && description !== '';
     setDescriptionError(!validatedDescription);
 
     return validatedName && validatedDescription;

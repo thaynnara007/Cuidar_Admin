@@ -11,7 +11,7 @@ function ActivitySteps() {
   const [state, setState] = useState('list_steps');
   const { id } = useParams();
 
-  const { data: activity } = useQuery('activity', () => getActivity(id, false), {
+  const { data: activity, isFetching, refetch } = useQuery('activity', () => getActivity(id), {
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -21,9 +21,10 @@ function ActivitySteps() {
       {state === 'list_steps' ? (
         <ListSteps
           setPageState={setState}
+          isFetching={isFetching}
+          refetch={refetch}
           activityId={id}
-          categoryId={activity?.data.categoryId}
-          activityName={activity?.data.name}
+          activityObj={activity}
         />
       ) : (
         <CreateStep setPageState={setState} activityId={id} activity={activity} />
