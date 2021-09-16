@@ -47,7 +47,7 @@ const useStyles = makeStyles({
   },
 });
 
-function CreateStep({ setPageState, activityId, activity, refetch }) {
+function EditStep() {
   const classes = useStyles();
 
   const steps = activity?.data.steps;
@@ -226,4 +226,4 @@ function CreateStep({ setPageState, activityId, activity, refetch }) {
   );
 }
 
-export default CreateStep;
+export default EditStep;
