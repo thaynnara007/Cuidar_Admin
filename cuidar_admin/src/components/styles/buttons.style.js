@@ -95,7 +95,7 @@ export const BeforeButton = withStyles({
     fontSize: '18px',
     color: '#24267E',
     '&:hover': {
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
     },
   },
 })(Button);

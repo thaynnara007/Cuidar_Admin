@@ -30,8 +30,8 @@ const useStyles = makeStyles({
   imageStyle: {
     width: '281px',
     height: '253px',
-    margin: '0 auto'
-  }
+    margin: '0 auto',
+  },
 });
 
 function StepScreen({ title, image, description, icon, color, textColor = '#FFFFFF' }) {
@@ -46,7 +46,11 @@ function StepScreen({ title, image, description, icon, color, textColor = '#FFFF
             <p className={classes.titleStyle} style={{ color: textColor }}>
               {title}
             </p>
-            <img className={classes.imageStyle} src={image} alt="visual description of the step"></img>
+            <img
+              className={classes.imageStyle}
+              src={image}
+              alt="imagem descrevendo o que é para ser feito"
+            />
             <p className={classes.textStyle} style={{ color: textColor }}>
               {description}
             </p>

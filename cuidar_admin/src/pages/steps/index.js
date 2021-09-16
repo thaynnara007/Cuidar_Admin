@@ -31,7 +31,7 @@ function ActivitySteps() {
           activityObj={activity}
         />
       ) : (
-        <CreateStep setPageState={setState} activityId={id} activity={activity} />
+        <CreateStep setPageState={setState} activityId={id} activity={activity} refetch={refetch} />
       )}
     </Navbar>
   );

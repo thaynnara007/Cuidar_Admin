@@ -5,12 +5,19 @@ import { toast } from 'react-toastify';
 
 import { Container, makeStyles, Typography, IconButton } from '@material-ui/core';
 
+import {
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+  TimelineItem,
+  TimelineSeparator,
+} from '@material-ui/lab';
 import { FormTextField } from '../styles/inputs.style';
-import { createActivity } from '../../api';
+import { createStep } from '../../api';
 import Header from '../header';
 import ArrowLeftIcon from '../icons/iconArrowLeft';
 import Loading from '../loading';
-import ActivityScreen from '../mobile/activityPage';
 import FileUploader from '../fileUploader';
 import StepScreen from '../mobile/stepPage';
 
@@ -45,21 +52,24 @@ const useStyles = makeStyles({
   },
 });
 
-function CreateStep({ setPageState, activityId, activity }) {
+function CreateStep({ setPageState, activityId, activity, refetch }) {
   const classes = useStyles();
 
   const steps = activity?.data.steps;
+  const sizeSteps = steps?.length;
+  const initNumber = sizeSteps && sizeSteps > 0 ? steps[sizeSteps - 1].number + 1 : 1;
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [number, setNumber] = useState(steps[steps.length - 1].number + 1 ?? 1);
+  const [number, setNumber] = useState(initNumber);
   const [image, setImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
   const [numberError, setNumberError] = useState(false);
+  const [numberHelperText, setNumberHelperText] = useState('Precisa ser um número positivo');
 
   const validateInfo = () => {
     const validatedName = name && name !== '';
@@ -68,10 +78,23 @@ function CreateStep({ setPageState, activityId, activity }) {
     const validatedDescription = description && description !== '';
     setDescriptionError(!validatedDescription);
 
-    const validatedNumber = number && number > 0;
+    let validatedNumber = true;
+    const sameStep = activity?.data.steps.find(
+      (step) => parseInt(step.number, 10) === parseInt(number, 10)
+    );
+
+    if (sameStep) {
+      validatedNumber = false;
+      setNumberHelperText('Já existe uma etapa com esse número de sequência.');
+    } else setNumberHelperText('Precisa ser um número positivo');
+
     setNumberError(!validatedNumber);
 
     return validatedName && validatedDescription && validatedNumber;
+  };
+
+  const handleSetNumber = (value) => {
+    if (value !== '' && value >= 0) setNumber(value);
   };
 
   const handleUpload = (file) => {
@@ -81,21 +104,63 @@ function CreateStep({ setPageState, activityId, activity }) {
     setImage(imageUrl);
   };
 
-  const handleCreateActivity = async () => {
+  const handleCreateStep = async () => {
     if (validateInfo()) {
       const body = {
         name,
         description,
         number,
+        activityId,
       };
 
-      const result = await createActivity(body, setIsLoading);
+      let imageFormData = null;
+
+      if (imageFile) {
+        imageFormData = new FormData();
+        imageFormData.append('file', imageFile);
+      }
+      const result = await createStep(body, imageFormData, setIsLoading);
 
       if (result) {
-        toast.success('Atividade criada com sucesso');
-        setPageState('list_activities');
+        toast.success('Etapa criada com sucesso');
+        setPageState('list_steps');
+        refetch();
       }
     }
+  };
+
+  const generateSteps = () => {
+    const currentStepId = `${name}-${number}`;
+    const currentStep = {
+      id: currentStepId,
+      name,
+      number,
+    };
+
+    const stepsToBeSorted = [...activity?.data.steps, currentStep];
+    const sortedSteps = stepsToBeSorted.sort((step1, step2) => step1.number - step2.number);
+    const size = sortedSteps?.length - 1;
+
+    return sortedSteps?.map((step, index) => (
+      <TimelineItem key={step.id}>
+        <TimelineSeparator>
+          {index === size ? (
+            <TimelineDot variant="outlined" color="primary" />
+          ) : (
+            <TimelineDot variant="outlined" />
+          )}
+          {index < size && <TimelineConnector />}
+        </TimelineSeparator>
+        <TimelineContent>
+          <Typography
+            variante="body1"
+            style={step.id === currentStepId ? { color: '#3F72AF' } : {}}
+          >
+            {`${step.name} - sequencial: ${step.number}`}
+          </Typography>
+        </TimelineContent>
+      </TimelineItem>
+    ));
   };
 
   return (
@@ -104,7 +169,7 @@ function CreateStep({ setPageState, activityId, activity }) {
         <Loading />
       ) : (
         <>
-          <Header buttonName="Registrar etapa" onClick={handleCreateActivity}>
+          <Header buttonName="Registrar etapa" onClick={handleCreateStep}>
             <IconButton color="inherit" onClick={() => setPageState('list_steps')}>
               <ArrowLeftIcon />
             </IconButton>
@@ -141,13 +206,13 @@ function CreateStep({ setPageState, activityId, activity }) {
                   }}
                   value={number}
                   error={numberError}
+                  helperText={numberHelperText}
                   className={classes.input}
-                  onChange={(e) => setNumber(e.target.value)}
+                  onChange={(e) => handleSetNumber(e.target.value)}
                 />
                 <FileUploader handleUpload={handleUpload}>Escolher imagem</FileUploader>
               </div>
               <div className={classes.layoutBox}>
-                <div style={{ width: '5%' }} />
                 <StepScreen
                   title={name}
                   description={description}
@@ -156,6 +221,7 @@ function CreateStep({ setPageState, activityId, activity }) {
                   color={activity?.data.category.color ?? '#C6FFC1'}
                   textColor={activity?.data.category.textColor ?? '#24267E'}
                 />
+                <Timeline align="alternate">{generateSteps()}</Timeline>
               </div>
             </Container>
           </Container>

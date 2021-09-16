@@ -512,3 +512,30 @@ export async function deleteStep(id, setIsLoading) {
     toast.error(msg);
   }
 }
+
+export async function createStep(body, imageFormData, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const step = await api.post('/step', body);
+
+    if (imageFormData) {
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      };
+      await api.put(`/step/${step.data.id}/image`, imageFormData, config);
+    }
+
+    setIsLoading(false);
+    return step;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
