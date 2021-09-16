@@ -12,6 +12,7 @@ import ArrowLeftIcon from '../icons/iconArrowLeft';
 import Loading from '../loading';
 import ActivityScreen from '../mobile/activityPage';
 import FileUploader from '../fileUploader';
+import StepScreen from '../mobile/stepPage';
 
 const useStyles = makeStyles({
   title: {
@@ -147,9 +148,10 @@ function CreateStep({ setPageState, activityId, activity }) {
               </div>
               <div className={classes.layoutBox}>
                 <div style={{ width: '5%' }} />
-                <ActivityScreen
+                <StepScreen
                   title={name}
                   description={description}
+                  image={image}
                   icon={activity?.data.icon}
                   color={activity?.data.category.color ?? '#C6FFC1'}
                   textColor={activity?.data.category.textColor ?? '#24267E'}

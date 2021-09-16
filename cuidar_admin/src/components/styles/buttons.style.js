@@ -69,3 +69,33 @@ export const ActivityButton = withStyles({
     },
   },
 })(Button);
+
+export const NextStepButton = withStyles({
+  root: {
+    margin: '0px auto',
+    marginTop: '31px',
+    padding: '6px 30px',
+    borderRadius: '15px',
+    textTransform: 'none',
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    fontSize: '25px',
+    backgroundColor: '#24267E',
+    '&:hover': {
+      backgroundColor: '#24267E',
+      color: '#FFFFFF',
+    },
+  },
+})(Button);
+
+export const BeforeButton = withStyles({
+  root: {
+    margin: '10px auto',
+    textTransform: 'none',
+    fontSize: '18px',
+    color: '#24267E',
+    '&:hover': {
+      backgroundColor: 'transparent'
+    },
+  },
+})(Button);
