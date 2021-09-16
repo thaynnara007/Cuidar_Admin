@@ -46,14 +46,14 @@ const useStyles = makeStyles({
 
 function CreateStep({ setPageState, activityId, activity }) {
   const classes = useStyles();
-  
-  const steps = activity?.data.steps
+
+  const steps = activity?.data.steps;
 
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [number, setNumber] = useState((steps[steps.length - 1].number + 1) ?? 1);
+  const [number, setNumber] = useState(steps[steps.length - 1].number + 1 ?? 1);
   const [image, setImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [nameError, setNameError] = useState(false);
@@ -74,11 +74,11 @@ function CreateStep({ setPageState, activityId, activity }) {
   };
 
   const handleUpload = (file) => {
-    const imageUrl = URL.createObjectURL(file)
+    const imageUrl = URL.createObjectURL(file);
 
-    setImageFile(file)
-    setImage(imageUrl)
-  }
+    setImageFile(file);
+    setImage(imageUrl);
+  };
 
   const handleCreateActivity = async () => {
     if (validateInfo()) {

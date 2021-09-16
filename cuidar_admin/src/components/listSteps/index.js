@@ -51,11 +51,11 @@ function ListSteps({ setPageState, isFetching, refetch, activityObj }) {
   const [stepName, setStepName] = useState();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
-  const [activity, setActivity] = useState(activityObj)
+  const [activity, setActivity] = useState(activityObj);
 
   useEffect(() => {
-    setActivity(activityObj)
-  }, [activityObj])
+    setActivity(activityObj);
+  }, [activityObj]);
 
   const handleShowDeleteModal = (idStep, nameStep) => {
     setStepId(idStep);

@@ -11,7 +11,11 @@ function ActivitySteps() {
   const [state, setState] = useState('list_steps');
   const { id } = useParams();
 
-  const { data: activity, isFetching, refetch } = useQuery('activity', () => getActivity(id), {
+  const {
+    data: activity,
+    isFetching,
+    refetch,
+  } = useQuery('activity', () => getActivity(id), {
     refetchOnWindowFocus: false,
     retry: false,
   });

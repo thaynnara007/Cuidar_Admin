@@ -16,7 +16,7 @@ function FileUploader({ children, handleUpload }) {
 
   return (
     <>
-      <HeaderButton onClick={handleClick} style={{margin: '0px'}}>
+      <HeaderButton onClick={handleClick} style={{ margin: '0px' }}>
         {children}
       </HeaderButton>
       <input
