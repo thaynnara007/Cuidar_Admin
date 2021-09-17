@@ -76,7 +76,7 @@ function ListSteps({ setPageState, isFetching, refetch, activityObj }) {
   };
 
   const generateSteps = () => {
-    const sortedSteps = activity?.data.steps.sort((step1, step2) => step1.number - step2.number);
+    const sortedSteps = activity?.data?.steps?.sort((step1, step2) => step1.number - step2.number);
     const size = sortedSteps?.length - 1;
 
     return sortedSteps?.map((step, index) => (

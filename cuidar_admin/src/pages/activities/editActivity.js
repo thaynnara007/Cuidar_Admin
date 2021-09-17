@@ -66,7 +66,7 @@ function EditActivity() {
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
 
-  const { data: activity, isFetching } = useQuery('activity', () => getActivity(id), {
+  const { data: activity, isFetching } = useQuery('activity', () => getActivity(id, false), {
     refetchOnWindowFocus: false,
     retry: false,
   });
