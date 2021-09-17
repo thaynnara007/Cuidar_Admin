@@ -149,9 +149,15 @@ function CreateStep({ setPageState, activityId, activity, refetch }) {
         <TimelineContent>
           <Typography
             variante="body1"
-            style={step.id === currentStepId ? { color: '#3F72AF' } : {}}
+            style={step.id === currentStepId ? { color: '#112D4E' } : { color: '#7F7C82' }}
           >
-            {`${step.name} - sequencial: ${step.number}`}
+            {`${step.name}`}
+          </Typography>
+          <Typography
+            variante="body1"
+            style={step.id === currentStepId ? { color: '#112D4E' } : { color: '#7F7C82' }}
+          >
+            {`sequencial: ${step.number}`}
           </Typography>
         </TimelineContent>
       </TimelineItem>

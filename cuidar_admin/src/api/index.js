@@ -478,9 +478,9 @@ export async function updateActivity(body, id, setIsLoading) {
   }
 }
 
-export async function getSteps(activitydId) {
+export async function getSteps(activityId) {
   try {
-    const url = `/step/activity/${activitydId}`;
+    const url = `/step/activity/${activityId}`;
 
     const result = await api.get(url);
 
@@ -536,6 +536,22 @@ export async function createStep(body, imageFormData, setIsLoading) {
     else msg = 'Network failed';
 
     setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function getStep(stepId) {
+  try {
+    const url = `/step/${stepId}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
     toast.error(msg);
   }
 }
