@@ -3,7 +3,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core';
 
 import Screen from './screen';
-import { ActivityButton } from '../styles/buttons.style';
+import { BeforeButton, NextStepButton } from '../styles/buttons.style';
 import CircleIcon from './circleIcon';
 
 const useStyles = makeStyles({
@@ -11,28 +11,30 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
     minHeight: '640px',
+  },
+  contentbox: {
+    display: 'flex',
+    flexDirection: 'column',
   },
   titleStyle: {
     textAlign: 'center',
-    margin: '40px 20px 0px 20px',
-    fontSize: '55px',
-    fontWeight: 'bold',
-  },
-  subtitleStyle: {
-    textAlign: 'center',
-    margin: '0px 20px 34px 20px',
-    fontSize: '20px',
+    margin: '18px 20px 3px 20px',
+    fontSize: '30px',
   },
   textStyle: {
     textAlign: 'center',
-    fontSize: '22px',
-    margin: '0px 45px',
+    fontSize: '24px',
+    margin: '3px 45px',
+  },
+  imageStyle: {
+    width: '281px',
+    height: '253px',
+    margin: '0 auto',
   },
 });
 
-function ActivityScreen({ title, subtitle, description, icon, color, textColor = '#FFFFFF' }) {
+function StepScreen({ title, image, description, icon, color, textColor = '#FFFFFF' }) {
   const classes = useStyles();
 
   return (
@@ -40,22 +42,25 @@ function ActivityScreen({ title, subtitle, description, icon, color, textColor =
       <div className={classes.box}>
         <div>
           <CircleIcon icon={icon} />
-          <div>
+          <div className={classes.contentbox}>
             <p className={classes.titleStyle} style={{ color: textColor }}>
               {title}
             </p>
-            <p className={classes.subtitleStyle} style={{ color: textColor }}>
-              {subtitle}
-            </p>
+            <img
+              className={classes.imageStyle}
+              src={image}
+              alt="imagem descrevendo o que é para ser feito"
+            />
             <p className={classes.textStyle} style={{ color: textColor }}>
               {description}
             </p>
           </div>
         </div>
-        <ActivityButton>Vamos lá!</ActivityButton>
+        <NextStepButton>Próximo passo</NextStepButton>
+        <BeforeButton>Anterior</BeforeButton>
       </div>
     </Screen>
   );
 }
 
-export default ActivityScreen;
+export default StepScreen;

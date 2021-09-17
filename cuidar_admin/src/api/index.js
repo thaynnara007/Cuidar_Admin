@@ -441,9 +441,11 @@ export async function createActivity(body, setIsLoading) {
   }
 }
 
-export async function getActivity(id) {
+export async function getActivity(id, includeSteps = true) {
   try {
-    const url = `/activity/${id}`;
+    let url = `/activity/${id}`;
+
+    if (!includeSteps) url = `/activity/${id}?includeSteps=false`;
 
     const result = await api.get(url);
 
@@ -463,6 +465,112 @@ export async function updateActivity(body, id, setIsLoading) {
 
     const url = `/activity/${id}`;
     const result = await api.put(url, body);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function getSteps(activityId) {
+  try {
+    const url = `/step/activity/${activityId}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
+
+export async function deleteStep(id, setIsLoading) {
+  try {
+    setIsLoading(true);
+    const url = `/step/${id}`;
+
+    const result = await api.delete(url);
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function createStep(body, imageFormData, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const step = await api.post('/step', body);
+
+    if (imageFormData) {
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      };
+      await api.put(`/step/${step.data.id}/image`, imageFormData, config);
+    }
+
+    setIsLoading(false);
+    return step;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function getStep(stepId) {
+  try {
+    const url = `/step/${stepId}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
+
+export async function updateStep(body, imageFormData, id, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const url = `/step/${id}`;
+    const result = await api.put(url, body);
+
+    if (imageFormData) {
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      };
+      await api.put(`/step/${id}/image`, imageFormData, config);
+    }
 
     setIsLoading(false);
     return result;
