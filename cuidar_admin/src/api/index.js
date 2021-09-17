@@ -555,3 +555,31 @@ export async function getStep(stepId) {
     toast.error(msg);
   }
 }
+
+export async function updateStep(body, imageFormData, id, setIsLoading) {
+  try {
+    setIsLoading(true);
+
+    const url = `/step/${id}`;
+    const result = await api.put(url, body);
+
+    if (imageFormData) {
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      };
+      await api.put(`/step/${id}/image`, imageFormData, config);
+    }
+
+    setIsLoading(false);
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    setIsLoading(false);
+    toast.error(msg);
+  }
+}

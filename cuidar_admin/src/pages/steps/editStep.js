@@ -13,14 +13,14 @@ import {
   TimelineItem,
   TimelineSeparator,
 } from '@material-ui/lab';
+import { useHistory, useParams } from 'react-router';
+import { useQuery } from 'react-query';
 import Header from '../../components/header';
 import ArrowLeftIcon from '../../components/icons/iconArrowLeft';
 import { FormTextField } from '../../components/styles/inputs.style';
 import FileUploader from '../../components/fileUploader';
 import StepScreen from '../../components/mobile/stepPage';
-import { useHistory, useParams } from 'react-router';
-import { useQuery } from 'react-query';
-import { getStep } from '../../api';
+import { getStep, updateStep } from '../../api';
 import Loading from '../../components/loading';
 import Navbar from '../../components/navbar';
 
@@ -69,10 +69,7 @@ function EditStep() {
   const [numberError, setNumberError] = useState(false);
   const [numberHelperText, setNumberHelperText] = useState('Precisa ser um número positivo');
 
-  const {
-    data: step,
-    isFetching,
-  } = useQuery('step', () => getStep(id), {
+  const { data: step, isFetching } = useQuery('step', () => getStep(id), {
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -92,7 +89,7 @@ function EditStep() {
     setDescriptionError(!validatedDescription);
 
     let validatedNumber = true;
-    const sameStep = step?.data.activity.steps.find(
+    const sameStep = steps?.find(
       (stepObj) => parseInt(stepObj.number, 10) === parseInt(number, 10)
     );
 
@@ -124,7 +121,8 @@ function EditStep() {
       const body = {
         name,
         description,
-        number
+        number,
+        activityId: step?.data.activityId,
       };
 
       let imageFormData = null;
@@ -133,11 +131,11 @@ function EditStep() {
         imageFormData = new FormData();
         imageFormData.append('file', imageFile);
       }
-      const result = await createStep(body, imageFormData, setIsLoading);
+      const result = await updateStep(body, imageFormData, id, setIsLoading);
 
       if (result) {
-        toast.success('Etapa criada com sucesso');  
-        goToListSteps()
+        toast.success('Etapa atualizada com sucesso');
+        goToListSteps();
       }
     }
   };
@@ -154,34 +152,32 @@ function EditStep() {
     const sortedSteps = stepsToBeSorted?.sort((step1, step2) => step1.number - step2.number);
     const size = sortedSteps?.length - 1;
 
-    return sortedSteps?.map((stepObj, index) => {
-      return (
-        <TimelineItem key={stepObj.id}>
-          <TimelineSeparator>
-            {index === size ? (
-              <TimelineDot variant="outlined" color="primary" />
-            ) : (
-              <TimelineDot variant="outlined" />
-            )}
-            {index < size && <TimelineConnector />}
-          </TimelineSeparator>
-          <TimelineContent>
-            <Typography
-              variante="body1"
-              style={stepObj.current ? { color: '#112D4E' } : { color: '#7F7C82' }}
-            >
-              {`${stepObj.name}`}
-            </Typography>
-            <Typography
-              variante="body1"
-              style={stepObj.current ? { color: '#112D4E' } : { color: '#7F7C82' }}
-            >
-              {`sequencial: ${stepObj.number}`}
-            </Typography>
-          </TimelineContent>
-        </TimelineItem>
-      );
-    });
+    return sortedSteps?.map((stepObj, index) => (
+      <TimelineItem key={stepObj.id}>
+        <TimelineSeparator>
+          {index === size ? (
+            <TimelineDot variant="outlined" color="primary" />
+          ) : (
+            <TimelineDot variant="outlined" />
+          )}
+          {index < size && <TimelineConnector />}
+        </TimelineSeparator>
+        <TimelineContent>
+          <Typography
+            variante="body1"
+            style={stepObj.current ? { color: '#112D4E' } : { color: '#7F7C82' }}
+          >
+            {`${stepObj.name}`}
+          </Typography>
+          <Typography
+            variante="body1"
+            style={stepObj.current ? { color: '#112D4E' } : { color: '#7F7C82' }}
+          >
+            {`sequencial: ${stepObj.number}`}
+          </Typography>
+        </TimelineContent>
+      </TimelineItem>
+    ));
   };
 
   return (
