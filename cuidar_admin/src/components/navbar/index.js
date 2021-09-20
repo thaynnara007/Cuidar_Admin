@@ -22,7 +22,6 @@ import ProfileIcon from '../icons/iconProfile';
 import AngleLeftIcon from '../icons/iconAngleLeft';
 import UsersIcon from '../icons/iconUsers';
 import BabyIcon from '../icons/iconBaby';
-import CalendarIcon from '../icons/iconCalendar';
 import ActivityIcon from '../icons/iconActivity';
 import BoardIcon from '../icons/iconBoard';
 
@@ -199,20 +198,11 @@ function Navbar({ children }) {
             </ListItemIcon>
             <ListItemText primary="Pacientes" />
           </ListItem>
-        </List>
-        <Divider />
-        <List>
           <ListItem button key="activitys" onClick={() => history.push('/categories')}>
             <ListItemIcon>
               <ActivityIcon />
             </ListItemIcon>
             <ListItemText primary="Atividades" />
-          </ListItem>
-          <ListItem button key="history" onClick={() => history.push('/history')}>
-            <ListItemIcon>
-              <CalendarIcon />
-            </ListItemIcon>
-            <ListItemText primary="Histórico" />
           </ListItem>
         </List>
       </Drawer>
