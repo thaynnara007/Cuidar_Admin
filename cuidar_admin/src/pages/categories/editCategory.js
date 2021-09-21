@@ -15,9 +15,10 @@ import CardOption from '../../components/cardOption';
 import CategoryScreen from '../../components/mobile/categoryPage';
 import { HeaderButton } from '../../components/styles/buttons.style';
 import ChooseIconModal from '../../components/modal/chooseIconModal';
-import { DEFAULT_ICON } from '../../utils/constants';
+import { CREATE_ACTIVITY_PERMISSION, DEFAULT_ICON } from '../../utils/constants';
 import Navbar from '../../components/navbar';
 import { getCategory, updateCategory } from '../../api';
+import { verifyPermission } from '../../utils/util';
 
 const useStyles = makeStyles({
   title: {
@@ -73,6 +74,8 @@ function EditCategory() {
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
 
+  const hasPermission = verifyPermission(CREATE_ACTIVITY_PERMISSION);
+
   const { data: category, isFetching } = useQuery('get category', () => getCategory(id), {
     refetchOnWindowFocus: false,
     retry: false,
@@ -123,7 +126,7 @@ function EditCategory() {
         <Loading />
       ) : (
         <>
-          <Header buttonName="Atualizar categoria" onClick={handleUpdate}>
+          <Header hasButton={hasPermission} buttonName="Atualizar categoria" onClick={handleUpdate}>
             <IconButton color="inherit" onClick={() => history.push('/categories')}>
               <ArrowLeftIcon />
             </IconButton>
@@ -140,7 +143,7 @@ function EditCategory() {
                   value={name}
                   error={nameError}
                   className={classes.input}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={hasPermission ? (e) => setName(e.target.value) : () => {}}
                 />
                 <FormTextField
                   label="descrição"
@@ -149,7 +152,7 @@ function EditCategory() {
                   value={description}
                   error={descriptionError}
                   className={classes.input}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={hasPermission ? (e) => setDescription(e.target.value) : () => {}}
                 />
                 <FormTextField
                   label="descrição da página"
@@ -157,37 +160,41 @@ function EditCategory() {
                   multiline
                   value={pageDescription}
                   className={classes.input}
-                  onChange={(e) => setPageDescription(e.target.value)}
+                  onChange={hasPermission ? (e) => setPageDescription(e.target.value) : () => {}}
                 />
-                <div className={classes.colorDiv}>
-                  <div>
-                    <Typography variant="subtitle1" style={{ color: 'grey', marginLeft: '5px' }}>
-                      Cor de fundo:
-                    </Typography>
-                    <ChromePicker
-                      color={color}
-                      onChangeComplete={(colorObj) => setColor(colorObj.hex)}
-                    />
+                {hasPermission && (
+                  <div className={classes.colorDiv}>
+                    <div>
+                      <Typography variant="subtitle1" style={{ color: 'grey', marginLeft: '5px' }}>
+                        Cor de fundo:
+                      </Typography>
+                      <ChromePicker
+                        color={color}
+                        onChangeComplete={(colorObj) => setColor(colorObj.hex)}
+                      />
+                    </div>
+                    <div style={{ width: '15%' }} />
+                    <div>
+                      <Typography variant="subtitle1" style={{ color: 'grey', marginLeft: '5px' }}>
+                        Cor do texto:
+                      </Typography>
+                      <ChromePicker
+                        color={textColor}
+                        onChangeComplete={(colorObj) => setTextColor(colorObj.hex)}
+                      />
+                    </div>
                   </div>
-                  <div style={{ width: '15%' }} />
-                  <div>
-                    <Typography variant="subtitle1" style={{ color: 'grey', marginLeft: '5px' }}>
-                      Cor do texto:
-                    </Typography>
-                    <ChromePicker
-                      color={textColor}
-                      onChangeComplete={(colorObj) => setTextColor(colorObj.hex)}
-                    />
-                  </div>
-                </div>
+                )}
               </div>
               <div className={classes.layoutBox}>
                 <div>
                   <CardOption icon={icon} name={name} description={description} />
                   <div className={classes.iconDiv}>
-                    <HeaderButton onClick={() => setOpenModal(true)} style={{ margin: '0 auto' }}>
-                      Escolher ícone
-                    </HeaderButton>
+                    {hasPermission && (
+                      <HeaderButton onClick={() => setOpenModal(true)} style={{ margin: '0 auto' }}>
+                        Escolher ícone
+                      </HeaderButton>
+                    )}
                   </div>
                 </div>
                 <div style={{ width: '5%' }} />

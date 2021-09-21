@@ -57,6 +57,10 @@ function Login({ flip }) {
         const { token, user } = result.data;
 
         await localStorage.setItem('cuidar_access_token', token);
+        await localStorage.setItem(
+          'cuidar_permissions',
+          JSON.stringify(user.permissions.map(({ name }) => name))
+        );
 
         toast(`Bem-vindo de volta ${user.name}!`);
         window.location.replace('/home');

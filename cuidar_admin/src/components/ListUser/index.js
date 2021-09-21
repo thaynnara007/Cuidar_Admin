@@ -26,6 +26,8 @@ import ConfirmationModal from '../modal/confirmationModal';
 import EditPermissionsModal from '../modal/editPermissionModal';
 import Header from '../header';
 import SearchIcon from '../icons/iconSearch';
+import { CREATE_USER_PERMISSION, DELETE_USER_PERMISSION } from '../../utils/constants';
+import { verifyPermission } from '../../utils/util';
 
 const useStyles = makeStyles({
   heading: {
@@ -181,12 +183,12 @@ function ListUser({ setPageState }) {
           <AccordionButton onClick={() => handleShowAddress(user.address)}>
             Ver endereço
           </AccordionButton>
-          {user.email !== 'master@email.com' && (
+          {verifyPermission(CREATE_USER_PERMISSION) && (
             <AccordionButton onClick={() => handleShowPermissionsModal(user.id, user.permissions)}>
               Editar permissões
             </AccordionButton>
           )}
-          {user.email !== 'master@email.com' && (
+          {verifyPermission(DELETE_USER_PERMISSION) && (
             <IconButton
               color="inherit"
               onClick={() => handleShowDeleteModal(user.id, `${user.name} ${user.lastName}`)}
@@ -200,7 +202,11 @@ function ListUser({ setPageState }) {
 
   return (
     <>
-      <Header buttonName="Novo usuário" onClick={() => setPageState('create_user')}>
+      <Header
+        hasButton={verifyPermission(CREATE_USER_PERMISSION)}
+        buttonName="Novo usuário"
+        onClick={() => setPageState('create_user')}
+      >
         <Typography variant="h4">Usuários</Typography>
       </Header>
       <Paper component="form" className={classes.inputPaper}>

@@ -21,6 +21,8 @@ import Loading from '../loading';
 import ConfirmationModal from '../modal/confirmationModal';
 import Header from '../header';
 import SearchIcon from '../icons/iconSearch';
+import { CREATE_PATIENT_PERMISSION, DELETE_PATIENT_PERMISSION } from '../../utils/constants';
+import { verifyPermission } from '../../utils/util';
 
 const useStyles = makeStyles({
   heading: {
@@ -132,21 +134,27 @@ function ListPatients({ setPageState }) {
           <AccordionButton onClick={() => history.push(`/patient/${patient?.id}`)}>
             Detalhes
           </AccordionButton>
-          <IconButton
-            color="inherit"
-            onClick={() =>
-              handleShowDeleteModal(patient.id, `${patient?.name} ${patient?.lastName}`)
-            }
-          >
-            <TrashIcon size="1x" color="#BD4B4B" />
-          </IconButton>
+          {verifyPermission(DELETE_PATIENT_PERMISSION) && (
+            <IconButton
+              color="inherit"
+              onClick={() =>
+                handleShowDeleteModal(patient.id, `${patient?.name} ${patient?.lastName}`)
+              }
+            >
+              <TrashIcon size="1x" color="#BD4B4B" />
+            </IconButton>
+          )}
         </AccordionActions>
       </Accordion>
     ));
 
   return (
     <>
-      <Header buttonName="Novo paciente" onClick={() => setPageState('create_patient')}>
+      <Header
+        hasButton={verifyPermission(CREATE_PATIENT_PERMISSION)}
+        buttonName="Novo paciente"
+        onClick={() => setPageState('create_patient')}
+      >
         <Typography variant="h4">Pacientes</Typography>
       </Header>
       <Paper component="form" className={classes.inputPaper}>

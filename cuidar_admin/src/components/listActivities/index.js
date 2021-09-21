@@ -20,7 +20,8 @@ import { getActivities, deleteActivity } from '../../api';
 import Loading from '../loading';
 import ConfirmationModal from '../modal/confirmationModal';
 import Header from '../header';
-import { getIcon } from '../../utils/util';
+import { getIcon, verifyPermission } from '../../utils/util';
+import { CREATE_ACTIVITY_PERMISSION, DELETE_ACTIVITY_PERMISSION } from '../../utils/constants';
 
 const useStyles = makeStyles({
   heading: {
@@ -145,21 +146,27 @@ function ListActivities({ setPageState, idCategory }) {
             Ver passos
           </AccordionButton>
           <AccordionButton onClick={() => history.push(`/activity/${activity?.id}`)}>
-            Editar
+            Detalhes
           </AccordionButton>
-          <IconButton
-            color="inherit"
-            onClick={() => handleShowDeleteModal(activity.id, `${activity?.name}`)}
-          >
-            <TrashIcon size="1x" color="#BD4B4B" />
-          </IconButton>
+          {verifyPermission(DELETE_ACTIVITY_PERMISSION) && (
+            <IconButton
+              color="inherit"
+              onClick={() => handleShowDeleteModal(activity.id, `${activity?.name}`)}
+            >
+              <TrashIcon size="1x" color="#BD4B4B" />
+            </IconButton>
+          )}
         </AccordionActions>
       </Accordion>
     ));
 
   return (
     <>
-      <Header buttonName="Nova atividade" onClick={() => setPageState('create_acitvity')}>
+      <Header
+        hasButton={verifyPermission(CREATE_ACTIVITY_PERMISSION)}
+        buttonName="Nova atividade"
+        onClick={() => setPageState('create_acitvity')}
+      >
         <Typography variant="h4">{data?.data.category.name ?? ''}</Typography>
       </Header>
       <div style={{ width: '100%', marginTop: '2px' }}>

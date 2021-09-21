@@ -23,6 +23,8 @@ import StepScreen from '../../components/mobile/stepPage';
 import { getStep, updateStep } from '../../api';
 import Loading from '../../components/loading';
 import Navbar from '../../components/navbar';
+import { verifyPermission } from '../../utils/util';
+import { CREATE_ACTIVITY_PERMISSION } from '../../utils/constants';
 
 const useStyles = makeStyles({
   title: {
@@ -68,6 +70,8 @@ function EditStep() {
   const [descriptionError, setDescriptionError] = useState(false);
   const [numberError, setNumberError] = useState(false);
   const [numberHelperText, setNumberHelperText] = useState('Precisa ser um número positivo');
+
+  const hasPermission = verifyPermission(CREATE_ACTIVITY_PERMISSION);
 
   const { data: step, isFetching } = useQuery('step', () => getStep(id), {
     refetchOnWindowFocus: false,
@@ -186,7 +190,7 @@ function EditStep() {
         <Loading />
       ) : (
         <>
-          <Header buttonName="Registrar etapa" onClick={handleCreateStep}>
+          <Header hasButton={hasPermission} buttonName="Registrar etapa" onClick={handleCreateStep}>
             <IconButton color="inherit" onClick={() => goToListSteps()}>
               <ArrowLeftIcon />
             </IconButton>
@@ -203,7 +207,7 @@ function EditStep() {
                   value={name}
                   error={nameError}
                   className={classes.input}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={hasPermission ? (e) => setName(e.target.value) : () => {}}
                 />
                 <FormTextField
                   label="descrição"
@@ -212,7 +216,7 @@ function EditStep() {
                   value={description}
                   error={descriptionError}
                   className={classes.input}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={hasPermission ? (e) => setDescription(e.target.value) : () => {}}
                 />
                 <FormTextField
                   label="Número sequêncial"
@@ -225,9 +229,11 @@ function EditStep() {
                   error={numberError}
                   helperText={numberHelperText}
                   className={classes.input}
-                  onChange={(e) => handleSetNumber(e.target.value)}
+                  onChange={hasPermission ? (e) => handleSetNumber(e.target.value) : () => {}}
                 />
-                <FileUploader handleUpload={handleUpload}>Escolher imagem</FileUploader>
+                {hasPermission && (
+                  <FileUploader handleUpload={handleUpload}>Escolher imagem</FileUploader>
+                )}
               </div>
               <div className={classes.layoutBox}>
                 <StepScreen
