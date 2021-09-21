@@ -101,9 +101,11 @@ export async function changePassword(password, setIsLoading) {
   }
 }
 
-export async function getUsers(page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
+export async function getUsers(search, page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
   try {
-    const url = `/user?page=${page}&pageSize=${pageSize}`;
+    let url = `/user?page=${page}&pageSize=${pageSize}`;
+
+    if (search && search !== '') url = `/user?page=${page}&pageSize=${pageSize}&search=${search}`;
 
     const result = await api.get(url);
 

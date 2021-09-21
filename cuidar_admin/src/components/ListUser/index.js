@@ -15,6 +15,7 @@ import Divider from '@material-ui/core/Divider';
 import Pagination from '@material-ui/lab/Pagination';
 import IconButton from '@material-ui/core/IconButton';
 
+import { InputBase, Paper } from '@material-ui/core';
 import AngleDownIcon from '../icons/iconAngleDown';
 import TrashIcon from '../icons/iconTrash';
 import { AccordionButton } from '../styles/buttons.style';
@@ -24,6 +25,7 @@ import FormModal from '../modal/formModal';
 import ConfirmationModal from '../modal/confirmationModal';
 import EditPermissionsModal from '../modal/editPermissionModal';
 import Header from '../header';
+import SearchIcon from '../icons/iconSearch';
 
 const useStyles = makeStyles({
   heading: {
@@ -53,6 +55,20 @@ const useStyles = makeStyles({
     margin: '8px 0px',
     fontWeight: 'bold',
   },
+  inputPaper: {
+    padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'center',
+    width: '20%',
+    marginTop: '10px',
+  },
+  input: {
+    flex: 1,
+    marginLeft: '5px',
+  },
+  iconButton: {
+    padding: 10,
+  },
 });
 
 function ListUser({ setPageState }) {
@@ -68,12 +84,13 @@ function ListUser({ setPageState }) {
   const [openPermissionModal, setOpenPermissionModal] = useState(false);
   const [initPermissions, setInitPermisisons] = useState(new Set());
   const [name, setName] = useState('');
+  const [search, setSearch] = useState('');
 
   const {
     data: usersRes,
     isFetching: isFetchingUsers,
     refetch,
-  } = useQuery('users', () => getUsers(page), {
+  } = useQuery('users', () => getUsers(search, page), {
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -186,6 +203,17 @@ function ListUser({ setPageState }) {
       <Header buttonName="Novo usuário" onClick={() => setPageState('create_user')}>
         <Typography variant="h4">Usuários</Typography>
       </Header>
+      <Paper component="form" className={classes.inputPaper}>
+        <InputBase
+          className={classes.input}
+          placeholder="Busca"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <IconButton onClick={() => refetch()} className={classes.iconButton} aria-label="search">
+          <SearchIcon size="1x" />
+        </IconButton>
+      </Paper>
       <div style={{ width: '100%', marginTop: '2px' }}>
         {isFetchingUsers || isFetchingPermissions ? (
           <Loading />
