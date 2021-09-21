@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
 import { toast } from 'react-toastify';
 import api from '../../api/api';
@@ -29,6 +30,7 @@ function PatientCalendar({ patientId }) {
           const { category } = activity;
 
           return {
+            id: entry.id,
             title: activity.name,
             start: entry.endTime,
             color: category.color,
@@ -53,8 +55,13 @@ function PatientCalendar({ patientId }) {
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay',
         }}
-        plugins={[dayGridPlugin, timeGridPlugin]}
-        initialEvents={[]}
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        initialEvents={[
+          {
+            id: 0,
+            title: '',
+          },
+        ]}
         events={handleGetEntries}
         locale="pt"
       />

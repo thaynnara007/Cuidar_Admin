@@ -226,9 +226,12 @@ export async function getPermissions() {
   }
 }
 
-export async function getPatients(page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
+export async function getPatients(search, page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
   try {
-    const url = `/patient?page=${page}&pageSize=${pageSize}`;
+    let url = `/patient?page=${page}&pageSize=${pageSize}`;
+
+    if (search && search !== '')
+      url = `/patient?page=${page}&pageSize=${pageSize}&search=${search}`;
 
     const result = await api.get(url);
 
