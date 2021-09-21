@@ -8,6 +8,7 @@ import Header from '../../components/header';
 import ArrowLeftIcon from '../../components/icons/iconArrowLeft';
 import Navbar from '../../components/navbar';
 import PatientFormInfo from '../../components/patientFormInfo';
+import PatientCalendar from '../../components/calendar';
 
 function PatientDetails() {
   const { id } = useParams();
@@ -31,7 +32,7 @@ function PatientDetails() {
         <Tab label="Histórico" />
       </Tabs>
       <div style={{ marginTop: '50px' }}>
-        {!showHistory ? <PatientFormInfo patientId={id} /> : <div />}
+        {!showHistory ? <PatientFormInfo patientId={id} /> : <PatientCalendar patientId={id} />}
       </div>
     </Navbar>
   );
