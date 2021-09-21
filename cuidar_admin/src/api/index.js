@@ -588,3 +588,19 @@ export async function updateStep(body, imageFormData, id, setIsLoading) {
     toast.error(msg);
   }
 }
+
+export async function getEntries(timeInfo, patientId) {
+  try {
+    const url = `/history/patient/${patientId}?start=${timeInfo.startStr}&end=${timeInfo.endStr}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}

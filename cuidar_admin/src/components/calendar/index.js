@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { makeStyles } from '@material-ui/core';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import { makeStyles } from '@material-ui/core';
+import { getEntries } from '../../api';
+import { getFirstDayOfCurrentMonth, getLastDayOfCurrentMonth } from '../../utils/date';
 
-import { toast } from 'react-toastify';
-import api from '../../api/api';
+const defaultTime = {
+  startStr: getFirstDayOfCurrentMonth().toISOString(),
+  endStr: getLastDayOfCurrentMonth().toISOString(),
+};
 
 const useStyles = makeStyles({
   event: {
@@ -16,57 +19,54 @@ const useStyles = makeStyles({
   },
 });
 
-function PatientCalendar({ patientId }) {
+const PatientCalendar = ({ patientId }) => {
   const classes = useStyles();
+  const [events, setEvents] = useState();
+  const [timeInfo, settimeInfo] = useState(defaultTime);
 
-  const handleGetEntries = (timeInfo) => {
-    const url = `/history/patient/${patientId}?start=${timeInfo.startStr}&end=${timeInfo.endStr}`;
+  useEffect(() => {
+    getEntries(timeInfo, patientId).then((result) => {
+      const entries = result?.data.map((entry) => {
+        const { activity } = entry;
+        const { category } = activity;
 
-    return api
-      .get(url)
-      .then((result) => {
-        const events = result.data.map((entry) => {
-          const { activity } = entry;
-          const { category } = activity;
-
-          return {
-            id: entry.id,
-            title: activity.name,
-            start: entry.endTime,
-            color: category.color,
-            textColor: category.textColor,
-            className: classes.event,
-          };
-        });
-
-        return events;
-      })
-      .catch((error) => {
-        toast.error(error);
+        return {
+          id: entry.id,
+          title: activity.name,
+          start: entry.endTime,
+          color: category.color,
+          textColor: category.textColor,
+          className: `${classes.event}`,
+        };
       });
+
+      setEvents(entries);
+    });
+  }, [timeInfo]);
+
+  const handleDateChange = (dateInfo) => {
+    const { startStr, endStr } = dateInfo;
+
+    settimeInfo({ startStr, endStr });
   };
 
   return (
     <div style={{ margin: '20px' }}>
       <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin]}
         initialView="dayGridMonth"
+        initialEvents={[]}
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay',
         }}
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialEvents={[
-          {
-            id: 0,
-            title: '',
-          },
-        ]}
-        events={handleGetEntries}
+        events={events}
+        datesSet={handleDateChange}
         locale="pt"
       />
     </div>
   );
-}
+};
 
 export default PatientCalendar;
