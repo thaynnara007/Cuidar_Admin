@@ -5,6 +5,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
+import { toast } from 'react-toastify';
 import api from '../../api/api';
 
 const useStyles = makeStyles({
@@ -17,10 +18,10 @@ const useStyles = makeStyles({
 function PatientCalendar({ patientId }) {
   const classes = useStyles();
 
-  const handleGetEntries = (timeInfo, successCallback, failureCallback) => {
+  const handleGetEntries = (timeInfo) => {
     const url = `/history/patient/${patientId}?start=${timeInfo.startStr}&end=${timeInfo.endStr}`;
 
-    api
+    return api
       .get(url)
       .then((result) => {
         const events = result.data.map((entry) => {
@@ -36,10 +37,10 @@ function PatientCalendar({ patientId }) {
           };
         });
 
-        successCallback(events);
+        return events;
       })
       .catch((error) => {
-        failureCallback(error);
+        toast.error(error);
       });
   };
 
@@ -53,6 +54,7 @@ function PatientCalendar({ patientId }) {
           right: 'dayGridMonth,timeGridWeek,timeGridDay',
         }}
         plugins={[dayGridPlugin, timeGridPlugin]}
+        initialEvents={[]}
         events={handleGetEntries}
         locale="pt"
       />
