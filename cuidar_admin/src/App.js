@@ -10,7 +10,6 @@ import Home from './pages/homepage';
 import Users from './pages/users';
 import Patients from './pages/patients';
 import Categories from './pages/categories';
-import History from './pages/history';
 import MyInfo from './pages/myInfo';
 import PatientDetails from './pages/patientDetails';
 import EditCategory from './pages/categories/editCategory';
@@ -61,9 +60,6 @@ function App() {
               </Route>
               <Route exact path="/step/:id">
                 <EditStep />
-              </Route>
-              <Route exact path="/history">
-                <History />
               </Route>
               <Route exact path="/profile">
                 <MyInfo />
