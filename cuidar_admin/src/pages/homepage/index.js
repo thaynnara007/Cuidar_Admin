@@ -10,13 +10,15 @@ import {
   Typography,
 } from '@material-ui/core';
 import React from 'react';
+
+
+import ActivityIcon from '../../components/icons/iconActivity';
 import AngleDownIcon from '../../components/icons/iconAngleDown';
 import BabyIcon from '../../components/icons/iconBaby';
 import TrashIcon from '../../components/icons/iconTrash';
-import UsersIcon from '../../components/icons/iconUsers';
-
 import Navbar from '../../components/navbar';
 import { AccordionButton, HeaderButton } from '../../components/styles/buttons.style';
+import { handleShowIcon } from '../../utils/util'
 
 const useStyles = makeStyles({
   textMargin: {
@@ -96,10 +98,10 @@ function Home() {
                   <Link href="#patient-create">Criar paciente</Link>
                 </li>
                 <li>
-                  <Link href="#patient-remove">Remover paciente</Link>
+                  <Link href="#patient-info">Informações paciente</Link>
                 </li>
                 <li>
-                  <Link href="#patient-info">Informações paciente</Link>
+                  <Link href="#patient-remove">Remover paciente</Link>
                 </li>
               </ul>
             </li>
@@ -248,16 +250,68 @@ function Home() {
             Categorias
           </Typography>
           <Divider />
+          <div className={classes.textMargin}>
+            <Typography variant="body1">
+            As categorias são usadas para classificar uma série de atividades. Sendo assim, as atividades 
+            relacionadas à alimentação, por exemplo, estão dentro da categoria Refeições.
+            </Typography>
+            <div className={classes.textDiv}>
+              <Typography variant="body1" style={{ marginRight: '16px' }}>
+                A aba de categorias pode ser acessada a partir do menu lateral, clicando no ícone:
+              </Typography>
+              <ActivityIcon />
+            </div>
+          </div>
+          <br />
           <Typography variant="h6" id="category-create">
             Criar categoria
           </Typography>
+          <div className={classes.textMargin}>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">Para cadastrar uma categoria, clique no botão</Typography>
+              <HeaderButton>Nova categoria</HeaderButton>
+              <Typography>
+                na aba de categorias, preencha os campos, escolha as cores e um ícone.
+              </Typography>
+            </div>
+            <div className={classes.textDiv}>
+              <Typography>
+                Do lado direito é mostrado uma prévia aproximada de como a tela da categoria sendo criada 
+                ficará no aplicativo móvel. Para concluir a criação da categoria basta clicar em
+              </Typography>
+              <HeaderButton>Registrar categoria</HeaderButton>
+            </div>
+          </div>
+          <br />
           <Typography variant="h6" id="category-remove">
             Remover categoria
           </Typography>
+          <div className={classes.textMargin}>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">Para remover uma categoria, basta clicar em</Typography>
+              <IconButton color="inherit">
+                <TrashIcon size="1x" color="#BD4B4B" />
+              </IconButton>
+              <Typography variant="body1"> e confirmar.</Typography>
+            </div>
+          </div>
+          <br />
           <Typography variant="h6" id="category-edit">
             Atualizar categoria
           </Typography>
-          <Divider />
+          <div className={classes.textMargin}>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">
+                Na aba de categorias, clicando no categoria desejada e então no botão
+              </Typography>
+              <AccordionButton>DETALHES</AccordionButton>
+              <Typography variant="body1">
+                é possível ver as informações relativas a de criação da categoria, incluindo a prévia
+                da tela.
+              </Typography>
+            </div>
+          </div>
+          <br />
         </div>
         <div id="activity" className={`${classes.textMargin}`}>
           <Typography variant="h4" className={classes.title}>
