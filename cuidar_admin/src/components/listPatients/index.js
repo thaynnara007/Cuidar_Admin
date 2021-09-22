@@ -122,9 +122,7 @@ function ListPatients({ setPageState }) {
           id="panel1bh-header"
           expandIcon={<AngleDownIcon size="1x" color="#7F7C82" />}
         >
-          <Typography
-            className={classes.heading}
-          >{`${patient?.name} ${patient?.lastName}`}</Typography>
+          <Typography className={classes.heading}>{`${patient?.fullName}`}</Typography>
           <Typography className={classes.secondaryHeading}>{`${patient.cpfFormatted}`}</Typography>
           <Typography className={classes.secondaryHeading}>{`${patient.email}`}</Typography>
           <Typography className={classes.secondaryHeading}>{`${patient?.phoneNumber}`}</Typography>
