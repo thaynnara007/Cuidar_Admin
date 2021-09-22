@@ -11,14 +11,12 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 
-
 import ActivityIcon from '../../components/icons/iconActivity';
 import AngleDownIcon from '../../components/icons/iconAngleDown';
 import BabyIcon from '../../components/icons/iconBaby';
 import TrashIcon from '../../components/icons/iconTrash';
 import Navbar from '../../components/navbar';
 import { AccordionButton, HeaderButton } from '../../components/styles/buttons.style';
-import { handleShowIcon } from '../../utils/util'
 
 const useStyles = makeStyles({
   textMargin: {
@@ -51,29 +49,27 @@ const useStyles = makeStyles({
 function Home() {
   const classes = useStyles();
 
-  const generatePacientAccordion = () => {
-    return (
-      <Accordion>
-        <AccordionSummary
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-          expandIcon={<AngleDownIcon size="1x" color="#7F7C82" />}
-        >
-          <Typography className={classes.heading}>{`Nico Robin`}</Typography>
-          <Typography className={classes.secondaryHeading}>{`088.122.189-10`}</Typography>
-          <Typography className={classes.secondaryHeading}>{`nico_robin@gmai.com`}</Typography>
-          <Typography className={classes.secondaryHeading}>{`987880737`}</Typography>
-        </AccordionSummary>
-        <Divider />
-        <AccordionActions>
-          <AccordionButton>Detalhes</AccordionButton>
-          <IconButton color="inherit">
-            <TrashIcon size="1x" color="#BD4B4B" />
-          </IconButton>
-        </AccordionActions>
-      </Accordion>
-    );
-  };
+  const generatePacientAccordion = () => (
+    <Accordion>
+      <AccordionSummary
+        aria-controls="panel1bh-content"
+        id="panel1bh-header"
+        expandIcon={<AngleDownIcon size="1x" color="#7F7C82" />}
+      >
+        <Typography className={classes.heading}>Nico Robin</Typography>
+        <Typography className={classes.secondaryHeading}>088.122.189-10</Typography>
+        <Typography className={classes.secondaryHeading}>nico_robin@gmai.com</Typography>
+        <Typography className={classes.secondaryHeading}>987880737</Typography>
+      </AccordionSummary>
+      <Divider />
+      <AccordionActions>
+        <AccordionButton>Detalhes</AccordionButton>
+        <IconButton color="inherit">
+          <TrashIcon size="1x" color="#BD4B4B" />
+        </IconButton>
+      </AccordionActions>
+    </Accordion>
+  );
 
   return (
     <Navbar>
@@ -252,8 +248,9 @@ function Home() {
           <Divider />
           <div className={classes.textMargin}>
             <Typography variant="body1">
-            As categorias são usadas para classificar uma série de atividades. Sendo assim, as atividades 
-            relacionadas à alimentação, por exemplo, estão dentro da categoria Refeições.
+              As categorias são usadas para classificar uma série de atividades. Sendo assim, as
+              atividades relacionadas à alimentação, por exemplo, estão dentro da categoria
+              Refeições.
             </Typography>
             <div className={classes.textDiv}>
               <Typography variant="body1" style={{ marginRight: '16px' }}>
@@ -276,8 +273,9 @@ function Home() {
             </div>
             <div className={classes.textDiv}>
               <Typography>
-                Do lado direito é mostrado uma prévia aproximada de como a tela da categoria sendo criada 
-                ficará no aplicativo móvel. Para concluir a criação da categoria basta clicar em
+                Do lado direito é mostrado uma prévia aproximada de como a tela da categoria sendo
+                criada ficará no aplicativo móvel. Para concluir a criação da categoria basta clicar
+                em
               </Typography>
               <HeaderButton>Registrar categoria</HeaderButton>
             </div>
@@ -306,27 +304,100 @@ function Home() {
               </Typography>
               <AccordionButton>DETALHES</AccordionButton>
               <Typography variant="body1">
-                é possível ver as informações relativas a de criação da categoria, incluindo a prévia
-                da tela.
+                é possível ver as informações relativas a de criação da categoria, incluindo a
+                prévia da tela.
               </Typography>
+            </div>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">
+                Aqui é possível editar os campos preenchidos, escolher novas cores e escolher um
+                novo ícone. Para concluir com as atualizações basta clicar em
+              </Typography>
+              <HeaderButton>Atualizar categoria</HeaderButton>
             </div>
           </div>
           <br />
+          <Divider />
         </div>
         <div id="activity" className={`${classes.textMargin}`}>
           <Typography variant="h4" className={classes.title}>
             Atividades
           </Typography>
           <Divider />
+          <div className={classes.textMargin}>
+            <Typography variant="body1">
+              As atividades são tarefas a serem realizadas pelas cuidadoras junto à criança com
+              microcefalia, com intuito de dar continuidade ao tratamento em âmbito domiciliar.
+            </Typography>
+            <br />
+            <div className={classes.textDiv}>
+              <Typography variant="body1">
+                Para acessar as atividades de uma categoria, primeiro vá para aba de categorias,
+                escolha uma categoria e clique em
+              </Typography>
+              <HeaderButton>Ver atividades</HeaderButton>
+            </div>
+          </div>
+          <br />
           <Typography variant="h6" id="activity-create">
             Criar atividade
           </Typography>
+          <div className={classes.textMargin}>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">
+                Para cadastrar uma nova atividade, clique no botão
+              </Typography>
+              <HeaderButton>Nova atividade</HeaderButton>
+              <Typography>preencha os campos e escolha um ícone.</Typography>
+            </div>
+            <div className={classes.textDiv}>
+              <Typography>
+                Do lado direito é mostrado uma prévia aproximada de como a tela da atividade sendo
+                criada ficará no aplicativo móvel. Para concluir a criação da atividade basta clicar
+                em
+              </Typography>
+              <HeaderButton>Registrar atividade</HeaderButton>
+            </div>
+          </div>
+          <br />
           <Typography variant="h6" id="activity-remove">
             Remover atividade
           </Typography>
+          <div className={classes.textMargin}>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">
+                Para remover basta clicar na atividade e em seguida no botão
+              </Typography>
+              <IconButton color="inherit">
+                <TrashIcon size="1x" color="#BD4B4B" />
+              </IconButton>
+              <Typography variant="body1"> e por fim confirmar.</Typography>
+            </div>
+          </div>
+          <br />
           <Typography variant="h6" id="activity-edit">
             Atualizar atividade
           </Typography>
+          <div className={classes.textMargin}>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">
+                Clicando no categoria desejada e então no botão
+              </Typography>
+              <AccordionButton>DETALHES</AccordionButton>
+              <Typography variant="body1">
+                é possível ver as informações relativas a de criação da atividade, incluindo a
+                prévia da tela.
+              </Typography>
+            </div>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">
+                Aqui é possível editar os campos preenchidos e escolher um novo ícone. Para concluir
+                com as atualizações basta clicar em
+              </Typography>
+              <HeaderButton>Atualizar atividade</HeaderButton>
+            </div>
+          </div>
+          <br />
           <Divider />
         </div>
         <div id="step" className={`${classes.textMargin}`}>
