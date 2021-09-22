@@ -405,15 +405,84 @@ function Home() {
             Etapas
           </Typography>
           <Divider />
+          <div className={classes.textMargin}>
+            <Typography variant="body1">
+              As etapas servem para descrever o passo a passo a ser realizado dentro de uma
+              atividade.
+            </Typography>
+            <br />
+            <div className={classes.textDiv}>
+              <Typography variant="body1">
+                Para acessar as etapas de uma atividade, primeiro vá para aba de atividades, escolha
+                uma atividade e clique em
+              </Typography>
+              <HeaderButton>Ver passos</HeaderButton>
+            </div>
+          </div>
+          <br />
           <Typography variant="h6" id="step-create">
             Criar etapa
           </Typography>
+          <div className={classes.textMargin}>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">Para cadastrar uma etapa, clique no botão</Typography>
+              <HeaderButton>Nova etapa</HeaderButton>
+              <Typography>
+                preencha os campos e escolha uma imagem que descreva visualmente o que é feito na
+                etapa.
+              </Typography>
+            </div>
+            <Typography variant="subtitle2">
+              ATENÇÃO: O campo 'Número sequencial' serve para ordenar de forma crescente as etapas,
+              ou seja, uma etapa com um número sequencial 1 acontece primeiro do que uma etapa com
+              um número sequencial 2 e assim por diante.
+            </Typography>
+            <br />
+            <div className={classes.textDiv}>
+              <Typography>
+                Do lado direito é mostrado uma prévia aproximada de como a tela da etapa sendo
+                criada ficará no aplicativo móvel, assim como a sequência das etapas. Para concluir
+                a criação da categoria basta clicar em
+              </Typography>
+              <HeaderButton>Registrar etapa</HeaderButton>
+            </div>
+          </div>
+          <br />
           <Typography variant="h6" id="step-remove">
             Remover etapa
           </Typography>
+          <div className={classes.textMargin}>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">Para remover uma etapa basta clicar no botão</Typography>
+              <IconButton color="inherit">
+                <TrashIcon size="1x" color="#BD4B4B" />
+              </IconButton>
+              <Typography variant="body1"> e confirmar.</Typography>
+            </div>
+          </div>
+          <br />
           <Typography variant="h6" id="step-edit">
             Atualizar etapa
           </Typography>
+          <div className={classes.textMargin}>
+            <Typography variant="body1">
+              Ao clicar no nome da etapa é aberto uma nova aba com os dados da etapa, sendo possível
+              ver as informações relativas a de criação da etapa, incluindo a prévia da tela.
+            </Typography>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">
+                Aqui é possível editar os campos preenchidos e escolher uma nova imagem. Para
+                concluir com as atualizações basta clicar em
+              </Typography>
+              <HeaderButton>Atualizar etapa</HeaderButton>
+            </div>
+            <Typography variant="subtitle2">
+              ATENÇÃO: O campo 'Número sequencial' serve para ordenar de forma crescente as etapas,
+              ou seja, uma etapa com um número sequencial 1 acontece primeiro do que uma etapa com
+              um número sequencial 2 e assim por diante.
+            </Typography>
+          </div>
+          <br />
           <Divider />
         </div>
         <div id="user" className={`${classes.textMargin}`}>

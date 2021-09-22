@@ -223,6 +223,7 @@ function CreateUser({ setPageState }) {
         <div className={classes.boxInput}>
           <FormTextField
             label="Email"
+            required
             variant="outlined"
             className={classes.inputHalf}
             value={email}
@@ -231,6 +232,7 @@ function CreateUser({ setPageState }) {
           />
           <FormTextField
             label="Número de telefone"
+            required
             variant="outlined"
             className={classes.inputHalf}
             value={phoneNumber}
@@ -241,6 +243,7 @@ function CreateUser({ setPageState }) {
         <div className={classes.boxInput}>
           <FormTextField
             label="Senha"
+            required
             type="password"
             variant="outlined"
             className={classes.inputHalf}
@@ -250,6 +253,7 @@ function CreateUser({ setPageState }) {
           />
           <FormTextField
             label="Confirme a senha"
+            required
             type="password"
             variant="outlined"
             className={classes.inputHalf}
@@ -265,6 +269,7 @@ function CreateUser({ setPageState }) {
         <div className={classes.boxInput}>
           <FormTextField
             label="Estado"
+            required
             variant="outlined"
             className={classes.input3Width}
             value={state}
@@ -273,6 +278,7 @@ function CreateUser({ setPageState }) {
           />
           <FormTextField
             label="Cidade"
+            required
             variant="outlined"
             className={classes.input3Width}
             value={city}
@@ -291,6 +297,7 @@ function CreateUser({ setPageState }) {
         <div className={classes.boxInput}>
           <FormTextField
             label="Bairro"
+            required
             variant="outlined"
             className={classes.input3Width}
             value={district}
@@ -299,6 +306,7 @@ function CreateUser({ setPageState }) {
           />
           <FormTextField
             label="Rua"
+            required
             variant="outlined"
             className={classes.input3Width}
             value={street}
@@ -307,6 +315,7 @@ function CreateUser({ setPageState }) {
           />
           <FormTextField
             label="Número"
+            required
             variant="outlined"
             className={classes.input3Width}
             value={number}

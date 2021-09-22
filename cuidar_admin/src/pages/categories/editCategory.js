@@ -139,6 +139,7 @@ function EditCategory() {
               <div className={classes.formBox}>
                 <FormTextField
                   label="Nome"
+                  required
                   variant="outlined"
                   value={name}
                   error={nameError}
@@ -147,6 +148,7 @@ function EditCategory() {
                 />
                 <FormTextField
                   label="descrição"
+                  required
                   variant="outlined"
                   multiline
                   value={description}

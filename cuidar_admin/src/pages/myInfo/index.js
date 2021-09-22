@@ -185,6 +185,7 @@ function MyInfo() {
           <div className={classes.boxInput}>
             <FormTextField
               label="Email"
+              required
               variant="outlined"
               className={classes.inputHalf}
               value={email}
@@ -193,6 +194,7 @@ function MyInfo() {
             />
             <FormTextField
               label="Número de telefone"
+              required
               variant="outlined"
               className={classes.inputHalf}
               value={phoneNumber}
@@ -226,6 +228,7 @@ function MyInfo() {
           <div className={classes.boxInput}>
             <FormTextField
               label="Estado"
+              required
               variant="outlined"
               className={classes.input3Width}
               value={state}
@@ -234,6 +237,7 @@ function MyInfo() {
             />
             <FormTextField
               label="Cidade"
+              required
               variant="outlined"
               className={classes.input3Width}
               value={city}
@@ -252,6 +256,7 @@ function MyInfo() {
           <div className={classes.boxInput}>
             <FormTextField
               label="Bairro"
+              required
               variant="outlined"
               className={classes.input3Width}
               value={district}
@@ -260,6 +265,7 @@ function MyInfo() {
             />
             <FormTextField
               label="Rua"
+              required
               variant="outlined"
               className={classes.input3Width}
               value={street}
@@ -268,6 +274,7 @@ function MyInfo() {
             />
             <FormTextField
               label="Número"
+              required
               variant="outlined"
               className={classes.input3Width}
               value={number}

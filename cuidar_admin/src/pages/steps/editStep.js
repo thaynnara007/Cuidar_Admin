@@ -190,7 +190,7 @@ function EditStep() {
         <Loading />
       ) : (
         <>
-          <Header hasButton={hasPermission} buttonName="Registrar etapa" onClick={handleCreateStep}>
+          <Header hasButton={hasPermission} buttonName="Atualizar etapa" onClick={handleCreateStep}>
             <IconButton color="inherit" onClick={() => goToListSteps()}>
               <ArrowLeftIcon />
             </IconButton>
@@ -203,6 +203,7 @@ function EditStep() {
               <div className={classes.formBox}>
                 <FormTextField
                   label="Nome"
+                  required
                   variant="outlined"
                   value={name}
                   error={nameError}
@@ -211,6 +212,7 @@ function EditStep() {
                 />
                 <FormTextField
                   label="descrição"
+                  required
                   variant="outlined"
                   multiline
                   value={description}

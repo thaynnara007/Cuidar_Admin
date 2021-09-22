@@ -136,6 +136,7 @@ function EditActivity() {
               <div className={classes.formBox}>
                 <FormTextField
                   label="Nome"
+                  required
                   variant="outlined"
                   value={name}
                   error={nameError}
@@ -144,6 +145,7 @@ function EditActivity() {
                 />
                 <FormTextField
                   label="descrição"
+                  required
                   variant="outlined"
                   multiline
                   value={description}
