@@ -19,8 +19,9 @@ import { getCategories, deleteCategory } from '../../api';
 import Loading from '../loading';
 import ConfirmationModal from '../modal/confirmationModal';
 import Header from '../header';
-import { getIcon } from '../../utils/util';
+import { getIcon, verifyPermission } from '../../utils/util';
 import ShowColor from '../color';
+import { CREATE_ACTIVITY_PERMISSION, DELETE_ACTIVITY_PERMISSION } from '../../utils/constants';
 
 const useStyles = makeStyles({
   heading: {
@@ -130,19 +131,25 @@ function ListCategories({ setPageState }) {
           <AccordionButton onClick={() => history.push(`/category/${category?.id}`)}>
             Detalhes
           </AccordionButton>
-          <IconButton
-            color="inherit"
-            onClick={() => handleShowDeleteModal(category.id, `${category?.name}`)}
-          >
-            <TrashIcon size="1x" color="#BD4B4B" />
-          </IconButton>
+          {verifyPermission(DELETE_ACTIVITY_PERMISSION) && (
+            <IconButton
+              color="inherit"
+              onClick={() => handleShowDeleteModal(category.id, `${category?.name}`)}
+            >
+              <TrashIcon size="1x" color="#BD4B4B" />
+            </IconButton>
+          )}
         </AccordionActions>
       </Accordion>
     ));
 
   return (
     <>
-      <Header buttonName="Nova categoria" onClick={() => setPageState('create_category')}>
+      <Header
+        hasButton={verifyPermission(CREATE_ACTIVITY_PERMISSION)}
+        buttonName="Nova categoria"
+        onClick={() => setPageState('create_category')}
+      >
         <Typography variant="h4">Categorias</Typography>
       </Header>
       <div style={{ width: '100%', marginTop: '2px' }}>

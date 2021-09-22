@@ -118,6 +118,7 @@ function CreateCategory({ setPageState }) {
               <div className={classes.formBox}>
                 <FormTextField
                   label="Nome"
+                  required
                   variant="outlined"
                   value={name}
                   error={nameError}
@@ -126,6 +127,7 @@ function CreateCategory({ setPageState }) {
                 />
                 <FormTextField
                   label="descrição"
+                  required
                   variant="outlined"
                   multiline
                   value={description}

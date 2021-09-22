@@ -7,7 +7,7 @@ import { useHistory, useParams } from 'react-router';
 import { Container, makeStyles, Typography, IconButton } from '@material-ui/core';
 
 import { useQuery } from 'react-query';
-import { DEFAULT_ICON } from '../../utils/constants';
+import { CREATE_ACTIVITY_PERMISSION, DEFAULT_ICON } from '../../utils/constants';
 import Loading from '../../components/loading';
 import Header from '../../components/header';
 import ArrowLeftIcon from '../../components/icons/iconArrowLeft';
@@ -18,6 +18,7 @@ import ActivityScreen from '../../components/mobile/activityPage';
 import ChooseIconModal from '../../components/modal/chooseIconModal';
 import Navbar from '../../components/navbar';
 import { getActivity, updateActivity } from '../../api';
+import { verifyPermission } from '../../utils/util';
 
 const useStyles = makeStyles({
   title: {
@@ -65,6 +66,8 @@ function EditActivity() {
   const [icon, setIcon] = useState(DEFAULT_ICON);
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
+
+  const hasPermission = verifyPermission(CREATE_ACTIVITY_PERMISSION);
 
   const { data: activity, isFetching } = useQuery('activity', () => getActivity(id, false), {
     refetchOnWindowFocus: false,
@@ -116,7 +119,11 @@ function EditActivity() {
         <Loading />
       ) : (
         <>
-          <Header buttonName="Atualizar atividade" onClick={handleEditActivity}>
+          <Header
+            hasButton={hasPermission}
+            buttonName="Atualizar atividade"
+            onClick={handleEditActivity}
+          >
             <IconButton color="inherit" onClick={() => backToActivitiesList()}>
               <ArrowLeftIcon />
             </IconButton>
@@ -129,20 +136,22 @@ function EditActivity() {
               <div className={classes.formBox}>
                 <FormTextField
                   label="Nome"
+                  required
                   variant="outlined"
                   value={name}
                   error={nameError}
                   className={classes.input}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={hasPermission ? (e) => setName(e.target.value) : () => {}}
                 />
                 <FormTextField
                   label="descrição"
+                  required
                   variant="outlined"
                   multiline
                   value={description}
                   error={descriptionError}
                   className={classes.input}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={hasPermission ? (e) => setDescription(e.target.value) : () => {}}
                 />
                 <FormTextField
                   label="descrição da página"
@@ -150,16 +159,18 @@ function EditActivity() {
                   multiline
                   value={pageDescription}
                   className={classes.input}
-                  onChange={(e) => setPageDescription(e.target.value)}
+                  onChange={hasPermission ? (e) => setPageDescription(e.target.value) : () => {}}
                 />
               </div>
               <div className={classes.layoutBox}>
                 <div>
                   <CardOption icon={icon} name={name} description={description} />
                   <div className={classes.iconDiv}>
-                    <HeaderButton onClick={() => setOpenModal(true)} style={{ margin: '0 auto' }}>
-                      Escolher ícone
-                    </HeaderButton>
+                    {hasPermission && (
+                      <HeaderButton onClick={() => setOpenModal(true)} style={{ margin: '0 auto' }}>
+                        Escolher ícone
+                      </HeaderButton>
+                    )}
                   </div>
                 </div>
                 <div style={{ width: '5%' }} />

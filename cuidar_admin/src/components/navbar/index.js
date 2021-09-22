@@ -24,6 +24,8 @@ import UsersIcon from '../icons/iconUsers';
 import BabyIcon from '../icons/iconBaby';
 import ActivityIcon from '../icons/iconActivity';
 import BoardIcon from '../icons/iconBoard';
+import { verifyPermission } from '../../utils/util';
+import { GET_PATIENT_PERMISSION, GET_USER_PERMISSION } from '../../utils/constants';
 
 const drawerWidth = 240;
 
@@ -186,18 +188,22 @@ function Navbar({ children }) {
             </ListItemIcon>
             <ListItemText primary="Como usar" />
           </ListItem>
-          <ListItem button key="users" onClick={() => history.push('/users')}>
-            <ListItemIcon>
-              <UsersIcon />
-            </ListItemIcon>
-            <ListItemText primary="Usuários" />
-          </ListItem>
-          <ListItem button key="patients" onClick={() => history.push('/patients')}>
-            <ListItemIcon>
-              <BabyIcon />
-            </ListItemIcon>
-            <ListItemText primary="Pacientes" />
-          </ListItem>
+          {verifyPermission(GET_USER_PERMISSION) && (
+            <ListItem button key="users" onClick={() => history.push('/users')}>
+              <ListItemIcon>
+                <UsersIcon />
+              </ListItemIcon>
+              <ListItemText primary="Usuários" />
+            </ListItem>
+          )}
+          {verifyPermission(GET_PATIENT_PERMISSION) && (
+            <ListItem button key="patients" onClick={() => history.push('/patients')}>
+              <ListItemIcon>
+                <BabyIcon />
+              </ListItemIcon>
+              <ListItemText primary="Pacientes" />
+            </ListItem>
+          )}
           <ListItem button key="activitys" onClick={() => history.push('/categories')}>
             <ListItemIcon>
               <ActivityIcon />

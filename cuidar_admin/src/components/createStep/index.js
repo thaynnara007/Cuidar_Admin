@@ -183,6 +183,7 @@ function CreateStep({ setPageState, activityId, activity, refetch }) {
               <div className={classes.formBox}>
                 <FormTextField
                   label="Nome"
+                  required
                   variant="outlined"
                   value={name}
                   error={nameError}
@@ -191,6 +192,7 @@ function CreateStep({ setPageState, activityId, activity, refetch }) {
                 />
                 <FormTextField
                   label="descrição"
+                  required
                   variant="outlined"
                   multiline
                   value={description}

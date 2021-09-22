@@ -12,6 +12,7 @@ import Divider from '@material-ui/core/Divider';
 import Pagination from '@material-ui/lab/Pagination';
 import IconButton from '@material-ui/core/IconButton';
 
+import { InputBase, Paper } from '@material-ui/core';
 import AngleDownIcon from '../icons/iconAngleDown';
 import TrashIcon from '../icons/iconTrash';
 import { AccordionButton } from '../styles/buttons.style';
@@ -19,6 +20,9 @@ import { getPatients, deletePatient } from '../../api';
 import Loading from '../loading';
 import ConfirmationModal from '../modal/confirmationModal';
 import Header from '../header';
+import SearchIcon from '../icons/iconSearch';
+import { CREATE_PATIENT_PERMISSION, DELETE_PATIENT_PERMISSION } from '../../utils/constants';
+import { verifyPermission } from '../../utils/util';
 
 const useStyles = makeStyles({
   heading: {
@@ -48,6 +52,20 @@ const useStyles = makeStyles({
     margin: '8px 0px',
     fontWeight: 'bold',
   },
+  inputPaper: {
+    padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'center',
+    width: '20%',
+    marginTop: '10px',
+  },
+  input: {
+    flex: 1,
+    marginLeft: '5px',
+  },
+  iconButton: {
+    padding: 10,
+  },
 });
 
 function ListPatients({ setPageState }) {
@@ -59,12 +77,13 @@ function ListPatients({ setPageState }) {
   const [idToDelete, setIdToDelete] = useState(null);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [name, setName] = useState('');
+  const [search, setSearch] = useState('');
 
   const {
     data: patients,
     isFetching,
     refetch,
-  } = useQuery('patients', () => getPatients(page), {
+  } = useQuery('patients', () => getPatients(search, page), {
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -103,9 +122,7 @@ function ListPatients({ setPageState }) {
           id="panel1bh-header"
           expandIcon={<AngleDownIcon size="1x" color="#7F7C82" />}
         >
-          <Typography
-            className={classes.heading}
-          >{`${patient?.name} ${patient?.lastName}`}</Typography>
+          <Typography className={classes.heading}>{`${patient?.fullName}`}</Typography>
           <Typography className={classes.secondaryHeading}>{`${patient.cpfFormatted}`}</Typography>
           <Typography className={classes.secondaryHeading}>{`${patient.email}`}</Typography>
           <Typography className={classes.secondaryHeading}>{`${patient?.phoneNumber}`}</Typography>
@@ -115,23 +132,40 @@ function ListPatients({ setPageState }) {
           <AccordionButton onClick={() => history.push(`/patient/${patient?.id}`)}>
             Detalhes
           </AccordionButton>
-          <IconButton
-            color="inherit"
-            onClick={() =>
-              handleShowDeleteModal(patient.id, `${patient?.name} ${patient?.lastName}`)
-            }
-          >
-            <TrashIcon size="1x" color="#BD4B4B" />
-          </IconButton>
+          {verifyPermission(DELETE_PATIENT_PERMISSION) && (
+            <IconButton
+              color="inherit"
+              onClick={() =>
+                handleShowDeleteModal(patient.id, `${patient?.name} ${patient?.lastName}`)
+              }
+            >
+              <TrashIcon size="1x" color="#BD4B4B" />
+            </IconButton>
+          )}
         </AccordionActions>
       </Accordion>
     ));
 
   return (
     <>
-      <Header buttonName="Novo paciente" onClick={() => setPageState('create_patient')}>
+      <Header
+        hasButton={verifyPermission(CREATE_PATIENT_PERMISSION)}
+        buttonName="Novo paciente"
+        onClick={() => setPageState('create_patient')}
+      >
         <Typography variant="h4">Pacientes</Typography>
       </Header>
+      <Paper component="form" className={classes.inputPaper}>
+        <InputBase
+          className={classes.input}
+          placeholder="Busca"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <IconButton onClick={() => refetch()} className={classes.iconButton} aria-label="search">
+          <SearchIcon size="1x" />
+        </IconButton>
+      </Paper>
       <div style={{ width: '100%', marginTop: '2px' }}>
         {isFetching ? (
           <Loading />

@@ -43,13 +43,13 @@ function CreatePatient({ setPageState }) {
   const [cpf, setCpf] = useState('');
   const [cpfError, setCpfError] = useState(false);
   const [birthday, setBirthday] = useState('');
+  const [birthdayError, setBirthdayError] = useState(false);
 
   const [state, setState] = useState('');
   const [stateError, setStateError] = useState(false);
   const [city, setCity] = useState('');
   const [cityError, setCityError] = useState(false);
   const [zipCode, setZipCode] = useState('');
-  const [zipCodeError, setZipCodeError] = useState(false);
   const [district, setDistrict] = useState('');
   const [districtError, setDistrictError] = useState(false);
   const [street, setStreet] = useState('');
@@ -68,7 +68,10 @@ function CreatePatient({ setPageState }) {
     const validatedPhone = phoneNumber && phoneNumber !== '';
     setPhoneNumberError(!validatedPhone);
 
-    return validatedEmail && validatedCpf && validatedPhone;
+    const validatedBirthday = birthday && birthday !== '';
+    setBirthdayError(!validatedBirthday);
+
+    return validatedEmail && validatedCpf && validatedPhone && validatedBirthday;
   };
 
   const validateAddressInfo = () => {
@@ -77,9 +80,6 @@ function CreatePatient({ setPageState }) {
 
     const validateCity = city && city !== '';
     setCityError(!validateCity);
-
-    const validateZipCode = zipCode && zipCode !== '';
-    setZipCodeError(!validateZipCode);
 
     const validateDistrict = district && district !== '';
     setDistrictError(!validateDistrict);
@@ -90,14 +90,7 @@ function CreatePatient({ setPageState }) {
     const validateNumber = number && number !== '';
     setNumberError(!validateNumber);
 
-    return (
-      validateState &&
-      validateCity &&
-      validateZipCode &&
-      validateDistrict &&
-      validateStreet &&
-      validateNumber
-    );
+    return validateState && validateCity && validateDistrict && validateStreet && validateNumber;
   };
 
   const handleCreatePatient = async () => {
@@ -167,6 +160,7 @@ function CreatePatient({ setPageState }) {
         <div className={classes.boxInput}>
           <FormTextField
             label="Email"
+            required
             variant="outlined"
             className={classes.inputHalf}
             value={email}
@@ -175,6 +169,7 @@ function CreatePatient({ setPageState }) {
           />
           <FormTextField
             label="Número de telefone"
+            required
             variant="outlined"
             className={classes.inputHalf}
             error={phoneNumberError}
@@ -185,6 +180,7 @@ function CreatePatient({ setPageState }) {
         <div className={classes.boxInput}>
           <FormTextField
             label="CPF"
+            required
             variant="outlined"
             helperText="Ex: 08910513310"
             className={classes.inputHalf}
@@ -194,6 +190,7 @@ function CreatePatient({ setPageState }) {
           />
           <FormTextField
             label="Data de nascimento"
+            required
             variant="outlined"
             type="date"
             className={classes.inputHalf}
@@ -201,6 +198,7 @@ function CreatePatient({ setPageState }) {
               shrink: true,
             }}
             value={birthday}
+            error={birthdayError}
             onChange={(e) => setBirthday(e.target.value)}
           />
         </div>
@@ -211,6 +209,7 @@ function CreatePatient({ setPageState }) {
         <div className={classes.boxInput}>
           <FormTextField
             label="Estado"
+            required
             variant="outlined"
             className={classes.input3Width}
             value={state}
@@ -219,6 +218,7 @@ function CreatePatient({ setPageState }) {
           />
           <FormTextField
             label="Cidade"
+            required
             variant="outlined"
             className={classes.input3Width}
             value={city}
@@ -230,13 +230,13 @@ function CreatePatient({ setPageState }) {
             variant="outlined"
             className={classes.input3Width}
             value={zipCode}
-            error={zipCodeError}
             onChange={(e) => setZipCode(e.target.value)}
           />
         </div>
         <div className={classes.boxInput}>
           <FormTextField
             label="Bairro"
+            required
             variant="outlined"
             className={classes.input3Width}
             value={district}
@@ -245,6 +245,7 @@ function CreatePatient({ setPageState }) {
           />
           <FormTextField
             label="Rua"
+            required
             variant="outlined"
             className={classes.input3Width}
             value={street}
@@ -253,6 +254,7 @@ function CreatePatient({ setPageState }) {
           />
           <FormTextField
             label="Número"
+            required
             variant="outlined"
             className={classes.input3Width}
             value={number}

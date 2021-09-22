@@ -108,6 +108,7 @@ function CreateActivity({ setPageState, categoryId, category }) {
               <div className={classes.formBox}>
                 <FormTextField
                   label="Nome"
+                  required
                   variant="outlined"
                   value={name}
                   error={nameError}
@@ -116,6 +117,7 @@ function CreateActivity({ setPageState, categoryId, category }) {
                 />
                 <FormTextField
                   label="descrição"
+                  required
                   variant="outlined"
                   multiline
                   value={description}

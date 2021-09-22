@@ -101,9 +101,11 @@ export async function changePassword(password, setIsLoading) {
   }
 }
 
-export async function getUsers(page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
+export async function getUsers(search, page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
   try {
-    const url = `/user?page=${page}&pageSize=${pageSize}`;
+    let url = `/user?page=${page}&pageSize=${pageSize}`;
+
+    if (search && search !== '') url = `/user?page=${page}&pageSize=${pageSize}&search=${search}`;
 
     const result = await api.get(url);
 
@@ -226,9 +228,12 @@ export async function getPermissions() {
   }
 }
 
-export async function getPatients(page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
+export async function getPatients(search, page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
   try {
-    const url = `/patient?page=${page}&pageSize=${pageSize}`;
+    let url = `/patient?page=${page}&pageSize=${pageSize}`;
+
+    if (search && search !== '')
+      url = `/patient?page=${page}&pageSize=${pageSize}&search=${search}`;
 
     const result = await api.get(url);
 
@@ -580,6 +585,22 @@ export async function updateStep(body, imageFormData, id, setIsLoading) {
     else msg = 'Network failed';
 
     setIsLoading(false);
+    toast.error(msg);
+  }
+}
+
+export async function getEntries(timeInfo, patientId) {
+  try {
+    const url = `/history/patient/${patientId}?start=${timeInfo.startStr}&end=${timeInfo.endStr}`;
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
     toast.error(msg);
   }
 }

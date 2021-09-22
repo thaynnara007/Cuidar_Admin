@@ -24,4 +24,13 @@ export const BED_ICON = 'BED';
 export const BOOK_ICON = 'BOOK';
 export const DEFAULT_ICON = 'DEFAULT';
 
+export const CREATE_USER_PERMISSION = 'criar usuário';
+export const GET_USER_PERMISSION = 'ler usuário';
+export const DELETE_USER_PERMISSION = 'remover usuário';
+export const CREATE_PATIENT_PERMISSION = 'criar paciente';
+export const GET_PATIENT_PERMISSION = 'ler paciente';
+export const DELETE_PATIENT_PERMISSION = 'remover paciente';
+export const CREATE_ACTIVITY_PERMISSION = 'criar atividade';
+export const DELETE_ACTIVITY_PERMISSION = 'remover atividade';
+
 export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3030';

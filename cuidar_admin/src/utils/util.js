@@ -100,3 +100,9 @@ export function getAllIcons() {
     { icon: <CategoryIconDefault />, value: DEFAULT_ICON },
   ];
 }
+
+export function verifyPermission(permission) {
+  const permissions = JSON.parse(localStorage.getItem('cuidar_permissions'));
+
+  return permissions?.includes(permission);
+}

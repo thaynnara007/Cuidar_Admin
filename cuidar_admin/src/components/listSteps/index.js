@@ -18,6 +18,8 @@ import Loading from '../loading';
 import TrashIcon from '../icons/iconTrash';
 import ConfirmationModal from '../modal/confirmationModal';
 import { BlueTimelineDot, FinalTimelineDot } from '../styles/dot.style';
+import { verifyPermission } from '../../utils/util';
+import { CREATE_ACTIVITY_PERMISSION, DELETE_ACTIVITY_PERMISSION } from '../../utils/constants';
 
 const useStyles = makeStyles({
   header: {
@@ -96,12 +98,14 @@ function ListSteps({ setPageState, isFetching, refetch, activityObj }) {
                   {step.name}
                 </Link>
               </Typography>
-              <IconButton
-                style={{ padding: '8px' }}
-                onClick={() => handleShowDeleteModal(step.id, step.name)}
-              >
-                <TrashIcon size="xs" color="#BD4B4B" />
-              </IconButton>
+              {verifyPermission(DELETE_ACTIVITY_PERMISSION) && (
+                <IconButton
+                  style={{ padding: '8px' }}
+                  onClick={() => handleShowDeleteModal(step.id, step.name)}
+                >
+                  <TrashIcon size="xs" color="#BD4B4B" />
+                </IconButton>
+              )}
             </div>
             <Typography variant="subtitle1" className={classes.subtitleStyle}>
               {step.description}
@@ -114,7 +118,11 @@ function ListSteps({ setPageState, isFetching, refetch, activityObj }) {
 
   return (
     <>
-      <Header buttonName="Nova etapa" onClick={() => setPageState('create_step')}>
+      <Header
+        hasButton={verifyPermission(CREATE_ACTIVITY_PERMISSION)}
+        buttonName="Nova etapa"
+        onClick={() => setPageState('create_step')}
+      >
         <div className={classes.header}>
           <IconButton
             color="inherit"
