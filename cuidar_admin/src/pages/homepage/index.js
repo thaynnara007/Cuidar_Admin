@@ -1,12 +1,16 @@
 import {
   Accordion,
   AccordionActions,
+  AccordionDetails,
   AccordionSummary,
+  Box,
+  Chip,
   Divider,
   IconButton,
   Link,
   makeStyles,
   Paper,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
 import React from 'react';
@@ -14,7 +18,9 @@ import React from 'react';
 import ActivityIcon from '../../components/icons/iconActivity';
 import AngleDownIcon from '../../components/icons/iconAngleDown';
 import BabyIcon from '../../components/icons/iconBaby';
+import ProfileIcon from '../../components/icons/iconProfile';
 import TrashIcon from '../../components/icons/iconTrash';
+import UsersIcon from '../../components/icons/iconUsers';
 import Navbar from '../../components/navbar';
 import { AccordionButton, HeaderButton } from '../../components/styles/buttons.style';
 
@@ -44,7 +50,40 @@ const useStyles = makeStyles({
     flexShrink: 0,
     flexBasis: '25%',
   },
+  heading2: {
+    fontSize: '15px',
+    flexBasis: '33.33%',
+    flexShrink: 0,
+  },
+  secondaryHeading2: {
+    fontSize: '15px',
+    color: '#7F7C82',
+    flexShrink: 0,
+    flexBasis: '33.33%',
+  },
+  chip: {
+    margin: '5px',
+  },
+  box: {
+    listStyle: 'none',
+    display: 'flex',
+    flexDirection: 'row',
+  },
 });
+
+const permissionsExample = [
+  {
+    id: 1,
+    name: 'criar paciente',
+    description:
+      'Permite que o usuário cadastre novos pacientes e edite as informações dos já cadastrados',
+  },
+  {
+    id: 2,
+    name: 'remover paciente',
+    description: 'Permite que o usuário delete algum paciente cadastrado.',
+  },
+];
 
 function Home() {
   const classes = useStyles();
@@ -64,6 +103,39 @@ function Home() {
       <Divider />
       <AccordionActions>
         <AccordionButton>Detalhes</AccordionButton>
+        <IconButton color="inherit">
+          <TrashIcon size="1x" color="#BD4B4B" />
+        </IconButton>
+      </AccordionActions>
+    </Accordion>
+  );
+
+  const genereteUserAccordion = () => (
+    <Accordion>
+      <AccordionSummary
+        aria-controls="panel1bh-content"
+        id="panel1bh-header"
+        expandIcon={<AngleDownIcon size="1x" color="#7F7C82" />}
+      >
+        <Typography className={classes.heading2}>Marceline Abadeer</Typography>
+        <Typography className={classes.secondaryHeading2}>marceline@gmail.com</Typography>
+        <Typography className={classes.secondaryHeading2}>83999754643</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Box className={classes.box}>
+          {permissionsExample.map((permission) => (
+            <li key={permission.id}>
+              <Tooltip title={permission.description}>
+                <Chip label={permission.name} className={classes.chip} />
+              </Tooltip>
+            </li>
+          ))}
+        </Box>
+      </AccordionDetails>
+      <Divider />
+      <AccordionActions>
+        <AccordionButton>Ver endereço</AccordionButton>
+        <AccordionButton>Editar permissões</AccordionButton>
         <IconButton color="inherit">
           <TrashIcon size="1x" color="#BD4B4B" />
         </IconButton>
@@ -490,16 +562,85 @@ function Home() {
             Usuários
           </Typography>
           <Divider />
+          <div className={classes.textMargin}>
+            <Typography variant="body1">
+              Os usuários são as pessoas que podem acessar o Cuidar Admin.
+            </Typography>
+            <div className={classes.textDiv}>
+              <Typography variant="body1" style={{ marginRight: '16px' }}>
+                A aba de usuários pode ser acessada a partir do menu lateral, clicando no ícone:
+              </Typography>
+              <UsersIcon />
+              <Typography variant="body1">
+                , onde há uma lista dos usuários cadastrados, no seguinte formato:
+              </Typography>
+            </div>
+            <br />
+            {genereteUserAccordion()}
+            <br />
+            <Typography variant="body1">
+              onde a primeira coluna equivale ao nome completo do usuário, a segunda coluna ao email
+              e a terceira ao número de telefone. Clicando no usuário é possível ver também as
+              permissões do mesmo.
+            </Typography>
+          </div>
+          <br />
           <Typography variant="h6" id="user-create">
             Criar usuário
           </Typography>
+          <div className={classes.textMargin}>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">Para cadastrar um usuário, clique no botão</Typography>
+              <HeaderButton>Novo usuário</HeaderButton>
+              <Typography>
+                na aba de usuários, preencha o formulário, escolha as permissões que o usuário terá
+                dentro do sistema e clique em
+              </Typography>
+              <HeaderButton>Registrar usuário</HeaderButton>
+            </div>
+          </div>
+          <br />
           <Typography variant="h6" id="user-remove">
             Remover usuário
           </Typography>
+          <div className={classes.textMargin}>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">Para remover um usuário, basta clicar em</Typography>
+              <IconButton color="inherit">
+                <TrashIcon size="1x" color="#BD4B4B" />
+              </IconButton>
+              <Typography variant="body1"> e confirmar.</Typography>
+            </div>
+          </div>
+          <br />
           <Typography variant="h6" id="user-edit">
             Atualizar usuário
           </Typography>
-          <Divider />
+          <div className={classes.textMargin}>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">
+                Para atualizar as permissões de um usuário, clique em
+              </Typography>
+              <AccordionButton>editar permissões</AccordionButton>
+              <Typography variant="body1">
+                , marque as permissões desejadas e desmarque as não desejadas.
+              </Typography>
+            </div>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">
+                Quanto aos dados pessoais, apenas o próprio usuário pode atualizar essas
+                informações. Para isso ir na barra superior e clicar no ícone:
+              </Typography>
+              <ProfileIcon styles={{ marginLeft: '5px' }} />
+            </div>
+            <div className={classes.textDiv}>
+              <Typography variant="body1">
+                Agora é só alterar os campos desejados e clicar em
+              </Typography>
+              <HeaderButton>Atualizar</HeaderButton>
+            </div>
+          </div>
+          <br />
         </div>
       </Paper>
     </Navbar>
