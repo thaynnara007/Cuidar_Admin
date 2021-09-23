@@ -17,6 +17,7 @@ import Activities from './pages/activities';
 import EditActivity from './pages/activities/editActivity';
 import ActivitySteps from './pages/steps';
 import EditStep from './pages/steps/editStep';
+import PrivateRoute from './components/privateRouter';
 
 const queryClient = new QueryClient();
 
@@ -31,39 +32,41 @@ function App() {
               <Route exact path="/">
                 <Enter />
               </Route>
-              <Route exact path="/home">
-                <Home />
-              </Route>
-              <Route exact path="/users">
-                <Users />
-              </Route>
-              <Route exact path="/patients">
-                <Patients />
-              </Route>
-              <Route exact path="/patient/:id">
-                <PatientDetails />
-              </Route>
-              <Route exact path="/categories">
-                <Categories />
-              </Route>
-              <Route exact path="/category/:id/activities">
-                <Activities />
-              </Route>
-              <Route exact path="/category/:id">
-                <EditCategory />
-              </Route>
-              <Route exact path="/activity/:id/steps">
-                <ActivitySteps />
-              </Route>
-              <Route exact path="/activity/:id">
-                <EditActivity />
-              </Route>
-              <Route exact path="/step/:id">
-                <EditStep />
-              </Route>
-              <Route exact path="/profile">
-                <MyInfo />
-              </Route>
+              <PrivateRoute exact path="/home" component={(props) => <Home {...props} />} />
+              <PrivateRoute exact path="/users" component={(props) => <Users {...props} />} />
+              <PrivateRoute exact path="/patients" component={(props) => <Patients {...props} />} />
+              <PrivateRoute
+                exact
+                path="/patient/:id"
+                component={(props) => <PatientDetails {...props} />}
+              />
+              <PrivateRoute
+                exact
+                path="/categories"
+                component={(props) => <Categories {...props} />}
+              />
+              <PrivateRoute
+                exact
+                path="/category/:id/activities"
+                component={(props) => <Activities {...props} />}
+              />
+              <PrivateRoute
+                exact
+                path="/category/:id"
+                component={(props) => <EditCategory {...props} />}
+              />
+              <PrivateRoute
+                exact
+                path="/activity/:id/steps"
+                component={(props) => <ActivitySteps {...props} />}
+              />
+              <PrivateRoute
+                exact
+                path="/activity/:id"
+                component={(props) => <EditActivity {...props} />}
+              />
+              <PrivateRoute exact path="/step/:id" component={(props) => <EditStep {...props} />} />
+              <PrivateRoute exact path="/profile" component={(props) => <MyInfo {...props} />} />
               <Route exact path="/*">
                 <NotFound />
               </Route>

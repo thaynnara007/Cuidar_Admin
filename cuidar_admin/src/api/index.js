@@ -28,6 +28,22 @@ export async function login(email, password, setIsLoading) {
   }
 }
 
+export async function isValidToken() {
+  try {
+    const url = '/auth/token/valid';
+
+    const result = await api.get(url);
+
+    return result;
+  } catch (error) {
+    let msg = '';
+    if (error.response) msg = error.response.data.error;
+    else msg = 'Network failed';
+
+    toast.error(msg);
+  }
+}
+
 export async function sendRecoveryPasswordEmail(email, setIsLoading) {
   try {
     setIsLoading(true);
