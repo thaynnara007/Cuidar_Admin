@@ -241,7 +241,7 @@ function EditStep() {
                 <StepScreen
                   title={name}
                   description={description}
-                  image={image ?? step?.data.image.pictureUrl}
+                  image={image ?? step?.data.image?.pictureUrl}
                   icon={step?.data.activity.icon}
                   color={step?.data.activity.category.color ?? '#C6FFC1'}
                   textColor={step?.data.activity.category.textColor ?? '#24267E'}

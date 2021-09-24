@@ -62,7 +62,6 @@ function CreateUser({ setPageState }) {
   const [city, setCity] = useState('');
   const [cityError, setCityError] = useState(false);
   const [zipCode, setZipCode] = useState('');
-  const [zipCodeError, setZipCodeError] = useState(false);
   const [district, setDistrict] = useState('');
   const [districtError, setDistrictError] = useState(false);
   const [street, setStreet] = useState('');
@@ -99,9 +98,6 @@ function CreateUser({ setPageState }) {
     const validateCity = city && city !== '';
     setCityError(!validateCity);
 
-    const validateZipCode = zipCode && zipCode !== '';
-    setZipCodeError(!validateZipCode);
-
     const validateDistrict = district && district !== '';
     setDistrictError(!validateDistrict);
 
@@ -111,14 +107,7 @@ function CreateUser({ setPageState }) {
     const validateNumber = number && number !== '';
     setNumberError(!validateNumber);
 
-    return (
-      validateState &&
-      validateCity &&
-      validateZipCode &&
-      validateDistrict &&
-      validateStreet &&
-      validateNumber
-    );
+    return validateState && validateCity && validateDistrict && validateStreet && validateNumber;
   };
 
   const addPermission = (event, id) => {
@@ -290,7 +279,6 @@ function CreateUser({ setPageState }) {
             variant="outlined"
             className={classes.input3Width}
             value={zipCode}
-            error={zipCodeError}
             onChange={(e) => setZipCode(e.target.value)}
           />
         </div>

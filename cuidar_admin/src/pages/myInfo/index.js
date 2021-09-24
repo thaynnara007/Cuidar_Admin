@@ -49,7 +49,6 @@ function MyInfo() {
   const [city, setCity] = useState('');
   const [cityError, setCityError] = useState(false);
   const [zipCode, setZipCode] = useState('');
-  const [zipCodeError, setZipCodeError] = useState(false);
   const [district, setDistrict] = useState('');
   const [districtError, setDistrictError] = useState(false);
   const [street, setStreet] = useState('');
@@ -100,9 +99,6 @@ function MyInfo() {
     const validateCity = city && city !== '';
     setCityError(!validateCity);
 
-    const validateZipCode = zipCode && zipCode !== '';
-    setZipCodeError(!validateZipCode);
-
     const validateDistrict = district && district !== '';
     setDistrictError(!validateDistrict);
 
@@ -112,14 +108,7 @@ function MyInfo() {
     const validateNumber = number && number !== '';
     setNumberError(!validateNumber);
 
-    return (
-      validateState &&
-      validateCity &&
-      validateZipCode &&
-      validateDistrict &&
-      validateStreet &&
-      validateNumber
-    );
+    return validateState && validateCity && validateDistrict && validateStreet && validateNumber;
   };
 
   const handleUpdateUser = async () => {
@@ -249,7 +238,6 @@ function MyInfo() {
               variant="outlined"
               className={classes.input3Width}
               value={zipCode}
-              error={zipCodeError}
               onChange={(e) => setZipCode(e.target.value)}
             />
           </div>
