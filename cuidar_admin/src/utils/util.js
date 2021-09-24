@@ -1,3 +1,5 @@
+import React from 'react';
+
 import AppleIcon from '../components/icons/iconApple';
 import BabyCarriageIcon from '../components/icons/iconBabyCarriage';
 import BallIcon from '../components/icons/iconBall';
