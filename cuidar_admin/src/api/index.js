@@ -228,13 +228,15 @@ export async function updateMe(body, setIsLoading) {
   }
 }
 
-export async function getPermissions() {
+export async function getPermissions(hasPermission = true) {
   try {
-    const url = `/permission`;
+    if (hasPermission) {
+      const url = `/permission`;
 
-    const result = await api.get(url);
+      const result = await api.get(url);
 
-    return result;
+      return result;
+    }
   } catch (error) {
     let msg = '';
     if (error.response) msg = error.response.data.error;

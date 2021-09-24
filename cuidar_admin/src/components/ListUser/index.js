@@ -88,6 +88,8 @@ function ListUser({ setPageState }) {
   const [name, setName] = useState('');
   const [search, setSearch] = useState('');
 
+  const createUserPermission = verifyPermission(CREATE_USER_PERMISSION);
+
   const {
     data: usersRes,
     isFetching: isFetchingUsers,
@@ -99,7 +101,7 @@ function ListUser({ setPageState }) {
 
   const { data: permissionsRes, isFetching: isFetchingPermissions } = useQuery(
     'permissions',
-    () => getPermissions(),
+    () => getPermissions(createUserPermission),
     {
       refetchOnWindowFocus: false,
       retry: false,
@@ -183,7 +185,7 @@ function ListUser({ setPageState }) {
           <AccordionButton onClick={() => handleShowAddress(user.address)}>
             Ver endereço
           </AccordionButton>
-          {verifyPermission(CREATE_USER_PERMISSION) && (
+          {createUserPermission && (
             <AccordionButton onClick={() => handleShowPermissionsModal(user.id, user.permissions)}>
               Editar permissões
             </AccordionButton>
@@ -203,7 +205,7 @@ function ListUser({ setPageState }) {
   return (
     <>
       <Header
-        hasButton={verifyPermission(CREATE_USER_PERMISSION)}
+        hasButton={createUserPermission}
         buttonName="Novo usuário"
         onClick={() => setPageState('create_user')}
       >
