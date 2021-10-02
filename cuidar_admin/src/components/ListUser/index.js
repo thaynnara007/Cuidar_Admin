@@ -93,12 +93,13 @@ function ListUser({ setPageState }) {
   const [search, setSearch] = useState('');
 
   const createUserPermission = verifyPermission(CREATE_USER_PERMISSION);
+  const getUserPermission = verifyPermission(GET_USER_PERMISSION);
 
   const {
     data: usersRes,
     isFetching: isFetchingUsers,
     refetch,
-  } = useQuery('users', () => getUsers(search, page), {
+  } = useQuery('users', () => getUsers(getUserPermission, search, page), {
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -226,7 +227,7 @@ function ListUser({ setPageState }) {
           <SearchIcon size="1x" />
         </IconButton>
       </Paper>
-      {verifyPermission(GET_USER_PERMISSION) && (
+      {getUserPermission && (
         <div style={{ width: '100%', marginTop: '2px' }}>
           {isFetchingUsers || isFetchingPermissions ? (
             <Loading />

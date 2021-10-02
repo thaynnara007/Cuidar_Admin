@@ -24,7 +24,7 @@ import SearchIcon from '../icons/iconSearch';
 import {
   CREATE_PATIENT_PERMISSION,
   DELETE_PATIENT_PERMISSION,
-  GET_USER_PERMISSION,
+  GET_PATIENT_PERMISSION,
 } from '../../utils/constants';
 import { verifyPermission } from '../../utils/util';
 
@@ -83,11 +83,13 @@ function ListPatients({ setPageState }) {
   const [name, setName] = useState('');
   const [search, setSearch] = useState('');
 
+  const getPatientsPermission = verifyPermission(GET_PATIENT_PERMISSION);
+
   const {
     data: patients,
     isFetching,
     refetch,
-  } = useQuery('patients', () => getPatients(search, page), {
+  } = useQuery('patients', () => getPatients(getPatientsPermission, search, page), {
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -170,7 +172,7 @@ function ListPatients({ setPageState }) {
           <SearchIcon size="1x" />
         </IconButton>
       </Paper>
-      {verifyPermission(GET_USER_PERMISSION) && (
+      {getPatientsPermission && (
         <div style={{ width: '100%', marginTop: '2px' }}>
           {isFetching ? (
             <Loading />

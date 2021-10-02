@@ -117,13 +117,22 @@ export async function changePassword(password, setIsLoading) {
   }
 }
 
-export async function getUsers(search, page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
+export async function getUsers(
+  permission = true,
+  search,
+  page = PAGE_DEFAULT,
+  pageSize = PAGE_SIZE_DEFAULT
+) {
   try {
-    let url = `/user?page=${page}&pageSize=${pageSize}`;
+    let result = {};
 
-    if (search && search !== '') url = `/user?page=${page}&pageSize=${pageSize}&search=${search}`;
+    if (permission) {
+      let url = `/user?page=${page}&pageSize=${pageSize}`;
 
-    const result = await api.get(url);
+      if (search && search !== '') url = `/user?page=${page}&pageSize=${pageSize}&search=${search}`;
+
+      result = await api.get(url);
+    }
 
     return result;
   } catch (error) {
@@ -246,14 +255,23 @@ export async function getPermissions(hasPermission = true) {
   }
 }
 
-export async function getPatients(search, page = PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT) {
+export async function getPatients(
+  permission,
+  search,
+  page = PAGE_DEFAULT,
+  pageSize = PAGE_SIZE_DEFAULT
+) {
   try {
-    let url = `/patient?page=${page}&pageSize=${pageSize}`;
+    let result = {};
 
-    if (search && search !== '')
-      url = `/patient?page=${page}&pageSize=${pageSize}&search=${search}`;
+    if (permission) {
+      let url = `/patient?page=${page}&pageSize=${pageSize}`;
 
-    const result = await api.get(url);
+      if (search && search !== '')
+        url = `/patient?page=${page}&pageSize=${pageSize}&search=${search}`;
+
+      result = await api.get(url);
+    }
 
     return result;
   } catch (error) {
