@@ -26,7 +26,11 @@ import ConfirmationModal from '../modal/confirmationModal';
 import EditPermissionsModal from '../modal/editPermissionModal';
 import Header from '../header';
 import SearchIcon from '../icons/iconSearch';
-import { CREATE_USER_PERMISSION, DELETE_USER_PERMISSION } from '../../utils/constants';
+import {
+  CREATE_USER_PERMISSION,
+  DELETE_USER_PERMISSION,
+  GET_USER_PERMISSION,
+} from '../../utils/constants';
 import { verifyPermission } from '../../utils/util';
 
 const useStyles = makeStyles({
@@ -89,12 +93,13 @@ function ListUser({ setPageState }) {
   const [search, setSearch] = useState('');
 
   const createUserPermission = verifyPermission(CREATE_USER_PERMISSION);
+  const getUserPermission = verifyPermission(GET_USER_PERMISSION);
 
   const {
     data: usersRes,
     isFetching: isFetchingUsers,
     refetch,
-  } = useQuery('users', () => getUsers(search, page), {
+  } = useQuery('users', () => getUsers(getUserPermission, search, page), {
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -222,48 +227,50 @@ function ListUser({ setPageState }) {
           <SearchIcon size="1x" />
         </IconButton>
       </Paper>
-      <div style={{ width: '100%', marginTop: '2px' }}>
-        {isFetchingUsers || isFetchingPermissions ? (
-          <Loading />
-        ) : (
-          <>
-            <Pagination
-              className={classes.pagination}
-              count={usersRes?.data.pages}
-              page={page}
-              onChange={handlePagination}
-              shape="rounded"
-            />
-            {accordionUserItens(usersRes?.data.rows)}
-            <FormModal
-              open={openAddressModal}
-              handleClose={() => setOpenAddressModal(false)}
-              title="Endereço"
-            >
-              {address}
-            </FormModal>
-            <ConfirmationModal
-              open={openDeleteModal}
-              handleClose={() => setOpenDeleteModal(false)}
-              title="Remover usuário"
-              description={`Esta ação não poderá ser revertida, você tem certeza que quer de apagar o usuário ${
-                name ?? ''
-              } ?`}
-              confirmButtonName="Remover"
-              handleConfirm={handleDelete}
-              isLoading={isLoadingDelete}
-            />
-            <EditPermissionsModal
-              open={openPermissionModal}
-              handleClose={() => setOpenPermissionModal(false)}
-              userId={idToEdit}
-              allPermissions={permissionsRes?.data}
-              initPermissions={initPermissions}
-              refetch={refetch}
-            />
-          </>
-        )}
-      </div>
+      {getUserPermission && (
+        <div style={{ width: '100%', marginTop: '2px' }}>
+          {isFetchingUsers || isFetchingPermissions ? (
+            <Loading />
+          ) : (
+            <>
+              <Pagination
+                className={classes.pagination}
+                count={usersRes?.data.pages}
+                page={page}
+                onChange={handlePagination}
+                shape="rounded"
+              />
+              {accordionUserItens(usersRes?.data.rows)}
+              <FormModal
+                open={openAddressModal}
+                handleClose={() => setOpenAddressModal(false)}
+                title="Endereço"
+              >
+                {address}
+              </FormModal>
+              <ConfirmationModal
+                open={openDeleteModal}
+                handleClose={() => setOpenDeleteModal(false)}
+                title="Remover usuário"
+                description={`Esta ação não poderá ser revertida, você tem certeza que quer de apagar o usuário ${
+                  name ?? ''
+                } ?`}
+                confirmButtonName="Remover"
+                handleConfirm={handleDelete}
+                isLoading={isLoadingDelete}
+              />
+              <EditPermissionsModal
+                open={openPermissionModal}
+                handleClose={() => setOpenPermissionModal(false)}
+                userId={idToEdit}
+                allPermissions={permissionsRes?.data}
+                initPermissions={initPermissions}
+                refetch={refetch}
+              />
+            </>
+          )}
+        </div>
+      )}
     </>
   );
 }

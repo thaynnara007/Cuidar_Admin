@@ -21,7 +21,11 @@ import Loading from '../loading';
 import ConfirmationModal from '../modal/confirmationModal';
 import Header from '../header';
 import SearchIcon from '../icons/iconSearch';
-import { CREATE_PATIENT_PERMISSION, DELETE_PATIENT_PERMISSION } from '../../utils/constants';
+import {
+  CREATE_PATIENT_PERMISSION,
+  DELETE_PATIENT_PERMISSION,
+  GET_PATIENT_PERMISSION,
+} from '../../utils/constants';
 import { verifyPermission } from '../../utils/util';
 
 const useStyles = makeStyles({
@@ -79,11 +83,13 @@ function ListPatients({ setPageState }) {
   const [name, setName] = useState('');
   const [search, setSearch] = useState('');
 
+  const getPatientsPermission = verifyPermission(GET_PATIENT_PERMISSION);
+
   const {
     data: patients,
     isFetching,
     refetch,
-  } = useQuery('patients', () => getPatients(search, page), {
+  } = useQuery('patients', () => getPatients(getPatientsPermission, search, page), {
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -166,33 +172,35 @@ function ListPatients({ setPageState }) {
           <SearchIcon size="1x" />
         </IconButton>
       </Paper>
-      <div style={{ width: '100%', marginTop: '2px' }}>
-        {isFetching ? (
-          <Loading />
-        ) : (
-          <>
-            <Pagination
-              className={classes.pagination}
-              count={patients?.data.pages}
-              page={page}
-              onChange={handlePagination}
-              shape="rounded"
-            />
-            {accordionPatientItens(patients?.data.rows)}
-            <ConfirmationModal
-              open={openDeleteModal}
-              handleClose={() => setOpenDeleteModal(false)}
-              title="Remover paciente"
-              description={`Esta ação não poderá ser revertida, você tem certeza que quer apagar o paciente ${
-                name ?? ''
-              } ?`}
-              confirmButtonName="Remover"
-              handleConfirm={handleDelete}
-              isLoading={isLoadingDelete}
-            />
-          </>
-        )}
-      </div>
+      {getPatientsPermission && (
+        <div style={{ width: '100%', marginTop: '2px' }}>
+          {isFetching ? (
+            <Loading />
+          ) : (
+            <>
+              <Pagination
+                className={classes.pagination}
+                count={patients?.data.pages}
+                page={page}
+                onChange={handlePagination}
+                shape="rounded"
+              />
+              {accordionPatientItens(patients?.data.rows)}
+              <ConfirmationModal
+                open={openDeleteModal}
+                handleClose={() => setOpenDeleteModal(false)}
+                title="Remover paciente"
+                description={`Esta ação não poderá ser revertida, você tem certeza que quer apagar o paciente ${
+                  name ?? ''
+                } ?`}
+                confirmButtonName="Remover"
+                handleConfirm={handleDelete}
+                isLoading={isLoadingDelete}
+              />
+            </>
+          )}
+        </div>
+      )}
     </>
   );
 }
